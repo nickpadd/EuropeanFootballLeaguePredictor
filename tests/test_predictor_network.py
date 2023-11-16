@@ -62,11 +62,11 @@ def create_dummy_dataframe():
 
 class TestProbabilityEstimatorNetwork:
     voting_dict = { 'long_term': 0.6, 'short_term': 0.4}
-    match_days_to_drop = 4
+    matchdays_to_drop = 4
     def test_build_network(self):
-        lin = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.match_days_to_drop)
+        lin = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         lin.build_network(LinearRegression)
-        svr = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.match_days_to_drop)
+        svr = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         svr.build_network(SVR)
         assert isinstance(lin.short_term_model.home_side, LinearRegression) and isinstance(lin.short_term_model.away_side, LinearRegression) and isinstance(lin.long_term_model.home_side, LinearRegression) and isinstance(lin.long_term_model.away_side, LinearRegression)
         assert isinstance(svr.short_term_model.home_side, SVR) and isinstance(svr.short_term_model.away_side, SVR) and isinstance(svr.long_term_model.home_side, SVR) and isinstance(svr.long_term_model.away_side, SVR)
@@ -76,7 +76,7 @@ class TestProbabilityEstimatorNetwork:
         long_term_data = create_dummy_dataframe
         short_term_data = create_dummy_dataframe
         
-        network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.match_days_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         filtered_long_term_data, filtered_short_term_data = network.drop_matchdays(long_term_data=long_term_data, short_term_data=short_term_data)
         assert all(filtered_long_term_data['AM'] > matchdays_to_drop) and all(filtered_long_term_data['HM'] > matchdays_to_drop)
         assert len(filtered_long_term_data) == len(filtered_short_term_data)
@@ -86,7 +86,7 @@ class TestProbabilityEstimatorNetwork:
         # Test case 1: Positive values
         input_array = np.random.uniform(0, 10, size=(4, 4))
         normalized_array = network.normalize_array(input_array)
-        assert ((normalized_array >= 0).all and (normalized_array <= 1).all)
+        assert ((normalized_array >= 0).all() and (normalized_array <= 1).all())
         
     def test_get_scoreline_probabilities(self,):
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
