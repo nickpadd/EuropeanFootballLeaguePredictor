@@ -1,7 +1,7 @@
-mlruns/
-htmlcov/
+mlruns/**
+htmlcov/**
 poetry.lock
-**/raw_files/
-**/preprocessed_files/
-**/evaluation/
+**/raw_files/**
+**/preprocessed_files/**
+**/evaluation/**
   
