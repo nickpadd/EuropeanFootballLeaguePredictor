@@ -78,7 +78,7 @@ class TestProbabilityEstimatorNetwork:
         
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         filtered_long_term_data, filtered_short_term_data = network.drop_matchdays(long_term_data=long_term_data, short_term_data=short_term_data)
-        assert all(filtered_long_term_data['AM'] > matchdays_to_drop) and all(filtered_long_term_data['HM'] > matchdays_to_drop)
+        assert all(filtered_long_term_data['AM'] > TestProbabilityEstimatorNetwork.matchdays_to_drop) and all(filtered_long_term_data['HM'] > TestProbabilityEstimatorNetwork.matchdays_to_drop)
         assert len(filtered_long_term_data) == len(filtered_short_term_data)
     
     def test_normalize_array(self):
