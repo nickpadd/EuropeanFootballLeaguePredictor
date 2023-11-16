@@ -1,4 +1,4 @@
-from europeanfootballleaguepredictor.models.PredictorNetwork import FootballPredictor, ProbabilityEstimatorNetwork
+from europeanfootballleaguepredictor.models.probability_estimator import FootballPredictor, ProbabilityEstimatorNetwork
 import numpy as np
 import pandas as pd
 from loguru import logger 
