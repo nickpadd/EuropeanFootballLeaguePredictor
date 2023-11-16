@@ -1,4 +1,4 @@
-from europeanfootballleaguepredictor.models.PredictorNetwork import ProbabilityEstimatorNetwork
+from europeanfootballleaguepredictor.models.probability_estimator import ProbabilityEstimatorNetwork
 from europeanfootballleaguepredictor.models.bettor import Bettor
 import numpy as np
 from sklearn.linear_model import LinearRegression, PoissonRegressor

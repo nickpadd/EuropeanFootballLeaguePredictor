@@ -1,4 +1,4 @@
-from europeanfootballleaguepredictor.models.PredictorNetwork import PredictorNetwork
+from europeanfootballleaguepredictor.models.probability_estimator import ProbabilityEstimatorNetwork
 from europeanfootballleaguepredictor.common.config_parser import Config_Parser
 from loguru import logger 
 import pandas as pd
@@ -74,13 +74,13 @@ def create_dummy_dataframe():
     return dummy_data
 
 
-class TestPredictorNetwork:
+class TestProbabilityEstimatorNetwork:
     
     def test_build_network(self, config_settings):
         config = config_settings
-        lin = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        lin = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         lin.build_network(LinearRegression)
-        svr = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        svr = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         svr.build_network(SVR)
         assert isinstance(lin.short_term_model.home_side, LinearRegression) and isinstance(lin.short_term_model.away_side, LinearRegression) and isinstance(lin.long_term_model.home_side, LinearRegression) and isinstance(lin.long_term_model.away_side, LinearRegression)
         assert isinstance(svr.short_term_model.home_side, SVR) and isinstance(svr.short_term_model.away_side, SVR) and isinstance(svr.long_term_model.home_side, SVR) and isinstance(svr.long_term_model.away_side, SVR)
@@ -91,14 +91,14 @@ class TestPredictorNetwork:
         long_term_data = create_dummy_dataframe
         short_term_data = create_dummy_dataframe
         
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         filtered_long_term_data, filtered_short_term_data = network.drop_matchdays(long_term_data=long_term_data, short_term_data=short_term_data)
         assert all(filtered_long_term_data['AM'] > config.matchdays_to_drop) and all(filtered_long_term_data['HM'] > config.matchdays_to_drop)
         assert len(filtered_long_term_data) == len(filtered_short_term_data)
     
     def test_normalize_array(self, config_settings):
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         # Test case 1: Positive values
         input_array = np.random.uniform(0, 10, size=(4, 4))
         normalized_array = network.normalize_array(input_array)
@@ -106,7 +106,7 @@ class TestPredictorNetwork:
         
     def test_get_scoreline_probabilities(self, config_settings):
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         home_goal_rate = np.random.uniform(0, 5, size=10)
         away_goal_rate = np.random.uniform(0, 4, size=10)
         poisson_array_list = network.get_scoreline_probabilities(home_goal_rate_array= home_goal_rate, away_goal_rate_array= away_goal_rate)
@@ -115,7 +115,7 @@ class TestPredictorNetwork:
 
     def test_get_betting_probabilities(self, config_settings):
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         home_goal_rate = np.random.uniform(0, 5, size=10)
         away_goal_rate = np.random.uniform(0, 4, size=10)
         poisson_array_list = network.get_scoreline_probabilities(home_goal_rate_array= home_goal_rate, away_goal_rate_array= away_goal_rate)
@@ -139,7 +139,7 @@ class TestPredictorNetwork:
         for_pred_long = for_pred_long.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
 
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         long_term_array, short_term_array, home_goals_array, away_goals_array, match_info, for_prediction_info, for_prediction_short_array, for_prediction_long_array = network.prepare_for_prediction(short_term_data=short, long_term_data=long, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
         assert len(long_term_array) == len(short_term_array) == len(home_goals_array) == len(away_goals_array) == len(match_info)
         assert len(for_prediction_info) == len(for_prediction_short_array) == len(for_prediction_long_array)
@@ -154,7 +154,7 @@ class TestPredictorNetwork:
     
     def test_deduct_goalrate(self, config_settings):
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         network.build_network(regressor = LinearRegression)
         
         train_short = np.round(np.random.uniform(0, 1, size=(12, 34)), 2)
@@ -184,7 +184,7 @@ class TestPredictorNetwork:
         for_pred_long = for_pred_long.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
         
         config = config_settings
-        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         network.build_network(regressor = LinearRegression)
         prediction_frame = network.predict_matches(long_term_data=long, short_term_data=short, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
         
