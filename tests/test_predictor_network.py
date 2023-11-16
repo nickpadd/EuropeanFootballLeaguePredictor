@@ -86,7 +86,7 @@ class TestProbabilityEstimatorNetwork:
         # Test case 1: Positive values
         input_array = np.random.uniform(0, 10, size=(4, 4))
         normalized_array = network.normalize_array(input_array)
-        assert ((normalized_array >= 0).all() and (normalized_array <= 1).all())
+        assert ((normalized_array >= 0).all and (normalized_array <= 1).all)
         
     def test_get_scoreline_probabilities(self,):
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
