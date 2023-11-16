@@ -1,6 +1,14 @@
 name: Run pytest
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
 
 jobs:
   test:
@@ -16,13 +24,8 @@ jobs:
           python-version: 3.8  # You can change this to your desired Python version
 
       - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-
-      - name: Install dependencies
-        run: |
-          poetry install
+        uses: snok/install-poetry@v1
 
       - name: Run pytest
         run: |
-          poetry run pytest tests/
+          poetry run pytest
