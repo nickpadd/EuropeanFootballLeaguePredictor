@@ -170,7 +170,7 @@ class TestProbabilityEstimatorNetwork:
         logger.debug(goal_rate)
         assert not any(np.any(np.isnan(value)) for value in goal_rate.values())
 
-    def test_predict_matches(self, config_settings, create_dummy_dataframe):
+    def test_produce_probabilities(self, config_settings, create_dummy_dataframe):
         
         short, long, for_pred_short, for_pred_long = [create_dummy_dataframe for i in range(4)]
         
@@ -186,7 +186,7 @@ class TestProbabilityEstimatorNetwork:
         config = config_settings
         network = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         network.build_network(regressor = LinearRegression)
-        prediction_frame = network.predict_matches(long_term_data=long, short_term_data=short, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
+        prediction_frame = network.produce_probabilities(long_term_data=long, short_term_data=short, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
         
         logger.debug(prediction_frame)
         for index, row in prediction_frame.iterrows():
