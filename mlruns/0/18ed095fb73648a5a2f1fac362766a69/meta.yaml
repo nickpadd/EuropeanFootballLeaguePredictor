@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/18ed095fb73648a5a2f1fac362766a69/artifacts
+end_time: 1700094014201
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 18ed095fb73648a5a2f1fac362766a69
+run_name: EPL | 2017
+run_uuid: 18ed095fb73648a5a2f1fac362766a69
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094001238
+status: 3
+tags: []
+user_id: nickpad

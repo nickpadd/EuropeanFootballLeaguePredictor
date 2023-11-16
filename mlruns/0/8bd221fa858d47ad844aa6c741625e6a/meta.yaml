@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/8bd221fa858d47ad844aa6c741625e6a/artifacts
+end_time: 1700094794112
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8bd221fa858d47ad844aa6c741625e6a
+run_name: Ligue_1 | 2019
+run_uuid: 8bd221fa858d47ad844aa6c741625e6a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094783533
+status: 3
+tags: []
+user_id: nickpad

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/bee496d7534545cc8709fa6d16747401/artifacts
+end_time: 1700094342189
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: bee496d7534545cc8709fa6d16747401
+run_name: La_Liga | 2020
+run_uuid: bee496d7534545cc8709fa6d16747401
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094329724
+status: 3
+tags: []
+user_id: nickpad

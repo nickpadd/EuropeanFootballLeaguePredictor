@@ -1,0 +1,381 @@
+Match Number,Round Number,Date,Location,Home Team,Away Team,Result
+1,1,19/08/2023 16:30,Carlo Castellani,Empoli,Verona,0 - 1
+2,1,19/08/2023 16:30,Benito Stirpe,Frosinone,Napoli,1 - 3
+3,1,19/08/2023 18:45,Luigi Ferraris,Genoa,Fiorentina,1 - 4
+4,1,19/08/2023 18:45,San Siro,Inter,Monza,2 - 0
+5,1,20/08/2023 16:30,Olimpico,Roma,Salernitana,2 - 2
+6,1,20/08/2023 16:30,Mapei Stadium - Città del Tricolore,Sassuolo,Atalanta,0 - 2
+7,1,20/08/2023 18:45,Ettore Giardiniero - Via del mare,Lecce,Lazio,2 - 1
+8,1,20/08/2023 18:45,Friuli,Udinese,Juventus,0 - 3
+9,1,21/08/2023 16:30,Olimpico Grande Torino,Torino,Cagliari,0 - 0
+10,1,21/08/2023 18:45,Renato Dall'Ara,Bologna,AC Milan,0 - 2
+11,2,26/08/2023 16:30,Benito Stirpe,Frosinone,Atalanta,2 - 1
+12,2,26/08/2023 16:30,Brianteo,Monza,Empoli,2 - 0
+13,2,26/08/2023 18:45,San Siro,AC Milan,Torino,4 - 1
+14,2,26/08/2023 18:45,Marcantonio Bentegodi,Verona,Roma,2 - 1
+15,2,27/08/2023 16:30,Artemio Franchi,Fiorentina,Lecce,2 - 2
+16,2,27/08/2023 16:30,Juventus Stadium,Juventus,Bologna,1 - 1
+17,2,27/08/2023 18:45,Olimpico,Lazio,Genoa,0 - 1
+18,2,27/08/2023 18:45,Diego Armando Maradona,Napoli,Sassuolo,2 - 0
+19,2,28/08/2023 16:30,Arechi,Salernitana,Udinese,1 - 1
+20,2,28/08/2023 18:45,Unipol Domus,Cagliari,Inter,0 - 2
+21,3,01/09/2023 16:30,Mapei Stadium - Città del Tricolore,Sassuolo,Verona,3 - 1
+22,3,01/09/2023 18:45,Olimpico,Roma,AC Milan,1 - 2
+23,3,02/09/2023 16:30,Renato Dall'Ara,Bologna,Cagliari,2 - 1
+24,3,02/09/2023 16:30,Friuli,Udinese,Frosinone,0 - 0
+25,3,02/09/2023 18:45,Atleti Azzurri d'Italia,Atalanta,Monza,3 - 0
+26,3,02/09/2023 18:45,Diego Armando Maradona,Napoli,Lazio,1 - 2
+27,3,03/09/2023 16:30,San Siro,Inter,Fiorentina,4 - 0
+28,3,03/09/2023 16:30,Olimpico Grande Torino,Torino,Genoa,1 - 0
+29,3,03/09/2023 18:45,Carlo Castellani,Empoli,Juventus,0 - 2
+30,3,03/09/2023 18:45,Ettore Giardiniero - Via del mare,Lecce,Salernitana,2 - 0
+31,4,16/09/2023 13:00,Juventus Stadium,Juventus,Lazio,3 - 1
+32,4,16/09/2023 16:00,San Siro,Inter,AC Milan,5 - 1
+33,4,16/09/2023 18:45,Luigi Ferraris,Genoa,Napoli,2 - 2
+34,4,17/09/2023 10:30,Unipol Domus,Cagliari,Udinese,0 - 0
+35,4,17/09/2023 13:00,Brianteo,Monza,Lecce,1 - 1
+36,4,17/09/2023 13:00,Benito Stirpe,Frosinone,Sassuolo,4 - 2
+37,4,17/09/2023 16:00,Artemio Franchi,Fiorentina,Atalanta,3 - 2
+38,4,17/09/2023 18:45,Olimpico,Roma,Empoli,7 - 0
+39,4,18/09/2023 16:30,Arechi,Salernitana,Torino,0 - 3
+40,4,18/09/2023 18:45,Marcantonio Bentegodi,Verona,Bologna,0 - 0
+47,5,22/09/2023 16:30,Arechi,Salernitana,Frosinone,1 - 1
+45,5,22/09/2023 18:45,Ettore Giardiniero - Via del mare,Lecce,Genoa,1 - 0
+46,5,23/09/2023 13:00,San Siro,AC Milan,Verona,1 - 0
+48,5,23/09/2023 16:00,Mapei Stadium - Città del Tricolore,Sassuolo,Juventus,4 - 2
+44,5,23/09/2023 18:45,Olimpico,Lazio,Monza,1 - 1
+43,5,24/09/2023 10:30,Carlo Castellani,Empoli,Inter,0 - 1
+41,5,24/09/2023 13:00,Atleti Azzurri d'Italia,Atalanta,Cagliari,2 - 0
+50,5,24/09/2023 13:00,Friuli,Udinese,Fiorentina,0 - 2
+42,5,24/09/2023 16:00,Renato Dall'Ara,Bologna,Napoli,0 - 0
+49,5,24/09/2023 18:45,Olimpico Grande Torino,Torino,Roma,1 - 1
+56,6,26/09/2023 18:45,Juventus Stadium,Juventus,Lecce,1 - 0
+51,6,27/09/2023 16:30,Unipol Domus,Cagliari,AC Milan,1 - 3
+52,6,27/09/2023 16:30,Carlo Castellani,Empoli,Salernitana,1 - 0
+60,6,27/09/2023 16:30,Marcantonio Bentegodi,Verona,Atalanta,0 - 1
+55,6,27/09/2023 18:45,San Siro,Inter,Sassuolo,1 - 2
+57,6,27/09/2023 18:45,Olimpico,Lazio,Torino,2 - 0
+59,6,27/09/2023 18:45,Diego Armando Maradona,Napoli,Udinese,4 - 1
+53,6,28/09/2023 16:30,Benito Stirpe,Frosinone,Fiorentina,1 - 1
+58,6,28/09/2023 16:30,Brianteo,Monza,Bologna,0 - 0
+54,6,28/09/2023 18:45,Luigi Ferraris,Genoa,Roma,4 - 1
+64,7,30/09/2023 13:00,Ettore Giardiniero - Via del mare,Lecce,Napoli,0 - 4
+65,7,30/09/2023 16:00,San Siro,AC Milan,Lazio,2 - 0
+67,7,30/09/2023 18:45,Arechi,Salernitana,Inter,0 - 4
+62,7,01/10/2023 10:30,Renato Dall'Ara,Bologna,Empoli,3 - 0
+70,7,01/10/2023 13:00,Friuli,Udinese,Genoa,2 - 2
+61,7,01/10/2023 16:00,Atleti Azzurri d'Italia,Atalanta,Juventus,0 - 0
+66,7,01/10/2023 18:45,Olimpico,Roma,Frosinone,2 - 0
+68,7,02/10/2023 16:30,Mapei Stadium - Città del Tricolore,Sassuolo,Monza,0 - 1
+69,7,02/10/2023 16:30,Olimpico Grande Torino,Torino,Verona,0 - 0
+63,7,02/10/2023 18:45,Artemio Franchi,Fiorentina,Cagliari,3 - 0
+75,8,06/10/2023 16:30,Carlo Castellani,Empoli,Udinese,0 - 0
+71,8,06/10/2023 18:45,Ettore Giardiniero - Via del mare,Lecce,Sassuolo,1 - 1
+78,8,07/10/2023 13:00,San Siro,Inter,Bologna,2 - 2
+79,8,07/10/2023 16:00,Juventus Stadium,Juventus,Torino,2 - 0
+77,8,07/10/2023 18:45,Luigi Ferraris,Genoa,AC Milan,0 - 1
+72,8,08/10/2023 10:30,Brianteo,Monza,Salernitana,3 - 0
+76,8,08/10/2023 13:00,Benito Stirpe,Frosinone,Verona,2 - 1
+80,8,08/10/2023 13:00,Olimpico,Lazio,Atalanta,3 - 2
+74,8,08/10/2023 16:00,Unipol Domus,Cagliari,Roma,1 - 4
+73,8,08/10/2023 18:45,Diego Armando Maradona,Napoli,Fiorentina,1 - 3
+90,9,21/10/2023 13:00,Marcantonio Bentegodi,Verona,Napoli,1 - 3
+88,9,21/10/2023 16:00,Olimpico Grande Torino,Torino,Inter,0 - 3
+87,9,21/10/2023 18:45,Mapei Stadium - Città del Tricolore,Sassuolo,Lazio,0 - 2
+85,9,22/10/2023 10:30,Olimpico,Roma,Monza,1 - 0
+82,9,22/10/2023 13:00,Renato Dall'Ara,Bologna,Frosinone,2 - 1
+86,9,22/10/2023 13:00,Arechi,Salernitana,Cagliari,2 - 2
+81,9,22/10/2023 16:00,Atleti Azzurri d'Italia,Atalanta,Genoa,2 - 0
+84,9,22/10/2023 18:45,San Siro,AC Milan,Juventus,0 - 1
+89,9,23/10/2023 16:30,Friuli,Udinese,Lecce,1 - 1
+83,9,23/10/2023 18:45,Artemio Franchi,Fiorentina,Empoli,0 - 2
+93,10,27/10/2023 18:45,Luigi Ferraris,Genoa,Salernitana,1 - 0
+100,10,28/10/2023 13:00,Mapei Stadium - Città del Tricolore,Sassuolo,Bologna,1 - 1
+97,10,28/10/2023 16:00,Ettore Giardiniero - Via del mare,Lecce,Torino,0 - 1
+95,10,28/10/2023 18:45,Juventus Stadium,Juventus,Verona,1 - 0
+91,10,29/10/2023 11:30,Unipol Domus,Cagliari,Frosinone,4 - 3
+98,10,29/10/2023 14:00,Brianteo,Monza,Udinese,1 - 1
+94,10,29/10/2023 17:00,San Siro,Inter,Roma,1 - 0
+99,10,29/10/2023 19:45,Diego Armando Maradona,Napoli,AC Milan,2 - 2
+92,10,30/10/2023 17:30,Carlo Castellani,Empoli,Atalanta,0 - 3
+96,10,30/10/2023 19:45,Olimpico,Lazio,Fiorentina,1 - 0
+102,11,03/11/2023 19:45,Renato Dall'Ara,Bologna,Lazio,1 - 0
+108,11,04/11/2023 14:00,Arechi,Salernitana,Napoli,0 - 2
+101,11,04/11/2023 17:00,Atleti Azzurri d'Italia,Atalanta,Inter,1 - 2
+106,11,04/11/2023 19:45,San Siro,AC Milan,Udinese,0 - 1
+110,11,05/11/2023 11:30,Marcantonio Bentegodi,Verona,Monza,1 - 3
+103,11,05/11/2023 14:00,Unipol Domus,Cagliari,Genoa,2 - 1
+107,11,05/11/2023 17:00,Olimpico,Roma,Lecce,2 - 1
+104,11,05/11/2023 19:45,Artemio Franchi,Fiorentina,Juventus,0 - 1
+105,11,06/11/2023 17:30,Benito Stirpe,Frosinone,Empoli,2 - 1
+109,11,06/11/2023 19:45,Olimpico Grande Torino,Torino,Sassuolo,2 - 1
+120,12,10/11/2023 17:30,Mapei Stadium - Città del Tricolore,Sassuolo,Salernitana,2 - 2
+113,12,10/11/2023 19:45,Luigi Ferraris,Genoa,Verona,1 - 0
+117,12,11/11/2023 14:00,Ettore Giardiniero - Via del mare,Lecce,AC Milan,2 - 2
+115,12,11/11/2023 17:00,Juventus Stadium,Juventus,Cagliari,2 - 1
+118,12,11/11/2023 19:45,Brianteo,Monza,Torino,1 - 1
+119,12,12/11/2023 11:30,Diego Armando Maradona,Napoli,Empoli,0 - 1
+111,12,12/11/2023 14:00,Friuli,Udinese,Atalanta,1 - 1
+112,12,12/11/2023 14:00,Artemio Franchi,Fiorentina,Bologna,2 - 1
+116,12,12/11/2023 17:00,Olimpico,Lazio,Roma,0 - 0
+114,12,12/11/2023 19:45,San Siro,Inter,Frosinone,2 - 0
+129,13,25/11/2023 14:00,Arechi,Salernitana,Lazio,
+121,13,25/11/2023 17:00,Atleti Azzurri d'Italia,Atalanta,Napoli,
+127,13,25/11/2023 19:45,San Siro,AC Milan,Fiorentina,
+123,13,26/11/2023 11:30,Unipol Domus,Cagliari,Monza,
+124,13,26/11/2023 14:00,Carlo Castellani,Empoli,Sassuolo,
+125,13,26/11/2023 14:00,Benito Stirpe,Frosinone,Genoa,
+128,13,26/11/2023 17:00,Olimpico,Roma,Udinese,
+126,13,26/11/2023 19:45,Juventus Stadium,Juventus,Inter,
+130,13,27/11/2023 17:30,Marcantonio Bentegodi,Verona,Lecce,
+122,13,27/11/2023 19:45,Renato Dall'Ara,Bologna,Torino,
+136,14,01/12/2023 19:45,Brianteo,Monza,Juventus,
+132,14,02/12/2023 14:00,Luigi Ferraris,Genoa,Empoli,
+133,14,02/12/2023 14:00,Olimpico,Lazio,Cagliari,
+135,14,02/12/2023 19:45,San Siro,AC Milan,Frosinone,
+134,14,03/12/2023 11:30,Ettore Giardiniero - Via del mare,Lecce,Bologna,
+131,14,03/12/2023 14:00,Artemio Franchi,Fiorentina,Salernitana,
+140,14,03/12/2023 14:00,Friuli,Udinese,Verona,
+138,14,03/12/2023 17:00,Mapei Stadium - Città del Tricolore,Sassuolo,Roma,
+137,14,03/12/2023 19:45,Diego Armando Maradona,Napoli,Inter,
+139,14,04/12/2023 19:45,Olimpico Grande Torino,Torino,Atalanta,
+146,15,08/12/2023 19:45,Juventus Stadium,Juventus,Napoli,
+150,15,09/12/2023 14:00,Marcantonio Bentegodi,Verona,Lazio,
+141,15,09/12/2023 17:00,Atleti Azzurri d'Italia,Atalanta,AC Milan,
+145,15,09/12/2023 19:45,San Siro,Inter,Udinese,
+144,15,10/12/2023 11:30,Benito Stirpe,Frosinone,Torino,
+147,15,10/12/2023 14:00,Brianteo,Monza,Genoa,
+149,15,10/12/2023 17:00,Arechi,Salernitana,Bologna,
+148,15,10/12/2023 19:45,Olimpico,Roma,Fiorentina,
+143,15,11/12/2023 17:30,Carlo Castellani,Empoli,Lecce,
+142,15,11/12/2023 19:45,Unipol Domus,Cagliari,Sassuolo,
+154,16,15/12/2023 19:45,Luigi Ferraris,Genoa,Juventus,
+156,16,16/12/2023 14:00,Ettore Giardiniero - Via del mare,Lecce,Frosinone,
+158,16,16/12/2023 17:00,Diego Armando Maradona,Napoli,Cagliari,
+159,16,16/12/2023 19:45,Olimpico Grande Torino,Torino,Empoli,
+157,16,17/12/2023 11:30,San Siro,AC Milan,Monza,
+153,16,17/12/2023 14:00,Artemio Franchi,Fiorentina,Verona,
+160,16,17/12/2023 14:00,Friuli,Udinese,Sassuolo,
+152,16,17/12/2023 17:00,Renato Dall'Ara,Bologna,Roma,
+155,16,17/12/2023 19:45,Olimpico,Lazio,Inter,
+151,16,18/12/2023 19:45,Atleti Azzurri d'Italia,Atalanta,Salernitana,
+166,17,22/12/2023 17:30,Mapei Stadium - Città del Tricolore,Sassuolo,Genoa,
+170,17,22/12/2023 17:30,Carlo Castellani,Empoli,Lazio,
+163,17,22/12/2023 19:45,Brianteo,Monza,Fiorentina,
+165,17,22/12/2023 19:45,Arechi,Salernitana,AC Milan,
+161,17,23/12/2023 11:30,Benito Stirpe,Frosinone,Juventus,
+167,17,23/12/2023 14:00,Olimpico Grande Torino,Torino,Udinese,
+169,17,23/12/2023 14:00,Renato Dall'Ara,Bologna,Atalanta,
+162,17,23/12/2023 17:00,San Siro,Inter,Lecce,
+168,17,23/12/2023 17:00,Marcantonio Bentegodi,Verona,Cagliari,
+164,17,23/12/2023 19:45,Olimpico,Roma,Napoli,
+173,18,29/12/2023 17:30,Artemio Franchi,Fiorentina,Torino,
+178,18,29/12/2023 17:30,Diego Armando Maradona,Napoli,Monza,
+174,18,29/12/2023 19:45,Luigi Ferraris,Genoa,Inter,
+176,18,29/12/2023 19:45,Olimpico,Lazio,Frosinone,
+171,18,30/12/2023 11:30,Atleti Azzurri d'Italia,Atalanta,Lecce,
+172,18,30/12/2023 14:00,Unipol Domus,Cagliari,Empoli,
+179,18,30/12/2023 14:00,Friuli,Udinese,Bologna,
+177,18,30/12/2023 17:00,San Siro,AC Milan,Sassuolo,
+180,18,30/12/2023 17:00,Marcantonio Bentegodi,Verona,Salernitana,
+175,18,30/12/2023 19:45,Juventus Stadium,Juventus,Roma,
+185,19,06/01/2024 14:00,Ettore Giardiniero - Via del mare,Lecce,Cagliari,
+182,19,06/01/2024 17:00,Carlo Castellani,Empoli,AC Milan,
+181,19,06/01/2024 19:45,Renato Dall'Ara,Bologna,Genoa,
+184,19,06/01/2024 23:00,San Siro,Inter,Verona,
+188,19,06/01/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Fiorentina,
+189,19,06/01/2024 23:00,Olimpico Grande Torino,Torino,Napoli,
+190,19,06/01/2024 23:00,Friuli,Udinese,Lazio,
+183,19,07/01/2024 14:00,Benito Stirpe,Frosinone,Monza,
+186,19,07/01/2024 17:00,Olimpico,Roma,Atalanta,
+187,19,07/01/2024 19:45,Arechi,Salernitana,Juventus,
+191,20,13/01/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Frosinone,
+192,20,13/01/2024 23:00,Unipol Domus,Cagliari,Bologna,
+193,20,13/01/2024 23:00,Artemio Franchi,Fiorentina,Udinese,
+194,20,13/01/2024 23:00,Luigi Ferraris,Genoa,Torino,
+195,20,13/01/2024 23:00,Juventus Stadium,Juventus,Sassuolo,
+196,20,13/01/2024 23:00,Olimpico,Lazio,Lecce,
+197,20,13/01/2024 23:00,San Siro,AC Milan,Roma,
+198,20,13/01/2024 23:00,Brianteo,Monza,Inter,
+199,20,13/01/2024 23:00,Diego Armando Maradona,Napoli,Salernitana,
+200,20,13/01/2024 23:00,Marcantonio Bentegodi,Verona,Empoli,
+201,21,20/01/2024 23:00,Olimpico,Roma,Verona,
+202,21,20/01/2024 23:00,Arechi,Salernitana,Genoa,
+203,21,20/01/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Napoli,
+204,21,20/01/2024 23:00,Olimpico Grande Torino,Torino,Lazio,
+205,21,20/01/2024 23:00,Friuli,Udinese,AC Milan,
+206,21,20/01/2024 23:00,Renato Dall'Ara,Bologna,Fiorentina,
+207,21,20/01/2024 23:00,Carlo Castellani,Empoli,Monza,
+208,21,20/01/2024 23:00,Benito Stirpe,Frosinone,Cagliari,
+209,21,20/01/2024 23:00,San Siro,Inter,Atalanta,
+210,21,20/01/2024 23:00,Ettore Giardiniero - Via del mare,Lecce,Juventus,
+211,22,27/01/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Udinese,
+212,22,27/01/2024 23:00,Unipol Domus,Cagliari,Torino,
+213,22,27/01/2024 23:00,Artemio Franchi,Fiorentina,Inter,
+214,22,27/01/2024 23:00,Luigi Ferraris,Genoa,Lecce,
+215,22,27/01/2024 23:00,Juventus Stadium,Juventus,Empoli,
+216,22,27/01/2024 23:00,Olimpico,Lazio,Napoli,
+217,22,27/01/2024 23:00,San Siro,AC Milan,Bologna,
+218,22,27/01/2024 23:00,Brianteo,Monza,Sassuolo,
+219,22,27/01/2024 23:00,Arechi,Salernitana,Roma,
+220,22,27/01/2024 23:00,Marcantonio Bentegodi,Verona,Frosinone,
+221,23,03/02/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Lazio,
+222,23,03/02/2024 23:00,Renato Dall'Ara,Bologna,Sassuolo,
+223,23,03/02/2024 23:00,Carlo Castellani,Empoli,Genoa,
+224,23,03/02/2024 23:00,Benito Stirpe,Frosinone,AC Milan,
+225,23,03/02/2024 23:00,San Siro,Inter,Juventus,
+226,23,03/02/2024 23:00,Ettore Giardiniero - Via del mare,Lecce,Fiorentina,
+227,23,03/02/2024 23:00,Diego Armando Maradona,Napoli,Verona,
+228,23,03/02/2024 23:00,Olimpico,Roma,Cagliari,
+229,23,03/02/2024 23:00,Olimpico Grande Torino,Torino,Salernitana,
+230,23,03/02/2024 23:00,Friuli,Udinese,Monza,
+231,24,10/02/2024 23:00,Renato Dall'Ara,Bologna,Lecce,
+232,24,10/02/2024 23:00,Unipol Domus,Cagliari,Lazio,
+233,24,10/02/2024 23:00,Artemio Franchi,Fiorentina,Frosinone,
+234,24,10/02/2024 23:00,Luigi Ferraris,Genoa,Atalanta,
+235,24,10/02/2024 23:00,Juventus Stadium,Juventus,Udinese,
+236,24,10/02/2024 23:00,San Siro,AC Milan,Napoli,
+237,24,10/02/2024 23:00,Brianteo,Monza,Verona,
+238,24,10/02/2024 23:00,Olimpico,Roma,Inter,
+239,24,10/02/2024 23:00,Arechi,Salernitana,Empoli,
+240,24,10/02/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Torino,
+241,25,17/02/2024 23:00,Olimpico Grande Torino,Torino,Lecce,
+242,25,17/02/2024 23:00,Friuli,Udinese,Cagliari,
+243,25,17/02/2024 23:00,Marcantonio Bentegodi,Verona,Juventus,
+244,25,17/02/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Sassuolo,
+245,25,17/02/2024 23:00,Carlo Castellani,Empoli,Fiorentina,
+246,25,17/02/2024 23:00,Benito Stirpe,Frosinone,Roma,
+247,25,17/02/2024 23:00,San Siro,Inter,Salernitana,
+248,25,17/02/2024 23:00,Olimpico,Lazio,Bologna,
+249,25,17/02/2024 23:00,Brianteo,Monza,AC Milan,
+250,25,17/02/2024 23:00,Diego Armando Maradona,Napoli,Genoa,
+251,26,24/02/2024 23:00,Renato Dall'Ara,Bologna,Verona,
+252,26,24/02/2024 23:00,Unipol Domus,Cagliari,Napoli,
+253,26,24/02/2024 23:00,Artemio Franchi,Fiorentina,Lazio,
+254,26,24/02/2024 23:00,Luigi Ferraris,Genoa,Udinese,
+255,26,24/02/2024 23:00,Juventus Stadium,Juventus,Frosinone,
+256,26,24/02/2024 23:00,Ettore Giardiniero - Via del mare,Lecce,Inter,
+257,26,24/02/2024 23:00,San Siro,AC Milan,Atalanta,
+258,26,24/02/2024 23:00,Olimpico,Roma,Torino,
+259,26,24/02/2024 23:00,Arechi,Salernitana,Monza,
+260,26,24/02/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Empoli,
+261,27,02/03/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Bologna,
+262,27,02/03/2024 23:00,Carlo Castellani,Empoli,Cagliari,
+263,27,02/03/2024 23:00,Benito Stirpe,Frosinone,Lecce,
+264,27,02/03/2024 23:00,San Siro,Inter,Genoa,
+265,27,02/03/2024 23:00,Olimpico,Lazio,AC Milan,
+266,27,02/03/2024 23:00,Brianteo,Monza,Roma,
+267,27,02/03/2024 23:00,Diego Armando Maradona,Napoli,Juventus,
+268,27,02/03/2024 23:00,Olimpico Grande Torino,Torino,Fiorentina,
+269,27,02/03/2024 23:00,Friuli,Udinese,Salernitana,
+270,27,02/03/2024 23:00,Marcantonio Bentegodi,Verona,Sassuolo,
+271,28,09/03/2024 23:00,Renato Dall'Ara,Bologna,Inter,
+272,28,09/03/2024 23:00,Unipol Domus,Cagliari,Salernitana,
+273,28,09/03/2024 23:00,Artemio Franchi,Fiorentina,Roma,
+274,28,09/03/2024 23:00,Luigi Ferraris,Genoa,Monza,
+275,28,09/03/2024 23:00,Juventus Stadium,Juventus,Atalanta,
+276,28,09/03/2024 23:00,Olimpico,Lazio,Udinese,
+277,28,09/03/2024 23:00,Ettore Giardiniero - Via del mare,Lecce,Verona,
+278,28,09/03/2024 23:00,San Siro,AC Milan,Empoli,
+279,28,09/03/2024 23:00,Diego Armando Maradona,Napoli,Torino,
+280,28,09/03/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Frosinone,
+281,29,16/03/2024 23:00,Atleti Azzurri d'Italia,Atalanta,Fiorentina,
+282,29,16/03/2024 23:00,Carlo Castellani,Empoli,Bologna,
+283,29,16/03/2024 23:00,Benito Stirpe,Frosinone,Lazio,
+284,29,16/03/2024 23:00,San Siro,Inter,Napoli,
+285,29,16/03/2024 23:00,Juventus Stadium,Juventus,Genoa,
+286,29,16/03/2024 23:00,Brianteo,Monza,Cagliari,
+287,29,16/03/2024 23:00,Olimpico,Roma,Sassuolo,
+288,29,16/03/2024 23:00,Arechi,Salernitana,Lecce,
+289,29,16/03/2024 23:00,Friuli,Udinese,Torino,
+290,29,16/03/2024 23:00,Marcantonio Bentegodi,Verona,AC Milan,
+291,30,29/03/2024 23:00,Renato Dall'Ara,Bologna,Salernitana,
+292,30,29/03/2024 23:00,Unipol Domus,Cagliari,Verona,
+293,30,29/03/2024 23:00,Artemio Franchi,Fiorentina,AC Milan,
+294,30,29/03/2024 23:00,Luigi Ferraris,Genoa,Frosinone,
+295,30,29/03/2024 23:00,San Siro,Inter,Empoli,
+296,30,29/03/2024 23:00,Olimpico,Lazio,Juventus,
+297,30,29/03/2024 23:00,Ettore Giardiniero - Via del mare,Lecce,Roma,
+298,30,29/03/2024 23:00,Diego Armando Maradona,Napoli,Atalanta,
+299,30,29/03/2024 23:00,Mapei Stadium - Città del Tricolore,Sassuolo,Udinese,
+300,30,29/03/2024 23:00,Olimpico Grande Torino,Torino,Monza,
+301,31,06/04/2024 22:00,Unipol Domus,Cagliari,Atalanta,
+302,31,06/04/2024 22:00,Carlo Castellani,Empoli,Torino,
+303,31,06/04/2024 22:00,Benito Stirpe,Frosinone,Bologna,
+304,31,06/04/2024 22:00,Juventus Stadium,Juventus,Fiorentina,
+305,31,06/04/2024 22:00,San Siro,AC Milan,Lecce,
+306,31,06/04/2024 22:00,Brianteo,Monza,Napoli,
+307,31,06/04/2024 22:00,Olimpico,Roma,Lazio,
+308,31,06/04/2024 22:00,Arechi,Salernitana,Sassuolo,
+309,31,06/04/2024 22:00,Friuli,Udinese,Inter,
+310,31,06/04/2024 22:00,Marcantonio Bentegodi,Verona,Genoa,
+311,32,13/04/2024 22:00,Atleti Azzurri d'Italia,Atalanta,Verona,
+312,32,13/04/2024 22:00,Renato Dall'Ara,Bologna,Monza,
+313,32,13/04/2024 22:00,Artemio Franchi,Fiorentina,Genoa,
+314,32,13/04/2024 22:00,San Siro,Inter,Cagliari,
+315,32,13/04/2024 22:00,Olimpico,Lazio,Salernitana,
+316,32,13/04/2024 22:00,Ettore Giardiniero - Via del mare,Lecce,Empoli,
+317,32,13/04/2024 22:00,Diego Armando Maradona,Napoli,Frosinone,
+318,32,13/04/2024 22:00,Mapei Stadium - Città del Tricolore,Sassuolo,AC Milan,
+319,32,13/04/2024 22:00,Olimpico Grande Torino,Torino,Juventus,
+320,32,13/04/2024 22:00,Friuli,Udinese,Roma,
+321,33,20/04/2024 22:00,Unipol Domus,Cagliari,Juventus,
+322,33,20/04/2024 22:00,Carlo Castellani,Empoli,Napoli,
+323,33,20/04/2024 22:00,Luigi Ferraris,Genoa,Lazio,
+324,33,20/04/2024 22:00,San Siro,AC Milan,Inter,
+325,33,20/04/2024 22:00,Brianteo,Monza,Atalanta,
+326,33,20/04/2024 22:00,Olimpico,Roma,Bologna,
+327,33,20/04/2024 22:00,Arechi,Salernitana,Fiorentina,
+328,33,20/04/2024 22:00,Mapei Stadium - Città del Tricolore,Sassuolo,Lecce,
+329,33,20/04/2024 22:00,Olimpico Grande Torino,Torino,Frosinone,
+330,33,20/04/2024 22:00,Marcantonio Bentegodi,Verona,Udinese,
+331,34,27/04/2024 22:00,Benito Stirpe,Frosinone,Salernitana,
+332,34,27/04/2024 22:00,Luigi Ferraris,Genoa,Cagliari,
+333,34,27/04/2024 22:00,San Siro,Inter,Torino,
+334,34,27/04/2024 22:00,Juventus Stadium,Juventus,AC Milan,
+335,34,27/04/2024 22:00,Olimpico,Lazio,Verona,
+336,34,27/04/2024 22:00,Ettore Giardiniero - Via del mare,Lecce,Monza,
+337,34,27/04/2024 22:00,Diego Armando Maradona,Napoli,Roma,
+338,34,27/04/2024 22:00,Atleti Azzurri d'Italia,Atalanta,Empoli,
+339,34,27/04/2024 22:00,Renato Dall'Ara,Bologna,Udinese,
+340,34,27/04/2024 22:00,Artemio Franchi,Fiorentina,Sassuolo,
+341,35,04/05/2024 22:00,Unipol Domus,Cagliari,Lecce,
+342,35,04/05/2024 22:00,Carlo Castellani,Empoli,Frosinone,
+343,35,04/05/2024 22:00,San Siro,AC Milan,Genoa,
+344,35,04/05/2024 22:00,Brianteo,Monza,Lazio,
+345,35,04/05/2024 22:00,Olimpico,Roma,Juventus,
+346,35,04/05/2024 22:00,Arechi,Salernitana,Atalanta,
+347,35,04/05/2024 22:00,Mapei Stadium - Città del Tricolore,Sassuolo,Inter,
+348,35,04/05/2024 22:00,Olimpico Grande Torino,Torino,Bologna,
+349,35,04/05/2024 22:00,Friuli,Udinese,Napoli,
+350,35,04/05/2024 22:00,Marcantonio Bentegodi,Verona,Fiorentina,
+351,36,11/05/2024 22:00,Atleti Azzurri d'Italia,Atalanta,Roma,
+352,36,11/05/2024 22:00,Artemio Franchi,Fiorentina,Monza,
+353,36,11/05/2024 22:00,Benito Stirpe,Frosinone,Inter,
+354,36,11/05/2024 22:00,Luigi Ferraris,Genoa,Sassuolo,
+355,36,11/05/2024 22:00,Juventus Stadium,Juventus,Salernitana,
+356,36,11/05/2024 22:00,Olimpico,Lazio,Empoli,
+357,36,11/05/2024 22:00,Ettore Giardiniero - Via del mare,Lecce,Udinese,
+358,36,11/05/2024 22:00,San Siro,AC Milan,Cagliari,
+359,36,11/05/2024 22:00,Diego Armando Maradona,Napoli,Bologna,
+360,36,11/05/2024 22:00,Marcantonio Bentegodi,Verona,Torino,
+361,37,18/05/2024 22:00,Renato Dall'Ara,Bologna,Juventus,
+362,37,18/05/2024 22:00,Artemio Franchi,Fiorentina,Napoli,
+363,37,18/05/2024 22:00,San Siro,Inter,Lazio,
+364,37,18/05/2024 22:00,Ettore Giardiniero - Via del mare,Lecce,Atalanta,
+365,37,18/05/2024 22:00,Brianteo,Monza,Frosinone,
+366,37,18/05/2024 22:00,Olimpico,Roma,Genoa,
+367,37,18/05/2024 22:00,Arechi,Salernitana,Verona,
+368,37,18/05/2024 22:00,Mapei Stadium - Città del Tricolore,Sassuolo,Cagliari,
+369,37,18/05/2024 22:00,Olimpico Grande Torino,Torino,AC Milan,
+370,37,18/05/2024 22:00,Friuli,Udinese,Empoli,
+371,38,25/05/2024 22:00,Juventus Stadium,Juventus,Monza,
+372,38,25/05/2024 22:00,Olimpico,Lazio,Sassuolo,
+373,38,25/05/2024 22:00,San Siro,AC Milan,Salernitana,
+374,38,25/05/2024 22:00,Diego Armando Maradona,Napoli,Lecce,
+375,38,25/05/2024 22:00,Marcantonio Bentegodi,Verona,Inter,
+376,38,25/05/2024 22:00,Atleti Azzurri d'Italia,Atalanta,Torino,
+377,38,25/05/2024 22:00,Unipol Domus,Cagliari,Fiorentina,
+378,38,25/05/2024 22:00,Carlo Castellani,Empoli,Roma,
+379,38,25/05/2024 22:00,Benito Stirpe,Frosinone,Udinese,
+380,38,25/05/2024 22:00,Luigi Ferraris,Genoa,Bologna,

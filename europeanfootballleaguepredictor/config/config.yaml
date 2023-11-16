@@ -1,0 +1,103 @@
+league: Ligue_1 #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
+
+model:
+  voting: #Percentage of long_term_form/short_term_form perencage. Should add to 1
+    long_term_form_vote_perc: 0.6
+    short_term_form_vote_perc: 0.4
+  matchdays_to_drop: 4
+  regressor: SVR #One of the available [LinearRegression, PoissonRegressor, SVR]
+
+bettor:
+  initial_bank: 60
+  margin_to_bet_dict:
+    home_win: 0.0
+    draw: 0.0
+    away_win: 0.0
+    over2.5: 0.0
+    under2.5: 0.0
+
+data_gathering:
+  long_term_form: null #Months of long_form, null indicates season long form
+  short_term_form: 3 #Months of short-term form
+  seasons_to_gather: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'] #List of the seasons to gather for the model to be trained on. Keep in mind that 2020 season was covid-season
+  current_season: '2023'
+  paths:
+    EPL: 
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/DataCoUkFiles/'
+      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/raw_files/'
+      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/preprocessed_files/'
+      fixture_download: 'europeanfootballleaguepredictor/data/leagues/EPL/upcoming/'
+      evaluation_output: 'europeanfootballleaguepredictor/data/leagues/EPL/evaluation/'
+    La_Liga:
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/DataCoUkFiles/'
+      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/raw_files/'
+      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/preprocessed_files/'
+      fixture_download: 'europeanfootballleaguepredictor/data/leagues/La_Liga/upcoming/'
+      evaluation_output: 'europeanfootballleaguepredictor/data/leagues/La_Liga/evaluation/'
+    Bundesliga:
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/DataCoUkFiles/'
+      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/raw_files/'
+      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/preprocessed_files/'
+      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/upcoming/' 
+      evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/evaluation/'
+    Serie_A:
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/DataCoUkFiles/'
+      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/raw_files/'
+      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/preprocessed_files/'
+      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Serie_A/upcoming/' 
+      evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Serie_A/evaluation/'
+    Ligue_1:
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/DataCoUkFiles/'
+      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/raw_files/'
+      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/preprocessed_files/'
+      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/upcoming/'      
+      evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/evaluation/'
+  bookmaker: 
+    EPL: 
+      url: 'https://en.stoiximan.gr/sport/soccer/england/premier-league/1/' #The corresponding stoiximan website url of the predicted league. Might not work in countries outside Greece.
+      dictionary_path: 'europeanfootballleaguepredictor/data/leagues/EPL/dictionaries/bookmaker.yaml'
+    La_Liga:
+      url:  'https://en.stoiximan.gr/sport/soccer/spain/laliga/5/'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/La_Liga/dictionaries/bookmaker.yaml'
+    Bundesliga:
+      url:  'https://en.stoiximan.gr/sport/soccer/germany/bundesliga/216/'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Bundesliga/dictionaries/bookmaker.yaml'
+    Serie_A:
+      url:  'https://en.stoiximan.gr/sport/soccer/italy/serie-a/1635/'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Serie_A/dictionaries/bookmaker.yaml'
+    Ligue_1:
+      url: 'https://en.stoiximan.gr/sport/soccer/france/ligue-1/215/'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Ligue_1/dictionaries/bookmaker.yaml'
+  data_co_uk: 
+    EPL:  
+      url: 'https://www.football-data.co.uk/mmz4281/2324/E0.csv' #The url that downloads the Data.co.uk dataset of the current season
+      dictionary_path: 'europeanfootballleaguepredictor/data/leagues/EPL/dictionaries/data_co_uk.yaml'
+    La_Liga:
+      url:  'https://www.football-data.co.uk/mmz4281/2324/SP1.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/La_Liga/dictionaries/data_co_uk.yaml'
+    Bundesliga:
+      url:  'https://www.football-data.co.uk/mmz4281/2324/D1.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Bundesliga/dictionaries/data_co_uk.yaml'
+    Serie_A:
+      url:  'https://www.football-data.co.uk/mmz4281/2324/I1.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Serie_A/dictionaries/data_co_uk.yaml'
+    Ligue_1:
+      url:  'https://www.football-data.co.uk/mmz4281/2324/F1.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Ligue_1/dictionaries/data_co_uk.yaml'
+  fixture_download:
+    EPL:
+      url: 'https://fixturedownload.com/download/epl-2023-GMTStandardTime.csv'
+      dictionary_path: 'europeanfootballleaguepredictor/data/leagues/EPL/dictionaries/fixture_download.yaml'
+    La_Liga:
+      url:  'https://fixturedownload.com/download/la-liga-2023-UTC.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/La_Liga/dictionaries/fixture_download.yaml'
+    Bundesliga:
+      url:  'https://fixturedownload.com/download/bundesliga-2023-UTC.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Bundesliga/dictionaries/fixture_download.yaml'
+    Serie_A:
+      url:  'https://fixturedownload.com/download/serie-a-2023-UTC.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Serie_A/dictionaries/fixture_download.yaml'
+    Ligue_1:
+      url:  'https://fixturedownload.com/download/ligue-1-2023-RomanceStandardTime.csv'
+      dictionary_path:  'europeanfootballleaguepredictor/data/leagues/Ligue_1/dictionaries/fixture_download.yaml'
+                  

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/14ca6353e0804225873f34215893bbfd/artifacts
+end_time: 1700094372336
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 14ca6353e0804225873f34215893bbfd
+run_name: La_Liga | 2021
+run_uuid: 14ca6353e0804225873f34215893bbfd
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094360012
+status: 3
+tags: []
+user_id: nickpad

@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/c05a80f5e1574453b419b3c509914325/artifacts
+deleted_time: 1700036742800
+end_time: 1700035832521
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: c05a80f5e1574453b419b3c509914325
+run_name: EPL | 2019
+run_uuid: c05a80f5e1574453b419b3c509914325
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700035822442
+status: 3
+tags: []
+user_id: nickpad

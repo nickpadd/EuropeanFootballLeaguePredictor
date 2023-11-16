@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/0bbcaa6d3b4e444e9137fdf271d484c5/artifacts
+deleted_time: 1700002811315
+end_time: 1700001682744
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 0bbcaa6d3b4e444e9137fdf271d484c5
+run_name: Test_run
+run_uuid: 0bbcaa6d3b4e444e9137fdf271d484c5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700001675514
+status: 4
+tags: []
+user_id: nickpad

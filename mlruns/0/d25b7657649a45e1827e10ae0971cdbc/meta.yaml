@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/d25b7657649a45e1827e10ae0971cdbc/artifacts
+end_time: 1700094393316
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: d25b7657649a45e1827e10ae0971cdbc
+run_name: La_Liga | 2022
+run_uuid: d25b7657649a45e1827e10ae0971cdbc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094380868
+status: 3
+tags: []
+user_id: nickpad

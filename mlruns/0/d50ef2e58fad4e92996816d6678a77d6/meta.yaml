@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/d50ef2e58fad4e92996816d6678a77d6/artifacts
+deleted_time: 1700002823203
+end_time: 1700001961100
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: d50ef2e58fad4e92996816d6678a77d6
+run_name: Serie_A | 2020
+run_uuid: d50ef2e58fad4e92996816d6678a77d6
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700001961095
+status: 4
+tags: []
+user_id: nickpad

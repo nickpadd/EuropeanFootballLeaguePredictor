@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/17b1a1fa9bd648b9ad25a720dcdb0077/artifacts
+end_time: 1700094731334
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 17b1a1fa9bd648b9ad25a720dcdb0077
+run_name: Serie_A | 2022
+run_uuid: 17b1a1fa9bd648b9ad25a720dcdb0077
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094718662
+status: 3
+tags: []
+user_id: nickpad

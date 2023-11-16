@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/1e8b2e09ac3042b6befc2e729310d251/artifacts
+deleted_time: 1700094556932
+end_time: 1700094412440
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 1e8b2e09ac3042b6befc2e729310d251
+run_name: La_Liga | 2023
+run_uuid: 1e8b2e09ac3042b6befc2e729310d251
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094407029
+status: 3
+tags: []
+user_id: nickpad

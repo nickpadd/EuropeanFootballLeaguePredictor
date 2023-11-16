@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/2c395d38d9b44aeeb5196779b70eba8b/artifacts
+deleted_time: 1700093983248
+end_time: 1700037662017
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 2c395d38d9b44aeeb5196779b70eba8b
+run_name: EPL | 2022
+run_uuid: 2c395d38d9b44aeeb5196779b70eba8b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700037653990
+status: 3
+tags: []
+user_id: nickpad

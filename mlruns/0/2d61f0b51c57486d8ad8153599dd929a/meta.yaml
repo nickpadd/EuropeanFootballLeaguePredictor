@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/2d61f0b51c57486d8ad8153599dd929a/artifacts
+end_time: 1700094084240
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2d61f0b51c57486d8ad8153599dd929a
+run_name: EPL | 2020
+run_uuid: 2d61f0b51c57486d8ad8153599dd929a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094070066
+status: 3
+tags: []
+user_id: nickpad

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/4357f165d3ad481e9458dbb572caa18c/artifacts
+end_time: 1700094531260
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4357f165d3ad481e9458dbb572caa18c
+run_name: Bundesliga | 2021
+run_uuid: 4357f165d3ad481e9458dbb572caa18c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094520788
+status: 3
+tags: []
+user_id: nickpad

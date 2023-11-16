@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/f5789493ee5340088181d79ca822820a/artifacts
+end_time: 1700094291841
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: f5789493ee5340088181d79ca822820a
+run_name: La_Liga | 2018
+run_uuid: f5789493ee5340088181d79ca822820a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094280338
+status: 3
+tags: []
+user_id: nickpad

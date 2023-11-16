@@ -1,0 +1,16 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/319e28db2ff2470cbed46dfc67dd673d/artifacts
+deleted_time: 1700036742791
+end_time: 1700036171448
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 319e28db2ff2470cbed46dfc67dd673d
+run_name: EPL | 2021
+run_uuid: 319e28db2ff2470cbed46dfc67dd673d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700036164333
+status: 3
+tags: []
+user_id: nickpad

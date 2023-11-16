@@ -1,0 +1,200 @@
+from europeanfootballleaguepredictor.models.PredictorNetwork import PredictorNetwork
+from europeanfootballleaguepredictor.common.config_parser import Config_Parser
+from loguru import logger 
+import pandas as pd
+import argparse
+import pytest
+import numpy as np
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
+
+
+@pytest.fixture
+def config_settings():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, help="Path to the configuration file (e.g., config.yaml)", default='europeanfootballleaguepredictor/config/config.yaml')
+    config_file_path = parser.parse_args().config
+    
+    config_data_parser = Config_Parser(config_file_path, None)
+    config_data = config_data_parser.load_and_extract_yaml_section()
+    config = config_data_parser.load_configuration_class(config_data)
+    
+    logger.info(config)
+    return config
+
+@pytest.fixture 
+def create_dummy_dataframe():
+    dummy_data = pd.DataFrame({
+        'Date': pd.date_range(start='2023-01-01', periods=12, freq='D'),
+        'HomeTeam': np.random.choice(['TeamA', 'TeamB', 'TeamC'], size=12),
+        'AwayTeam': np.random.choice(['TeamX', 'TeamY', 'TeamZ'], size=12),
+        'Result': [f"{np.random.randint(0, 5)}-{np.random.randint(0, 5)}" for _ in range(12)],
+        'HomeWinOdds': np.round(np.random.uniform(1, 5, size=12), 2),
+        'DrawOdds': np.round(np.random.uniform(1, 5, size=12), 2),
+        'AwayWinOdds': np.round(np.random.uniform(1, 6, size=12), 2),
+        'OverOdds': np.round(np.random.uniform(1, 3, size=12), 2),
+        'UnderOdds': np.round(np.random.uniform(1, 3, size=12), 2),
+        'HM': np.random.randint(0, 15, size=12),
+        'HW/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'HD/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'HL/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'HG/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'HGA/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'HPTS/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'HxG/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HNPxG/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HxGA/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HNPxGA/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HNPxGD/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HPPDA': np.round(np.random.uniform(5, 20, size=12), 2),
+        'HOPPDA': np.round(np.random.uniform(5, 20, size=12), 2),
+        'HDC/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HODC/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'HxPTS/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'AM': np.random.randint(0, 15, size=12),
+        'AW/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'AD/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'AL/M': np.round(np.random.uniform(0.1, 0.9, size=12), 2),
+        'AG/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'AGA/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'APTS/M': np.round(np.random.uniform(0.1, 2.5, size=12), 2),
+        'AxG/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'ANPxG/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'AxGA/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'ANPxGA/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'ANPxGD/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'APPDA': np.round(np.random.uniform(5, 20, size=12), 2),
+        'AOPPDA': np.round(np.random.uniform(5, 20, size=12), 2),
+        'ADC/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'AODC/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'AxPTS/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
+        'Match_id': [f"match_{i}" for i in range(1, 13)]
+    })
+    logger.debug(dummy_data)
+    return dummy_data
+
+
+class TestPredictorNetwork:
+    
+    def test_build_network(self, config_settings):
+        config = config_settings
+        lin = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        lin.build_network(LinearRegression)
+        svr = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        svr.build_network(SVR)
+        assert isinstance(lin.short_term_model.home_side, LinearRegression) and isinstance(lin.short_term_model.away_side, LinearRegression) and isinstance(lin.long_term_model.home_side, LinearRegression) and isinstance(lin.long_term_model.away_side, LinearRegression)
+        assert isinstance(svr.short_term_model.home_side, SVR) and isinstance(svr.short_term_model.away_side, SVR) and isinstance(svr.long_term_model.home_side, SVR) and isinstance(svr.long_term_model.away_side, SVR)
+
+    def test_drop_matchdays(self, config_settings, create_dummy_dataframe):
+        config = config_settings
+        # Create sample data for testing
+        long_term_data = create_dummy_dataframe
+        short_term_data = create_dummy_dataframe
+        
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        filtered_long_term_data, filtered_short_term_data = network.drop_matchdays(long_term_data=long_term_data, short_term_data=short_term_data)
+        assert all(filtered_long_term_data['AM'] > config.matchdays_to_drop) and all(filtered_long_term_data['HM'] > config.matchdays_to_drop)
+        assert len(filtered_long_term_data) == len(filtered_short_term_data)
+    
+    def test_normalize_array(self, config_settings):
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        # Test case 1: Positive values
+        input_array = np.random.uniform(0, 10, size=(4, 4))
+        normalized_array = network.normalize_array(input_array)
+        assert ((normalized_array >= 0).all and (normalized_array <= 1).all)
+        
+    def test_get_scoreline_probabilities(self, config_settings):
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        home_goal_rate = np.random.uniform(0, 5, size=10)
+        away_goal_rate = np.random.uniform(0, 4, size=10)
+        poisson_array_list = network.get_scoreline_probabilities(home_goal_rate_array= home_goal_rate, away_goal_rate_array= away_goal_rate)
+        for array in poisson_array_list:
+            assert np.round(np.sum(array), 2) == 1.0
+
+    def test_get_betting_probabilities(self, config_settings):
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        home_goal_rate = np.random.uniform(0, 5, size=10)
+        away_goal_rate = np.random.uniform(0, 4, size=10)
+        poisson_array_list = network.get_scoreline_probabilities(home_goal_rate_array= home_goal_rate, away_goal_rate_array= away_goal_rate)
+        betting_probabilities_list = network.get_betting_probabilities(scoreline_prob_list=poisson_array_list)
+        for prob_list in betting_probabilities_list:
+            assert np.round(prob_list['home'] + prob_list['draw'] + prob_list['away'], 2) == 1
+            assert np.round(prob_list['over2.5'] + prob_list['under2.5'], 2) ==1
+            assert np.round(prob_list['over3.5'] + prob_list['under3.5'], 2) ==1
+            assert np.round(prob_list['gg'] + prob_list['ng'], 2) ==1
+    
+    def test_prepare_for_prediction(self, config_settings, create_dummy_dataframe):
+        short, long, for_pred_short, for_pred_long = [create_dummy_dataframe for i in range(4)]
+        
+        for_pred_short['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_long['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_short['No'] =np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_long['No'] =np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_short['Line'] = np.random.choice(['2.5', '3.5'], size=12)
+        for_pred_long['Line'] = np.random.choice(['2.5', '3.5'], size=12)
+        for_pred_short = for_pred_short.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
+        for_pred_long = for_pred_long.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
+
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        long_term_array, short_term_array, home_goals_array, away_goals_array, match_info, for_prediction_info, for_prediction_short_array, for_prediction_long_array = network.prepare_for_prediction(short_term_data=short, long_term_data=long, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
+        assert len(long_term_array) == len(short_term_array) == len(home_goals_array) == len(away_goals_array) == len(match_info)
+        assert len(for_prediction_info) == len(for_prediction_short_array) == len(for_prediction_long_array)
+        assert not np.any(np.isnan(long_term_array))
+        assert not np.any(np.isnan(short_term_array))
+        assert not np.any(np.isnan(home_goals_array))
+        assert not np.any(np.isnan(away_goals_array))
+        assert not np.any(np.isnan(for_prediction_short_array))
+        assert not np.any(np.isnan(for_prediction_long_array))
+        assert not for_prediction_info.isna().any().any()
+        assert not match_info.isna().any().any()       
+    
+    def test_deduct_goalrate(self, config_settings):
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network.build_network(regressor = LinearRegression)
+        
+        train_short = np.round(np.random.uniform(0, 1, size=(12, 34)), 2)
+        train_long = np.round(np.random.uniform(0, 1, size=(12, 34)), 2)
+        for_pred_short = np.round(np.random.uniform(0, 1, size=(12, 34)), 2)
+        for_pred_long = np.round(np.random.uniform(0, 1, size=(12, 34)), 2)
+        home_goals = np.random.randint(0, 5, size=12)
+        away_goals = np.random.randint(0, 5, size=12)
+        
+        
+        network.train_network(short_term_data=train_short, long_term_data=train_long, home_goals=home_goals, away_goals=away_goals)
+        goal_rate = network.deduct_goal_rate(for_prediction_long_form=for_pred_short, for_prediction_short_form=for_pred_long)
+        logger.debug(goal_rate)
+        assert not any(np.any(np.isnan(value)) for value in goal_rate.values())
+
+    def test_predict_matches(self, config_settings, create_dummy_dataframe):
+        
+        short, long, for_pred_short, for_pred_long = [create_dummy_dataframe for i in range(4)]
+        
+        for_pred_short['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_long['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_short['No'] =np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_long['No'] =np.round(np.random.uniform(1, 3, size=12), 2)
+        for_pred_short['Line'] = np.random.choice(['2.5', '3.5'], size=12)
+        for_pred_long['Line'] = np.random.choice(['2.5', '3.5'], size=12)
+        for_pred_short = for_pred_short.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
+        for_pred_long = for_pred_long.rename(columns={'OverOdds': 'OverLineOdds', 'UnderOdds': 'UnderLineOdds'})
+        
+        config = config_settings
+        network = PredictorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
+        network.build_network(regressor = LinearRegression)
+        prediction_frame = network.predict_matches(long_term_data=long, short_term_data=short, for_prediction_long=for_pred_long, for_prediction_short=for_pred_short)
+        
+        logger.debug(prediction_frame)
+        for index, row in prediction_frame.iterrows():
+            win_sum = row['HomeWinProbability'] + row['DrawProbability'] + row['AwayWinProbability']
+            line2_sum = row['Under2.5Probability'] + row['Over2.5Probability']
+            line3_sum = row['Under3.5Probability'] + row['Over3.5Probability']
+            gg_sum = row['GGProbability'] + row['NGProbability']
+            assert np.round(win_sum, 2) ==1
+            assert np.round(line2_sum, 2) ==1
+            assert np.round(line3_sum, 2) ==1
+            assert np.round(gg_sum, 2) ==1

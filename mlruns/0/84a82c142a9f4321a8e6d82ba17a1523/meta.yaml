@@ -1,0 +1,15 @@
+artifact_uri: file:///home/nickpad/Documents/EuropeanFootballLeaguePredictor/mlruns/0/84a82c142a9f4321a8e6d82ba17a1523/artifacts
+end_time: 1700094452127
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 84a82c142a9f4321a8e6d82ba17a1523
+run_name: Bundesliga | 2017
+run_uuid: 84a82c142a9f4321a8e6d82ba17a1523
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700094442506
+status: 3
+tags: []
+user_id: nickpad
