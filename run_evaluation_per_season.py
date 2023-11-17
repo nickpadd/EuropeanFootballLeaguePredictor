@@ -9,7 +9,6 @@ from pretty_html_table import build_table
 import argparse
 import os
 from europeanfootballleaguepredictor.models.bettor import Bettor
-from europeanfootballleaguepredictor.models.supervisor import Supervisor
 import mlflow.sklearn
 import tempfile
 
@@ -28,7 +27,8 @@ def main():
     
     logger.info(config)
     '''End of the configuration file parsing'''
-    with mlflow.start_run(run_name = f"{config.league} | {validation_season}") as run:
+    _regressor_instance = config.regressor()
+    with mlflow.start_run(run_name = f"{_regressor_instance} | {config.league} | {validation_season}") as run:
         
         net = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
         net.build_network(regressor = config.regressor)

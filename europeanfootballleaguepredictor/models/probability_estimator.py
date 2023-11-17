@@ -3,6 +3,7 @@ from europeanfootballleaguepredictor.models.bettor import Bettor
 import numpy as np
 from scipy.stats import poisson
 import pandas as pd 
+from sklearn.linear_model import PoissonRegressor
 from sklearn.preprocessing import MinMaxScaler
 from loguru import logger
 import json
@@ -15,6 +16,11 @@ class FootballPredictor(BaseModel):
     def build_model(self, regressor):
         self.home_side = regressor()
         self.away_side = regressor()
+        
+        if isinstance(self.home_side, PoissonRegressor):
+            self.home_side = regressor(max_iter = 1000)
+            self.away_side = regressor(max_iter = 1000)
+
     
     def train_model(self, train_data, home_goals, away_goals):
         self.home_side.fit(train_data, home_goals.ravel())
