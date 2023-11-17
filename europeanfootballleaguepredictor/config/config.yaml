@@ -5,7 +5,7 @@ model:
     long_term_form_vote_perc: 0.6
     short_term_form_vote_perc: 0.4
   matchdays_to_drop: 4
-  regressor: PoissonRegressor #One of the available [LinearRegression, PoissonRegressor, SVR]
+  regressor:  SVR #One of the available [LinearRegression, PoissonRegressor, SVR]
 
 bettor:
   initial_bank: 60

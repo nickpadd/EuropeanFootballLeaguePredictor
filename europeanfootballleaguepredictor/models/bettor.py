@@ -41,8 +41,8 @@ class Bettor:
         bookmaker_columns =['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverOdds', 'UnderOdds']
         model_columns = ['HomeWinProbability', 'DrawProbability', 'AwayWinProbability', 'Over2.5Probability', 'Under2.5Probability']
         self.info = prediction_dataframe[info_columns]
-        self.bookmaker_probabilities = prediction_dataframe[bookmaker_columns]
-        self.model_probabilities = prediction_dataframe[model_columns]
+        self.bookmaker_probabilities = prediction_dataframe[bookmaker_columns+['Match_id']]
+        self.model_probabilities = prediction_dataframe[model_columns+['Match_id']]
         self.results = results.reset_index(drop=True)
         
     def check_dictionary_compliance(self, bookmaker_odds: float, estimated_true_probability: float, bet_name):
@@ -89,16 +89,17 @@ class Bettor:
         self.ROI[f'{bet_name}_roi'] = 100*self.NetGain[f'{bet_name}_gain']/self.starting_bank
             
     def place_value_bets(self):
-        logger.info('Betting before supervisor instructions on the season...')
+        logger.info('Betting on the season...')
         bet_columns = ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']
         value_bets = self.info.copy()
         value_bets[bet_columns] = np.nan
         for index, id in tqdm(enumerate(self.info['Match_id']), total=len(self.info['Match_id'])):
             result_dict = self.get_betting_result(match_id = id)
             for bookmaker_odds_column, model_probability_column, bet_name in zip(self.bookmaker_probabilities.columns, self.model_probabilities.columns, bet_columns):
-                bookmaker_odds = self.bookmaker_probabilities.loc[index, bookmaker_odds_column]
-                model_probability = self.model_probabilities.loc[index, model_probability_column]
+                bookmaker_odds = self.bookmaker_probabilities.loc[self.bookmaker_probabilities['Match_id']==id, bookmaker_odds_column].values[0]
+                model_probability = self.model_probabilities.loc[self.model_probabilities['Match_id']==id, model_probability_column].values[0]
                 portion, bet = self.kelly_criterion(bookmaker_odds=bookmaker_odds, estimated_true_probability=model_probability, bet_name=bet_name)
+                value_bets.loc[index, 'Match_id'] = id
                 value_bets.loc[index, f'{bet_name}_bet'] = bet
                 value_bets.loc[index, f'{bet_name}_portion'] = portion
                 self.pay_bet(bet=bet, bet_name=bet_name)
@@ -110,29 +111,6 @@ class Bettor:
         
         self.value_bets = value_bets
         return {'Investment': self.starting_bank, 'NetGain': self.NetGain, 'ROI': self.ROI}
-    
-    def place_supervised_bets(self, acceptance_dict):
-        logger.info('Betting after supervisor instructions on the season...')
-        bet_columns = ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']
-        value_bets = self.info.copy()
-        value_bets[bet_columns] = np.nan
-        for index, id in tqdm(enumerate(self.info['Match_id']), total=len(self.info['Match_id'])):
-            result_dict = self.get_betting_result(match_id = id)
-            for bookmaker_odds_column, model_probability_column, bet_name in zip(self.bookmaker_probabilities.columns, self.model_probabilities.columns, bet_columns):
-                bookmaker_odds = self.bookmaker_probabilities.loc[index, bookmaker_odds_column]
-                model_probability = self.model_probabilities.loc[index, model_probability_column]
-                bet, portion = self.kelly_criterion(bookmaker_odds=bookmaker_odds, estimated_true_probability=model_probability, bet_name=bet_name)
-                bet = int(acceptance_dict[bet_name][id])*bet
-                value_bets.loc[index, f'{bet_name}_bet'] = bet
-                self.pay_bet(bet=bet, bet_name=bet_name)
-                value_bets.loc[index, f'{bet_name}_result'] = str(result_dict[bet_name])
-                self.get_payed_if_won(bet=bet, bet_name=bet_name, result=result_dict[bet_name], bookmaker_odds=bookmaker_odds)
-                value_bets.loc[index,f'{bet_name}_bank'] = self.current_bankroll[f'{bet_name}_bank']
-                value_bets.loc[index,f'{bet_name}_ROI'] = self.ROI[f'{bet_name}_roi']
-                value_bets.loc[index,f'{bet_name}_NetGain'] = self.NetGain[f'{bet_name}_gain']
-        
-        self.value_bets = value_bets
-        return {'Investment': self.starting_bank, 'NetGain_supervised': self.NetGain, 'ROI_supervised': self.ROI}
         
     def produce_report_figures(self, validation_season, evaluation_output):
         logger.info('Producing report figures...')
