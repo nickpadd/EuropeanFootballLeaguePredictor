@@ -50,8 +50,8 @@ def main():
           for bet_name in ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']:
             mlflow.log_metric(f"ROI_{validation_season}_{bet_name}", metrics['ROI'][f'{bet_name}_roi'])
           
-          avg_1x2 = statistics.mean([metrics['ROI']['home_win_roi'], metrics['ROI']['draw_roi'], metrics['ROI']['away_win_roi']])
-          avg_ou = statistics.mean([metrics['ROI']['over2.5_roi'], metrics['ROI']['under2.5_roi']])
+          avg_1x2 = metrics['ROI']['home_win_roi'] + metrics['ROI']['draw_roi'] + metrics['ROI']['away_win_roi']
+          avg_ou = metrics['ROI']['over2.5_roi'] + metrics['ROI']['under2.5_roi']
           
           weighted_average_ROI['1x2'].append(weight*avg_1x2)
           weighted_average_ROI['over/under 2.5'].append(weight*avg_ou)
@@ -79,15 +79,14 @@ def main():
         weighted_average_ROI['away_win'] = statistics.mean(weighted_average_ROI['away_win'])
         weighted_average_ROI['over2.5'] = statistics.mean(weighted_average_ROI['over2.5'])
         weighted_average_ROI['under2.5'] = statistics.mean(weighted_average_ROI['under2.5'])
-        
-        
-    mlflow.log_metric("WeightedAverage_1x2_ROI", round(weighted_average_ROI['1x2'], 2))
-    mlflow.log_metric("WeightedAverage_over/under 2.5_ROI", round(weighted_average_ROI['over/under 2.5'], 2))
-    mlflow.log_metric("WeightedAverage_home_win_ROI", round(weighted_average_ROI['home_win'], 2))
-    mlflow.log_metric("WeightedAverage_draw_ROI", round(weighted_average_ROI['draw'], 2))
-    mlflow.log_metric("WeightedAverage_away_win_ROI", round(weighted_average_ROI['away_win'], 2))
-    mlflow.log_metric("WeightedAverage_over2.5_ROI", round(weighted_average_ROI['over2.5'], 2))
-    mlflow.log_metric("WeightedAverage_under2.5_ROI", round(weighted_average_ROI['under2.5'], 2))
+         
+        mlflow.log_metric("WeightedAverage_1x2_ROI", round(weighted_average_ROI['1x2'], 2))
+        mlflow.log_metric("WeightedAverage_over/under 2.5_ROI", round(weighted_average_ROI['over/under 2.5'], 2))
+        mlflow.log_metric("WeightedAverage_home_win_ROI", round(weighted_average_ROI['home_win'], 2))
+        mlflow.log_metric("WeightedAverage_draw_ROI", round(weighted_average_ROI['draw'], 2))
+        mlflow.log_metric("WeightedAverage_away_win_ROI", round(weighted_average_ROI['away_win'], 2))
+        mlflow.log_metric("WeightedAverage_over2.5_ROI", round(weighted_average_ROI['over2.5'], 2))
+        mlflow.log_metric("WeightedAverage_under2.5_ROI", round(weighted_average_ROI['under2.5'], 2))
 
 
         

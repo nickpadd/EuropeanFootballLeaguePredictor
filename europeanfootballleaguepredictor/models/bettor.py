@@ -67,6 +67,7 @@ class Bettor:
         away_goals = int(scoreline.split('-')[1])
     
         result_dict = {
+            'scoreline': scoreline,
             'home_win': True if home_goals>away_goals else False,
             'draw': True if home_goals==away_goals else False,
             'away_win': True if home_goals<away_goals else False,
@@ -92,22 +93,21 @@ class Bettor:
         logger.info('Betting on the season...')
         bet_columns = ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']
         value_bets = self.info.copy()
-        value_bets[bet_columns] = np.nan
-        for index, id in tqdm(enumerate(self.info['Match_id']), total=len(self.info['Match_id'])):
+        for index, id in tqdm(enumerate(value_bets['Match_id']), total=len(value_bets['Match_id'])):
             result_dict = self.get_betting_result(match_id = id)
             for bookmaker_odds_column, model_probability_column, bet_name in zip(self.bookmaker_probabilities.columns, self.model_probabilities.columns, bet_columns):
                 bookmaker_odds = self.bookmaker_probabilities.loc[self.bookmaker_probabilities['Match_id']==id, bookmaker_odds_column].values[0]
                 model_probability = self.model_probabilities.loc[self.model_probabilities['Match_id']==id, model_probability_column].values[0]
                 portion, bet = self.kelly_criterion(bookmaker_odds=bookmaker_odds, estimated_true_probability=model_probability, bet_name=bet_name)
-                value_bets.loc[index, 'Match_id'] = id
-                value_bets.loc[index, f'{bet_name}_bet'] = bet
-                value_bets.loc[index, f'{bet_name}_portion'] = portion
+                value_bets.loc[value_bets['Match_id']==id, f'scoreline'] = result_dict['scoreline']
+                value_bets.loc[value_bets['Match_id']==id, f'{bet_name}_bet'] = bet
+                value_bets.loc[value_bets['Match_id']==id, f'{bet_name}_portion'] = portion
                 self.pay_bet(bet=bet, bet_name=bet_name)
-                value_bets.loc[index, f'{bet_name}_result'] = str(result_dict[bet_name])
+                value_bets.loc[value_bets['Match_id']==id, f'{bet_name}_result'] = str(result_dict[bet_name])
                 self.get_payed_if_won(bet=bet, bet_name=bet_name, result=result_dict[bet_name], bookmaker_odds=bookmaker_odds)
-                value_bets.loc[index,f'{bet_name}_bank'] = self.current_bankroll[f'{bet_name}_bank']
-                value_bets.loc[index,f'{bet_name}_ROI'] = self.ROI[f'{bet_name}_roi']
-                value_bets.loc[index,f'{bet_name}_NetGain'] = self.NetGain[f'{bet_name}_gain']
+                value_bets.loc[value_bets['Match_id']==id,f'{bet_name}_bank'] = self.current_bankroll[f'{bet_name}_bank']
+                value_bets.loc[value_bets['Match_id']==id,f'{bet_name}_ROI'] = self.ROI[f'{bet_name}_roi']
+                value_bets.loc[value_bets['Match_id']==id,f'{bet_name}_NetGain'] = self.NetGain[f'{bet_name}_gain']
         
         self.value_bets = value_bets
         return {'Investment': self.starting_bank, 'NetGain': self.NetGain, 'ROI': self.ROI}
@@ -119,7 +119,7 @@ class Bettor:
         figure_dict = {}
         for bet, bookmaker_column in tqdm(zip(['home_win', 'draw', 'away_win', 'over2.5', 'under2.5'], ['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverOdds', 'UnderOdds']), total=5):
             value_bets_only_played = self.value_bets[self.value_bets[f'{bet}_bet'] != 0].copy()
-            fig, ax1 = plt.subplots(figsize=(20, 8))
+            fig, ax1 = plt.subplots(figsize=(40, 10))
             fig.suptitle(f'{bet} {validation_season} \n Investment: {self.starting_bank}€ | ROI: {round(self.ROI[f"{bet}_roi"], 2)}% Net Gain: {round(self.NetGain[f"{bet}_gain"], 2)}€')
     
             # Plot ROI on the first y-axis (ax1)
@@ -147,10 +147,10 @@ class Bettor:
             ax1.set_xticklabels(x_labels[::x_labels_step], rotation=90)
     
             # Add text labels at specific x-axis ticks using ax1.annotate()
-            for x_tick in x_labels[::x_labels_step]:
+            for x_tick, id in zip(x_labels[::x_labels_step], value_bets_only_played['Match_id'].tolist()):
                 k = x_labels.index(x_tick)  # Get the index of the x_tick label in the DataFrame
-                odds_value = self.bookmaker_probabilities.loc[k, bookmaker_column]
-                result_value = self.results['Result'].iloc[k]
+                odds_value = self.bookmaker_probabilities.loc[self.bookmaker_probabilities['Match_id']==id, bookmaker_column].values[0]
+                result_value = self.results.loc[self.results['Match_id']==id, 'Result'].values[0]
     
                 label = f"{odds_value} | {result_value}"
                 # Calculate the y-coordinate for the label
@@ -169,6 +169,7 @@ class Bettor:
             # Save the figure instead of showing it
             directory_path = os.path.join(evaluation_output, validation_season)
             os.makedirs(directory_path, exist_ok=True)
+            plt.tight_layout()
             fig.savefig(os.path.join(directory_path, f'{bet}_figure.png'))
             figure_dict[f'{bet}_figure'] = fig
             plt.close(fig)  # Close the figure to free up resources
