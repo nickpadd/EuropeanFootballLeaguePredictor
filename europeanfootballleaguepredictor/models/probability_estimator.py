@@ -249,8 +249,9 @@ class ProbabilityEstimatorNetwork:
         data['long_term']['Date'] = pd.to_datetime(data['long_term']['Date'], format='%d/%m/%Y')
 
         # Define the start and end dates of the validation season
-        validation_start_date = pd.to_datetime(f'{validation_season}-08-01')
-        validation_end_date = pd.to_datetime(f'{int(validation_season) + 1}-07-31')
+        #This dating is because of the covid seasons in serie_a taking until 08-05 in 2019
+        validation_start_date = pd.to_datetime(f'{validation_season}-08-06')
+        validation_end_date = pd.to_datetime(f'{int(validation_season) + 1}-08-05')
 
         # Filter the dataset to include only the data within the validation season
         validation_data = {'short_term': data['short_term'][(pd.to_datetime(data['short_term']['Date'], format='%d/%m/%Y') >= validation_start_date) & (pd.to_datetime(data['short_term']['Date'], format='%d/%m/%Y') <= validation_end_date)].reset_index(drop=True),
