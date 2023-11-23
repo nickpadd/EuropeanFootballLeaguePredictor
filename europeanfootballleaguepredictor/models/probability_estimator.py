@@ -243,7 +243,6 @@ class ProbabilityEstimatorNetwork:
 
     
     def cut_validation_season(self, short_term_data, long_term_data, validation_season):
-        logger.warning('Validating for Ligue_1 season 2022 seems to be not working currently!')
         data = {'short_term': short_term_data, 'long_term': long_term_data}
         data['short_term']['Date'] = pd.to_datetime(data['short_term']['Date'], format='%d/%m/%Y')
         data['long_term']['Date'] = pd.to_datetime(data['long_term']['Date'], format='%d/%m/%Y')
