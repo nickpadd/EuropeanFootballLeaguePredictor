@@ -8,6 +8,7 @@ from europeanfootballleaguepredictor.visualization.visualize import Visualizer
 from pretty_html_table import build_table
 import importlib
 import os
+import argparse
 
 def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, long_form_vote):
     voting_dict = {'long_term': long_form_vote, 'short_term': 1-long_form_vote} 
@@ -50,24 +51,27 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
 
     visualizer = Visualizer(probability_dataframe)
     figure = visualizer.radar_scoreline_plot()
-    html_table = build_table(probability_dataframe.drop(['ScorelineProbability'], axis=1), 'blue_light')
+    html_table = build_table(probability_dataframe.drop(['ScorelineProbability', 'Match_id'], axis=1), 'blue_light')
     
     return figure, html_table
 
+def main():
+    with gr.Blocks() as iface:
+        with gr.Row():
+            drop1 = gr.Dropdown(['EPL', 'Bundesliga', 'Ligue_1', 'La_Liga', 'Serie_A'], label="Select League")
+            drop3 = gr.Dropdown(['LinearRegression', 'PoissonRegressor', 'SVR'], label="Select regressor Type")
+        with gr.Row():
+            with gr.Column(scale=1, min_width=600):
+                slide1 = gr.Slider(minimum=0, maximum=10, step=1, value=4, show_label=True, interactive=True, label="Select number of matchdays to drop")
+                slide2 = gr.Slider(minimum=0, maximum=1, step=0.1, value=0.6, show_label=True, interactive=True, label="Select long form vote. Short form will be 1-long")
+                btn = gr.Button("Predict")
+            with gr.Column(scale=5, min_width=1200):
+                plot1 = gr.Plot(label='Predicted results plots')
+                table1 = gr.HTML(label='Predicted results tables')
 
-with gr.Blocks() as iface:
-    with gr.Row():
-        drop1 = gr.Dropdown(['EPL', 'Bundesliga', 'Ligue_1', 'La_Liga', 'Serie_A'], label="Select League")
-        drop3 = gr.Dropdown(['LinearRegression', 'PoissonRegressor', 'SVR'], label="Select regressor Type")
-    with gr.Row():
-        with gr.Column(scale=1, min_width=600):
-            slide1 = gr.Slider(minimum=0, maximum=10, step=1, value=4, show_label=True, interactive=True, label="Select number of matchdays to drop")
-            slide2 = gr.Slider(minimum=0, maximum=1, step=0.1, value=0.6, show_label=True, interactive=True, label="Select long form vote. Short form will be 1-long")
-            btn = gr.Button("Predict")
-        with gr.Column(scale=5, min_width=1200):
-            plot1 = gr.Plot(label='Predicted results plots')
-            table1 = gr.HTML(label='Predicted results tables')
+        btn.click(league_predictions_figure, inputs=[drop1, drop3, slide1, slide2], outputs=[plot1, table1])
+
+    iface.launch(height=2000, share=True)
     
-    btn.click(league_predictions_figure, inputs=[drop1, drop3, slide1, slide2], outputs=[plot1, table1])
-        
-iface.launch(height=2000)
+if __name__ == "__main__":
+    main()
