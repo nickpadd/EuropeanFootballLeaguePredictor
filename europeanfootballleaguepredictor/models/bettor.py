@@ -5,9 +5,18 @@ import seaborn as sns
 import os
 from tqdm import tqdm 
 from sklearn.svm import SVC
+import pandas as pd
 
 class Bettor:
-    def __init__(self, bank: float, margin_dictionary: dict):
+    """A Bettor class to find and place value bets as well as give report on the results in a given set of matches
+    """
+    def __init__(self, bank: float, kelly_cap: float) -> None:
+        """Initializes the bettor object
+
+        Args:
+            bank (float): The initial investment the bettor has in its disposal at the start of the betting for each different betting category 
+            kelly_cap (float): The max percentage of the current bankroll to bet
+        """
         self.starting_bank = bank
         self.current_bankroll = {
             'home_win_bank': bank,
@@ -30,13 +39,21 @@ class Bettor:
             'over2.5_gain': 0,
             'under2.5_gain': 0
         }
-        self.margin_dictionary = margin_dictionary
+        self.kelly_cap = kelly_cap
         self.result_dict = {}
     
-    def reset_bank(self):
-        self.__init__(bank= self.starting_bank, margin_dictionary=self.margin_dictionary)
+    def reset_bank(self) -> None:
+        """Resests the starting bank by re-initializing the bettor
+        """
+        self.__init__(bank= self.starting_bank, kelly_cap=self.kelly_cap)
         
-    def preprocess(self, prediction_dataframe, results):    
+    def preprocess(self, prediction_dataframe: pd.DataFrame, results: pd.DataFrame) -> None:    
+        """Prepares the bettor for prediction by parsing the prediction dataframe
+
+        Args:
+            prediction_dataframe (pd.DataFrame): A dataframe containing match information, predicted model probabilities and bookmaker odds that the bettor uses to find and place value bets
+            results (pd.DataFrame): A dataframe containing the resulting scoreline of each match
+        """
         info_columns = ['Match_id', 'Date', 'HomeTeam', 'AwayTeam']
         bookmaker_columns =['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverOdds', 'UnderOdds']
         model_columns = ['HomeWinProbability', 'DrawProbability', 'AwayWinProbability', 'Over2.5Probability', 'Under2.5Probability']
@@ -45,23 +62,35 @@ class Bettor:
         self.model_probabilities = prediction_dataframe[model_columns+['Match_id']]
         self.results = results.reset_index(drop=True)
         
-    def check_dictionary_compliance(self, bookmaker_odds: float, estimated_true_probability: float, bet_name):
-        if estimated_true_probability - 1/bookmaker_odds > self.margin_dictionary[bet_name]:
-            return True 
-        else: 
-            return False
-        
-    def kelly_criterion(self, bookmaker_odds: float, estimated_true_probability: float, bet_name):
-        dict_allows_bet = self.check_dictionary_compliance(bookmaker_odds= bookmaker_odds, estimated_true_probability= estimated_true_probability, bet_name= bet_name)
-        if dict_allows_bet:
-            portion_of_bet_gained_with_win = bookmaker_odds - 1
-            bankroll_portion = estimated_true_probability - (1 - estimated_true_probability)/portion_of_bet_gained_with_win
-            bet = bankroll_portion*self.current_bankroll[f'{bet_name}_bank']
-            return bankroll_portion, max(bet, 0)/4
-        else:
-            return 0, 0
+    def quarter_kelly_criterion(self, bookmaker_odds: float, estimated_true_probability: float, bet_name: str, kelly_cap: float) -> tuple:
+        """Returns the portion of the current bankroll to bet as well as the bet, using the quarter kelly criterion and taking into account the kelly cap as the maximum portion to bet, specified by the user in the configuration file
+
+        Args:
+            bookmaker_odds (float): A dataframe containing the bookmaker odds of the for-prediction matches
+            estimated_true_probability (float): A dataframe containing the models estimated probabilities of popular bets of the for-prediction matches
+            bet_name (str): The name of the bet the kelly criterion should consider, one of ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']
+            kelly_cap (float): A float indicating the maximum portion of the current bankroll the criterion should output, should be (0, 1]. For example for kelly_cap=0.1 the maximum output bet would be 10% of the current bankroll.
+
+        Returns:
+            tuple:
+                float: The portion of the current bankroll to bet
+                float: The value of the bet
+        """ 
+        #QUARTER KELLY
+        portion_of_bet_gained_with_win = bookmaker_odds - 1
+        bankroll_portion = min(estimated_true_probability - (1 - estimated_true_probability)/portion_of_bet_gained_with_win, kelly_cap) #Capping the portion at 10%
+        bet = bankroll_portion*self.current_bankroll[f'{bet_name}_bank']/4
+        return max(bankroll_portion, 0), max(bet, 0)
     
-    def get_betting_result(self, match_id):
+    def get_betting_result(self, match_id: str) -> dict:
+        """Searches and returns for the result dictionary of the specified match
+
+        Args:
+            match_id (str): The id of the match to return the result dictionary
+
+        Returns:
+            dict: The result dictionary with keys ['scoreline', 'home_win', 'draw', 'away_win', 'over2.5', 'under2.5'] with a string in the format of '{home_goals}-{away_goals}' for scoreline and with True or False for the betting outcomes
+        """
         scoreline = self.results.loc[self.results['Match_id']==match_id, 'Result'].values[0]
         home_goals = int(scoreline.split('-')[0])
         away_goals = int(scoreline.split('-')[1])
@@ -77,10 +106,24 @@ class Bettor:
         self.result_dict[match_id] = result_dict
         return result_dict
     
-    def pay_bet(self, bet, bet_name):
+    def pay_bet(self, bet: float, bet_name: str) -> None:
+        """Pays the specified bet amount in the bank of the bet category
+
+        Args:
+            bet (float): The value of the bet that is to be paid
+            bet_name (str): An identification of the bet category
+        """
         self.current_bankroll[f'{bet_name}_bank'] -= bet
     
-    def get_payed_if_won(self, bet, bet_name, result, bookmaker_odds):
+    def get_payed_if_won(self, bet: float, bet_name: str, result: bool, bookmaker_odds: float) -> None:
+        """Gets payed in the specific bet category bank and updates the ROI and NetGain of the bettor
+
+        Args:
+            bet (float): The bet value
+            bet_name (str): An identification of the bet category
+            result (bool): The result of the bet [True, False]
+            bookmaker_odds (float): The odds provided by the bookmaker
+        """
         if result == True:
             self.current_bankroll[f'{bet_name}_bank'] += bet*bookmaker_odds
         elif result == False:
@@ -89,7 +132,12 @@ class Bettor:
         self.NetGain[f'{bet_name}_gain'] = self.current_bankroll[f'{bet_name}_bank'] - self.starting_bank
         self.ROI[f'{bet_name}_roi'] = 100*self.NetGain[f'{bet_name}_gain']/self.starting_bank
             
-    def place_value_bets(self):
+    def place_value_bets(self) -> dict:
+        """Conducts the search and placement as well as the payment of the bets in each betting category and gets the results
+
+        Returns:
+            dict: A dictionary with the results of the betting process. Each of the key values contains another dictionary with the specified information divided in the betting categories. 
+        """
         logger.info('Betting on the season...')
         bet_columns = ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']
         value_bets = self.info.copy()
@@ -98,7 +146,7 @@ class Bettor:
             for bookmaker_odds_column, model_probability_column, bet_name in zip(self.bookmaker_probabilities.columns, self.model_probabilities.columns, bet_columns):
                 bookmaker_odds = self.bookmaker_probabilities.loc[self.bookmaker_probabilities['Match_id']==id, bookmaker_odds_column].values[0]
                 model_probability = self.model_probabilities.loc[self.model_probabilities['Match_id']==id, model_probability_column].values[0]
-                portion, bet = self.kelly_criterion(bookmaker_odds=bookmaker_odds, estimated_true_probability=model_probability, bet_name=bet_name)
+                portion, bet = self.quarter_kelly_criterion(bookmaker_odds=bookmaker_odds, estimated_true_probability=model_probability, bet_name=bet_name, kelly_cap=self.kelly_cap)
                 value_bets.loc[value_bets['Match_id']==id, f'scoreline'] = result_dict['scoreline']
                 value_bets.loc[value_bets['Match_id']==id, f'{bet_name}_bet'] = bet
                 value_bets.loc[value_bets['Match_id']==id, f'{bet_name}_portion'] = portion
@@ -112,7 +160,16 @@ class Bettor:
         self.value_bets = value_bets
         return {'Investment': self.starting_bank, 'NetGain': self.NetGain, 'ROI': self.ROI}
         
-    def produce_report_figures(self, validation_season, evaluation_output):
+    def produce_report_figures(self, validation_season: str, evaluation_output: str) -> dict:
+        """Produces and saves the reporting figures in the specified path
+
+        Args:
+            validation_season (str): The season that is evaluated, one of ['2017', '2018', '2019', '2020', '2021', '2022', '2023']
+            evaluation_output (str): The specified path to save the evaluation figures
+
+        Returns:
+            dict: A dictionary containing with each key value containing the figure that corresponds to the betting of the certain betting category
+        """
         logger.info('Producing report figures...')
         sns.set_style("darkgrid", {"axes.facecolor": ".9"})
         self.value_bets['CombinedLabel'] = self.value_bets['HomeTeam'] + '-' + self.value_bets['AwayTeam'] + ' | ' + self.value_bets['Date'].astype(str)

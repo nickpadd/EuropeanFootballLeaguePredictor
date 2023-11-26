@@ -23,6 +23,7 @@ coverage = "^7.3.2"
 matplotlib = "^3.8.1"
 seaborn = "^0.13.0"
 mlflow = "^2.8.0"
+gradio = "^4.7.1"
 
 
 [build-system]

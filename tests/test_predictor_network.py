@@ -9,7 +9,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 
 @pytest.fixture 
-def create_dummy_dataframe():
+def create_dummy_dataframe() ->pd.DataFrame:
+    """Creates a dummy dataframe in the format of the gathered preprocessed datasets that are input to the probability_estimator_network
+
+    Returns:
+        pd.DataFrame: A dummy dataframe in the format of the gathered preprocessed datasets
+    """
     dummy_data = pd.DataFrame({
         'Date': pd.date_range(start='2023-01-01', periods=12, freq='D'),
         'HomeTeam': np.random.choice(['TeamA', 'TeamB', 'TeamC'], size=12),
@@ -61,9 +66,13 @@ def create_dummy_dataframe():
 
 
 class TestProbabilityEstimatorNetwork:
+    """A class of tests of the probability_estimator_network
+    """
     voting_dict = { 'long_term': 0.6, 'short_term': 0.4}
     matchdays_to_drop = 4
-    def test_build_network(self):
+    def test_build_network(self) ->None:
+        """Tests weather the network is build correctly with the regression models having been initialized as expected class instances
+        """
         lin = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         lin.build_network(LinearRegression)
         svr = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
@@ -71,7 +80,12 @@ class TestProbabilityEstimatorNetwork:
         assert isinstance(lin.short_term_model.home_side, LinearRegression) and isinstance(lin.short_term_model.away_side, LinearRegression) and isinstance(lin.long_term_model.home_side, LinearRegression) and isinstance(lin.long_term_model.away_side, LinearRegression)
         assert isinstance(svr.short_term_model.home_side, SVR) and isinstance(svr.short_term_model.away_side, SVR) and isinstance(svr.long_term_model.home_side, SVR) and isinstance(svr.long_term_model.away_side, SVR)
 
-    def test_drop_matchdays(self, create_dummy_dataframe):
+    def test_drop_matchdays(self, create_dummy_dataframe :pd.DataFrame) -> None:
+        """Tests the drop_matchdays method. Makes sure the length of the long/short form data is equal and that there are no matchdays that were supposed to be dropped in the resulting dataset
+
+        Args:
+            create_dummy_dataframe (pd.DataFrame): _description_
+        """
         # Create sample data for testing
         long_term_data = create_dummy_dataframe
         short_term_data = create_dummy_dataframe
@@ -81,14 +95,18 @@ class TestProbabilityEstimatorNetwork:
         assert all(filtered_long_term_data['AM'] > TestProbabilityEstimatorNetwork.matchdays_to_drop) and all(filtered_long_term_data['HM'] > TestProbabilityEstimatorNetwork.matchdays_to_drop)
         assert len(filtered_long_term_data) == len(filtered_short_term_data)
     
-    def test_normalize_array(self):
+    def test_normalize_array(self) ->None:
+        """Tests the normalize_array method. Makes sure the values of the array are all in [0, 1] as expected
+        """
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         # Test case 1: Positive values
         input_array = np.random.uniform(0, 10, size=(4, 4))
         normalized_array = network.normalize_array(input_array)
         assert ((normalized_array >= 0).all and (normalized_array <= 1).all)
         
-    def test_get_scoreline_probabilities(self,):
+    def test_get_scoreline_probabilities(self) ->None:
+        """Tests get_scoreline_probabilities method. Makes sure that the sum of the distinct scoreline probabilities is close to 1 with a tolerance of atol
+        """
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         home_goal_rate = np.random.uniform(0, 5, size=10)
         away_goal_rate = np.random.uniform(0, 4, size=10)
@@ -96,7 +114,9 @@ class TestProbabilityEstimatorNetwork:
         for array in poisson_array_list:
             assert np.isclose(np.round(np.sum(array), 2), 1, atol=0.2)
 
-    def test_get_betting_probabilities(self):
+    def test_get_betting_probabilities(self) ->None:
+        """Tests get_betting_probabilities method. Makes sure that the sum of the distinct betting categories is close to 1 with a tolerance of atol
+        """
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         home_goal_rate = np.random.uniform(0, 5, size=10)
         away_goal_rate = np.random.uniform(0, 4, size=10)
@@ -108,7 +128,12 @@ class TestProbabilityEstimatorNetwork:
             assert np.isclose(np.round(prob_list['over3.5'] + prob_list['under3.5'], 2), 1, atol=0.2)
             assert np.isclose(np.round(prob_list['gg'] + prob_list['ng'], 2), 1, atol=0.2)
     
-    def test_prepare_for_prediction(self, create_dummy_dataframe):
+    def test_prepare_for_prediction(self, create_dummy_dataframe) ->None:
+        """Tests the prepare_for_prediction method. Makessure the length of the sort/long form as well as home/away goals and match info is equal. Tests weather there are remaining null values in the resulting data
+
+        Args:
+            create_dummy_dataframe (func): The function that creates a dummy dataframe in the format of the collected preprocessed datasets
+        """
         short, long, for_pred_short, for_pred_long = [create_dummy_dataframe for i in range(4)]
         
         for_pred_short['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)
@@ -133,7 +158,9 @@ class TestProbabilityEstimatorNetwork:
         assert not for_prediction_info.isna().any().any()
         assert not match_info.isna().any().any()       
     
-    def test_deduct_goalrate(self):
+    def test_deduct_goalrate(self) ->None:
+        """Tests the deduct goalrate method. Makes sure that there are no null goal rate values
+        """
         network = ProbabilityEstimatorNetwork(voting_dict=TestProbabilityEstimatorNetwork.voting_dict, matchdays_to_drop=TestProbabilityEstimatorNetwork.matchdays_to_drop)
         network.build_network(regressor = LinearRegression)
         
@@ -150,8 +177,12 @@ class TestProbabilityEstimatorNetwork:
         logger.debug(goal_rate)
         assert not any(np.any(np.isnan(value)) for value in goal_rate.values())
 
-    def test_produce_probabilities(self, create_dummy_dataframe):
-        
+    def test_produce_probabilities(self, create_dummy_dataframe) ->None:
+        """Tests producce_probabilities method. Makes sure the sum of the the distinc betting category probabilities is close to 1 with a tolerance of atol
+
+        Args:
+            create_dummy_dataframe (func): The function that creates a dummy dataframe in the format of the collected preprocessed datasets
+        """
         short, long, for_pred_short, for_pred_long = [create_dummy_dataframe for i in range(4)]
         
         for_pred_short['Yes']=np.round(np.random.uniform(1, 3, size=12), 2)

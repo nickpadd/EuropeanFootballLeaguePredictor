@@ -7,11 +7,27 @@ from sklearn.linear_model import LinearRegression, PoissonRegressor
 from sklearn.svm import SVR
 
 class Config_Parser:
-    def __init__(self, config_path, section_name):
+    """The configuration parser class that is responsible for loading the config.yaml, checking for some basic validity of the configuration and loading the dataclass Configuration.
+    """
+    def __init__(self, config_path, section_name=None) -> None:
+        """_summary_
+
+        Args:
+            config_path (_type_: str): The path of the config.yaml file
+            section_name (_type_: str, Optional): The name of the exact subsection of the .yaml file to access. Defaults to None.
+        """
         self.config_path = config_path
         self.section_name = section_name
         
     def load_and_extract_yaml_section(self, path=None) -> dict:
+        """Loads and extracts the exact yaml section specified when called. Else loads and extracts default configuration from self.config_path.
+
+        Args:
+            path (_type_: str, optional): The name of the exact subsection of the .yaml file to access. Defaults to None.
+
+        Returns:
+            dict: Configuration dictionary.
+        """
         if path is None:
             with open(self.config_path, 'r') as file:
                 config_data = yaml.safe_load(file)
@@ -31,7 +47,12 @@ class Config_Parser:
             logger.success(f'Successfully loaded {path}')
             return config          
     
-    def check_validity(self, config_data):
+    def check_validity(self, config_data) -> None:
+        """Checks the validity of certain important configuration settings.
+
+        Args:
+            config_data (_type_: dict): The configuration dictionary in the format output from load_and_extract_yaml_section().
+        """
         if config_data['model']['voting']['long_term_form_vote_perc'] + config_data['model']['voting']['short_term_form_vote_perc'] != 1:
             logger.error('Voting weights do not add to 1! Please check configuration file!')
             sys.exit(1)
@@ -42,7 +63,15 @@ class Config_Parser:
             logger.error(f"League {config_data['league']} is invalid! Please check configuration file!")
             sys.exit(1)
             
-    def load_configuration_class(self, config_data):
+    def load_configuration_class(self, config_data) -> dataclass:
+        """Calls check_validity(). Imports the regressor depending on the users choice. Loads self.config dataclass with the validated configuration settings.
+
+        Args:
+            config_data (_type_: dict): The configuration dictionary in the format output from load_and_extract_yaml_section().
+
+        Returns:
+            self.config (_type_: Configuration_dataclass_object): The dataclass with the validated configuration settings.
+        """
         self.check_validity(config_data)
         try:
             module_path = 'sklearn.linear_model'
@@ -57,7 +86,7 @@ class Config_Parser:
                 league= config_data['league'],
                 regressor = regressor,
                 bettor_bank = config_data['bettor']['initial_bank'],
-                bettor_margin_dict = config_data['bettor']['margin_to_bet_dict'],
+                bettor_kelly_cap = config_data['bettor']['kelly_cap'],
                 evaluation_output = config_data['data_gathering']['paths'][config_data['league']]['evaluation_output'],
                 months_of_form_list = [config_data['data_gathering']['long_term_form'], config_data['data_gathering']['short_term_form']],
                 seasons_to_gather= config_data['data_gathering']['seasons_to_gather'],
@@ -82,10 +111,12 @@ class Config_Parser:
 
 @dataclass
 class Configuration:
+    """A dataclass containing the configuration settings.
+    """
     league: str
     regressor: object
     bettor_bank: float
-    bettor_margin_dict: dict
+    bettor_kelly_cap: float
     evaluation_output: str
     months_of_form_list: list
     seasons_to_gather: list

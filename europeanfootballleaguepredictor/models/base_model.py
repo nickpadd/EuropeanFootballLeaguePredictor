@@ -21,16 +21,15 @@ class BaseModel(ABC):
 
     @abstractmethod
     def evaluate(self, evaluation_data: Any):
-        """A method to fit the model
+        """A method to evaluate the model
         Args:
             evaluation_data: Evaluation dataset
-            batch_size: Batch size
         """
         pass
 
     @abstractmethod
     def predict(self, inference_data: Any):
-        """A method to fit the model
+        """A method to predict with the model
         Args:
             inference_data: Data to predict
         """

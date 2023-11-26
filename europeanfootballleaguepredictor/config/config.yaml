@@ -1,20 +1,15 @@
-league: Ligue_1 #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
+league: Serie_A #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
 
 model:
   voting: #Percentage of long_term_form/short_term_form perencage. Should add to 1
     long_term_form_vote_perc: 0.6
     short_term_form_vote_perc: 0.4
   matchdays_to_drop: 4
-  regressor:  SVR #One of the available [LinearRegression, PoissonRegressor, SVR]
+  regressor: PoissonRegressor #One of the available [LinearRegression, PoissonRegressor, SVR]
 
 bettor:
   initial_bank: 60
-  margin_to_bet_dict:
-    home_win: 0.0
-    draw: 0.0
-    away_win: 0.0
-    over2.5: 0.0
-    under2.5: 0.0
+  kelly_cap: 0.05 #The max percentage of the current bankroll to bet
 
 data_gathering:
   long_term_form: null #Months of long_form, null indicates season long form

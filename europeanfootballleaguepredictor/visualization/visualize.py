@@ -6,14 +6,28 @@ import numpy as np
 from loguru import logger 
 
 class Visualizer:
-    def __init__(self, prediction_dataframe: pd.DataFrame):
+    """The visualizer of the predicted match probabilities
+    """
+    def __init__(self, prediction_dataframe: pd.DataFrame) -> None:
+        """Initializing the visualizer using the prediction dataframe
+
+        Args:
+            prediction_dataframe (pd.DataFrame): A dataframe containing match information and predicted probabilities from the model
+        """
         self.prediction_dataframe = prediction_dataframe
         self.get_bookmaker_prob()
 
     def get_bookmaker_prob(self):
+        """Changes the bookmaker odds into probabilities
+        """
         self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']] = 1/self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']]
         
     def radar_scoreline_plot(self):
+        """Creates the figure containing the scoreline barplot and the radar probability plot
+
+        Returns:
+            matplotlib.figure.Figure: A figure containing the scoreline barplot and the radar probability plot
+        """
         fig = make_subplots(rows=1, cols=2, specs=[[{'type': 'polar'}, {'type': 'xy'}]], column_widths=[0.33, 0.67])
         fig.update_layout(width=1500, height=650)
         # create a list to store the buttons
