@@ -1,5 +1,6 @@
 Predictions/* linguist-vendored=false
 */data/leagues/* linguist-vendored=false
 Readme.md linguist-vendored=false
-
+*.py linguist-detectable=true
+*.html linguist-detectable=false
 
