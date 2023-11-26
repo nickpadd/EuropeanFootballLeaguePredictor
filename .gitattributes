@@ -1,3 +1,5 @@
-Predictions/* linguist-vendored
-*/data/leagues/* linguist-vendored
+Predictions/* linguist-vendored=false
+*/data/leagues/* linguist-vendored=false
+Readme.md linguist-vendored=false
+
 
