@@ -1,4 +1,4 @@
-league: EPL #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
+league: Serie_A #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
 
 model:
   voting: #Percentage of long_term_form/short_term_form perencage. Should add to 1
@@ -9,12 +9,7 @@ model:
 
 bettor:
   initial_bank: 60
-  margin_to_bet_dict:
-    home_win: 0.05
-    draw: 0.05
-    away_win: 0.05
-    over2.5: 0.05
-    under2.5: 0.05
+  kelly_cap: 0.05 #The max percentage of the current bankroll to bet
 
 data_gathering:
   long_term_form: null #Months of long_form, null indicates season long form

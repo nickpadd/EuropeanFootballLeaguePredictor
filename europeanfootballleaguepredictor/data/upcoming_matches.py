@@ -10,7 +10,23 @@ from europeanfootballleaguepredictor.data.preprocessor import Preprocessor
 from europeanfootballleaguepredictor.utils.path_handler import PathHandler
 
 class UpcomingMatchScheduler():
-    def __init__(self, odds: pd.DataFrame, current_season: str, months_of_form_list: list, league: str, data_co_uk_ulr: str, data_co_uk_path: str, data_co_uk_dict: dict, fixtures_path: str, fixtures_url: str, fixtures_dict: dict):
+    """The class responsible for making the important dataset updates in order to predict the upcoming matches
+    """
+    def __init__(self, odds: pd.DataFrame, current_season: str, months_of_form_list: list, league: str, data_co_uk_ulr: str, data_co_uk_path: str, data_co_uk_dict: dict, fixtures_path: str, fixtures_url: str, fixtures_dict: dict) ->None:
+        """Initializing the class
+
+        Args:
+            odds (pd.DataFrame): A dataframe containing the bookmaker odds for the upcoming matches
+            current_season (str): The current season. '2023' corresponds to 2023/2024 season
+            months_of_form_list (list): A list containing the long term form and short term form months. None corresponds to season long form
+            league (str): A string identifier of the league to gather. One of the available ['EPL', 'La_Liga', 'Bundesliga', 'Ligue_1', 'Serie_A']
+            data_co_uk_ulr (str): The url that contains the current season dataset download for the corresponding league from the data.co.uk website
+            data_co_uk_path (str): The path to the season file of data_co_uk
+            data_co_uk_dict (dict): The dictionary that maps team names of data_co_uk format to understat format
+            fixtures_path (str): The path to the season fixtures dataset
+            fixtures_url (str): The url to update the season fixtured 
+            fixtures_dict (dict): The dictionary that maps team names of fixtures dataset format to understat format
+        """
         self.odds = odds 
         self.league = league
         self.current_season = current_season 
@@ -22,7 +38,12 @@ class UpcomingMatchScheduler():
         self.fixtures_dict = fixtures_dict
         self.fixtures_path = fixtures_path
     
-    def update_dataset(self, category: str):
+    def update_dataset(self, category: str) -> None:
+        """Updates the datasets of the specified category
+
+        Args:
+            category (str): A string identifier of what datasets to update. One of available 'odds', 'fixtures'
+        """
         if category == 'odds':
             data_path, replacing_dict, url = self.data_co_uk_path, self.data_co_uk_dict, self.data_co_uk_url
             path = os.path.join(data_path,  f'E0-{self.current_season}.csv')
@@ -41,7 +62,13 @@ class UpcomingMatchScheduler():
         else:
             logger.success(f"Failed to download the file. Status code: {response.status_code}")
             
-    def replace_team_names(self, data_path, replacing_dict):
+    def replace_team_names(self, data_path :str, replacing_dict : dict) -> None:
+        """Replaces the team names using a dictionary mapping in the specified file of the data_path
+
+        Args:
+            data_path (str): The path to the file to replace the team names of
+            replacing_dict (dict): The dictionary that maps team names of the dataset format to understat format
+        """
         logger.info('Replacing team names.')
         data = pd.read_csv(data_path)
         team_dict = replacing_dict
@@ -54,7 +81,9 @@ class UpcomingMatchScheduler():
             
         data.to_csv(data_path, index=False)
         
-    def setup_upcoming_fixtures(self):
+    def setup_upcoming_fixtures(self) ->None:
+        """A pipeline to read update and write the updated datasets in order for the model to predict upcoming matches
+        """
         fixtures = pd.read_csv(os.path.join(self.fixtures_path, 'SeasonFixtures.csv'))
         fixtures.rename(columns={'Home Team': 'HomeTeam', 'Away Team': 'AwayTeam'}, inplace=True)
         fixtures['Date'] = pd.to_datetime(fixtures['Date'], format="%d/%m/%Y %H:%M")

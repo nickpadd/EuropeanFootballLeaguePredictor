@@ -11,6 +11,21 @@ import os
 import argparse
 
 def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, long_form_vote):
+    """Generates a prediction table with the model predictions of certain match outcomes 
+    and a prediction figure that includes a radar plot comparing the bookmakers odds depicted as probabilities with the predicted probabilities
+    as well as a barplot with the most probable scorelines according to the model. 
+    
+    Args:
+        league_name (str): One of the available leagues ['EPL', 'Bundesliga', 'Ligue_1', 'La_Liga', 'Serie_A']
+        regressor_str (str): One of the available regressors ['LinearRegression', 'PoissonRegressor', 'SVR']
+        matchdays_to_drop (int): The matchdays at the start of the season that are considered to provide redundant information to the model because the league table is not yet indicative of the teams performance due to small sample size.
+        long_form_vote (int): The weight with which the model produces the predictions between long form and short form. The short_form_vote is then calculated by 1-long_form_vote. Long form and short form are dependent on the users configuration before the data collection. Defaults are long_form : season long form, short_form : 3 month form.
+
+    Returns:
+        plotly_figure: A prediction figure that includes a radar plot comparing the bookmakers odds depicted as probabilities with the predicted probabilities as well as a barplot with the most probable scorelines according to the model.
+        html_table: A prediction table with the model predictions of certain match outcomes.
+    """
+    
     voting_dict = {'long_term': long_form_vote, 'short_term': 1-long_form_vote} 
     '''Parsing the configuration file'''
     try:
@@ -56,6 +71,8 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
     return figure, html_table
 
 def main():
+    """Main function of the up initializes the gradio app interface with which the user runs the model.
+    """
     with gr.Blocks() as iface:
         with gr.Row():
             drop1 = gr.Dropdown(['EPL', 'Bundesliga', 'Ligue_1', 'La_Liga', 'Serie_A'], label="Select League")

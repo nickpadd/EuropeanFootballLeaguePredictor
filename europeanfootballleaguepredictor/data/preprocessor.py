@@ -5,17 +5,25 @@ import os
 import sys
 
 class Preprocessor():
-    def __init__(self, preprocessed_data_path):
+    """A class responsible for preprocessing the raw collected datasets
+    """
+    def __init__(self, preprocessed_data_path: str):
+        """Initializes the preprocessor using the specified raw data path
+
+        Args:
+            preprocessed_data_path (str): The path of the raw datasets
+        """
         self.preprocessed_data_path = preprocessed_data_path
     
-    def get_files(self, folder_path) -> pd.DataFrame:
-        '''
-        Method that gets all the available .csv files from path.
+    def get_files(self, folder_path: str) -> pd.DataFrame:
+        """Gets a combined dataframe out of all the .csv files in the specified foler
+
         Args:
-        path: The path of the folder of the .csv files
+            folder_path (str): The path of the folder
+
         Returns:
-        combined_df: A dataframe containing the combined seasons of the folder
-        '''
+            pd.DataFrame: A combined dataframe with all the .csv files of the folder concatenated
+        """
         logger.info(f'Parsing the files of {folder_path}')
         csv_files = [f for f in os.listdir(folder_path) if f.endswith(".csv")]
 
@@ -32,7 +40,16 @@ class Preprocessor():
         logger.success(f'Succesfully parsed the files of {folder_path}')
         return combined_df
     
-    def produce_match_id(self, dataframe_list : list = None, dataframe : pd.DataFrame = None):
+    def produce_match_id(self, dataframe_list : list = None, dataframe : pd.DataFrame = None) -> list or pd.DataFrame:
+        """Produces a unique identification in 'Match_id' for each match in the dataframe or list of dataframes
+
+        Args:
+            dataframe_list (list, optional): List of dataframes or None. Defaults to None.
+            dataframe (pd.DataFrame, optional): Dataframe or None. Defaults to None.
+
+        Returns:
+            list or pd.DataFrame: The input dataframe or list of dataframes with the unique identifier 'Match_id' column
+        """
 
         dataframes_with_id = []
 
@@ -43,8 +60,16 @@ class Preprocessor():
         logger.success(f'Succesfully produced Match_id')
         return dataframes_with_id
 
-    def stats_per_match(self, dataframe_list : list = None, dataframe : pd.DataFrame = None):
-        
+    def stats_per_match(self, dataframe_list : list = None, dataframe : pd.DataFrame = None) -> list or pd.DataFrame:
+        """Normalizes the advanced statistics in order to convey statistics per match
+
+        Args:
+            dataframe_list (list, optional): List of dataframes or None. Defaults to None.
+            dataframe (pd.DataFrame, optional): Dataframe or None. Defaults to None.
+
+        Returns:
+            list or pd.DataFrame: The input dataframe or list of dataframes with the statistics normalized per match and the columns renamed
+        """
         data_per_match = []
         for dataframe in dataframe_list:
             for col in ['HW', 'HD', 'HL', 'HG', 'HGA', 'HPTS', 'HxG', 'HNPxG', 'HxGA', 'HNPxGA', 'HNPxGD', 'HDC', 'HODC', 'HxPTS']:
@@ -60,7 +85,16 @@ class Preprocessor():
         logger.success('Succesfully normalized stats per match.')   
         return data_per_match
                 
-    def test_for_nulls(self, data, data_status: str):
+    def test_for_nulls(self, data: list or pd.DataFrame, data_status: str) -> list:
+        """Tests the datasets and deals with null values
+
+        Args:
+            data (list or pd.DataFrame): A list of dataframes or a dataframe to be checked
+            data_status (str): Identifier for the status of the data. One of ['Raw', 'Preprocessed']
+
+        Returns:
+            list: A list of dataframes with checked and dealt with null values according to the data status
+        """
         filtered_data_list=[]
         odds_columns = ['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverOdds', 'UnderOdds']
         if data_status == 'Raw':
@@ -101,7 +135,15 @@ class Preprocessor():
         return filtered_data_list
                 
             
-    def preprocessing_pipeline(self, data: list):
+    def preprocessing_pipeline(self, data: list) -> list:
+        """A pipeline that produces preprocessed dataframes out of the raw dataframes list
+
+        Args:
+            data (list): A list containing dataframes in the raw format of collected dataframes
+
+        Returns:
+            list: A list of preprocessed dataframes
+        """
         data = self.test_for_nulls(data,  data_status='Raw')
         data = self.produce_match_id(data)
         data = self.stats_per_match(data)
@@ -109,7 +151,12 @@ class Preprocessor():
         
         return data
     
-    def output_files(self, dataframe_list: list):
+    def output_files(self, dataframe_list: list) -> None:
+        """Outputs the dataframes in the dataframe list in the long/short term corresponding csv files
+
+        Args:
+            dataframe_list (list): A list of dataframes, a long term and a short term form to be output into .csv files
+        """
         for dataframe, name in zip(dataframe_list, ['LongTermForm.csv', 'ShortTermForm.csv']):
             final_path = os.path.join(self.preprocessed_data_path, name)
             dataframe.to_csv(final_path)

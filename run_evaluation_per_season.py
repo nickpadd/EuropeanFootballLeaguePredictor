@@ -39,11 +39,11 @@ def main():
       with mlflow.start_run(run_name = f"{_regressor_instance} | {config.league} | {validation_season}") as run:
         # Log model parameters
         mlflow.log_param("Form_Votes", config.voting_dict)
-        mlflow.log_param('Margin_Dict', config.bettor_margin_dict)
+        mlflow.log_param('Margin_Dict', config.bettor_kelly_cap)
         mlflow.log_param('Regressor', _regressor_instance)
         mlflow.log_param('League', config.league)
         mlflow.log_param('Matchdays to drop', config.matchdays_to_drop)
-        bettor = Bettor(bank=config.bettor_bank, margin_dictionary=config.bettor_margin_dict)
+        bettor = Bettor(bank=config.bettor_bank, kelly_cap=config.bettor_kelly_cap)
         figures, metrics = net.evaluate_per_season(short_term_data=short_term_form, long_term_data=long_term_form, validation_season=validation_season, bettor= bettor, evaluation_output = config.evaluation_output)
         logger.info(metrics)
           
