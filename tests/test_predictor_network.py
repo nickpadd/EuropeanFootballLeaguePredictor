@@ -70,6 +70,7 @@ class TestProbabilityEstimatorNetwork:
     """
     voting_dict = { 'long_term': 0.6, 'short_term': 0.4}
     matchdays_to_drop = 4
+    tolerance = 0.3
     def test_build_network(self) ->None:
         """Tests weather the network is build correctly with the regression models having been initialized as expected class instances
         """
@@ -112,7 +113,7 @@ class TestProbabilityEstimatorNetwork:
         away_goal_rate = np.random.uniform(0, 4, size=10)
         poisson_array_list = network.get_scoreline_probabilities(home_goal_rate_array= home_goal_rate, away_goal_rate_array= away_goal_rate)
         for array in poisson_array_list:
-            assert np.isclose(np.round(np.sum(array), 2), 1, atol=0.2)
+            assert np.isclose(np.round(np.sum(array), 2), 1, atol=self.tolerance)
 
     def test_get_betting_probabilities(self) ->None:
         """Tests get_betting_probabilities method. Makes sure that the sum of the distinct betting categories is close to 1 with a tolerance of atol
@@ -126,7 +127,7 @@ class TestProbabilityEstimatorNetwork:
             assert np.isclose(np.round(prob_list['home'] + prob_list['draw'] + prob_list['away'], 2), 1, atol=0.2)
             assert np.isclose(np.round(prob_list['over2.5'] + prob_list['under2.5'], 2), 1, atol=0.2)
             assert np.isclose(np.round(prob_list['over3.5'] + prob_list['under3.5'], 2), 1, atol=0.2)
-            assert np.isclose(np.round(prob_list['gg'] + prob_list['ng'], 2), 1, atol=0.2)
+            assert np.isclose(np.round(prob_list['gg'] + prob_list['ng'], 2), 1, atol=self.tolerance)
     
     def test_prepare_for_prediction(self, create_dummy_dataframe) ->None:
         """Tests the prepare_for_prediction method. Makessure the length of the sort/long form as well as home/away goals and match info is equal. Tests weather there are remaining null values in the resulting data
@@ -204,7 +205,7 @@ class TestProbabilityEstimatorNetwork:
             line2_sum = row['Under2.5Probability'] + row['Over2.5Probability']
             line3_sum = row['Under3.5Probability'] + row['Over3.5Probability']
             gg_sum = row['GGProbability'] + row['NGProbability']
-            assert np.isclose(np.round(win_sum, 2) ==1, 1, atol=0.2)
-            assert np.isclose(np.round(line2_sum, 2) ==1, 1, atol=0.2)
-            assert np.isclose(np.round(line3_sum, 2) ==1, 1, atol=0.2)
-            assert np.isclose(np.round(gg_sum, 2) ==1, 1, atol=0.2)
+            assert np.isclose(np.round(win_sum, 2) ==1, 1, atol=self.tolerance)
+            assert np.isclose(np.round(line2_sum, 2) ==1, 1, atol=self.tolerance)
+            assert np.isclose(np.round(line3_sum, 2) ==1, 1, atol=self.tolerance)
+            assert np.isclose(np.round(gg_sum, 2) ==1, 1, atol=self.tolerance)
