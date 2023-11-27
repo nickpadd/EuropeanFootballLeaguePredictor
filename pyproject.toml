@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "europeanfootballleaguepredictor"
 version = "0.1.0"
-description = ""
+description = "A model network that predicts the upcoming top european league football matches."
 authors = ["nickpadd <nickpad1@hotmail.com>"]
 readme = "README.md"
 

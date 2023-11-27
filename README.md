@@ -1,7 +1,6 @@
 # EuropeanFotballLeaguePredictor
 
-EuropeanFootballLeaguePredictor is a predictor of europes top league games based on historic performances of teams, taking into account only advanced league table statistics. It uses traditional machine learning techniques and statistical modeling in order to deduct data driven predictions based on the team’s season performance and recent form. The model evaluation has shown promising results on predicting past seasons, proving its capability to be profitable using certain betting strategies something that could provide impactful data-driven insights for either the bookmaker as well as the bettor.
-
+EuropeanFootballLeaguePredictor is a predictor of europes top league games based on historic performances of teams, taking into account only advanced league table statistics. It uses traditional machine learning techniques and statistical modeling in order to deduct data driven predictions based on the team’s season performance and recent form. The EuropeanFootballLeaguePredictor includes EnglishPremierLegue, La Liga, Ligue 1, Bundesliga, Serie A. 
 
 ## Betting Disclaimer
 

@@ -2,7 +2,7 @@ import pandas as pd
 from loguru import logger  
 import requests
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from europeanfootballleaguepredictor.data.understat_gatherer import Understat_Parser
 import uuid
 import asyncio
@@ -12,11 +12,11 @@ from europeanfootballleaguepredictor.utils.path_handler import PathHandler
 class UpcomingMatchScheduler():
     """The class responsible for making the important dataset updates in order to predict the upcoming matches
     """
-    def __init__(self, odds: pd.DataFrame, current_season: str, months_of_form_list: list, league: str, data_co_uk_ulr: str, data_co_uk_path: str, data_co_uk_dict: dict, fixtures_path: str, fixtures_url: str, fixtures_dict: dict) ->None:
+    def __init__(self, current_season: str, months_of_form_list: list, league: str, data_co_uk_ulr: str, data_co_uk_path: str, data_co_uk_dict: dict, fixtures_path: str, fixtures_url: str, fixtures_dict: dict, odds : pd.DataFrame =None) ->None:
         """Initializing the class
 
         Args:
-            odds (pd.DataFrame): A dataframe containing the bookmaker odds for the upcoming matches
+            odds (pd.DataFrame, None): A dataframe containing the bookmaker odds for the upcoming matches. Default is None in case the user does not have access to the bookmaker url.
             current_season (str): The current season. '2023' corresponds to 2023/2024 season
             months_of_form_list (list): A list containing the long term form and short term form months. None corresponds to season long form
             league (str): A string identifier of the league to gather. One of the available ['EPL', 'La_Liga', 'Bundesliga', 'Ligue_1', 'Serie_A']
@@ -89,15 +89,23 @@ class UpcomingMatchScheduler():
         fixtures['Date'] = pd.to_datetime(fixtures['Date'], format="%d/%m/%Y %H:%M")
         fixtures['Date'] = fixtures['Date'].dt.strftime("%d/%m/%Y")
         
-        logger.debug(self.odds)
-        upcoming_matches = pd.merge(fixtures[['Date', 'HomeTeam', 'AwayTeam']], self.odds, left_on=['HomeTeam', 'AwayTeam'], right_on=['Home Team', 'Away Team'], how='inner')
-        logger.debug(upcoming_matches)
-        upcoming_matches = upcoming_matches.drop(columns=['Home Team', 'Away Team'], axis=1)
-        upcoming_matches.rename(columns={'1': 'HomeWinOdds', 'x': 'DrawOdds', '2': 'AwayWinOdds', 'OverLine': 'OverLineOdds', 'UnderLine': 'UnderLineOdds'}, inplace=True)
-        upcoming_matches.drop(columns=['Yes', 'No'])
+        try:
+            upcoming_matches = pd.merge(fixtures[['Date', 'HomeTeam', 'AwayTeam']], self.odds, left_on=['HomeTeam', 'AwayTeam'], right_on=['Home Team', 'Away Team'], how='inner')
+            upcoming_matches = upcoming_matches.drop(columns=['Home Team', 'Away Team'], axis=1)
+            upcoming_matches.rename(columns={'1': 'HomeWinOdds', 'x': 'DrawOdds', '2': 'AwayWinOdds', 'OverLine': 'OverLineOdds', 'UnderLine': 'UnderLineOdds'}, inplace=True)
+            upcoming_matches.drop(columns=['Yes', 'No'])
+        except (KeyError, TypeError) as e:
+            today = datetime.now()
+            fifteen_days_from_now = today + timedelta(days=15)
+            fixtures['Date'] = pd.to_datetime(fixtures['Date'], format='%d/%m/%Y')
+            upcoming_matches = fixtures[(fixtures['Date'] >= today) & (fixtures['Date'] <= fifteen_days_from_now)][['Date', 'HomeTeam', 'AwayTeam']]
+            upcoming_matches['Date'] = upcoming_matches['Date'].dt.strftime('%d/%m/%Y')
+             
         upcoming_fixtures_path = os.path.join(self.fixtures_path, 'UpcomingFixtures.csv')
         upcoming_matches.to_csv(upcoming_fixtures_path, index=False)
         logger.success(f'Upcoming fixtures saved succesfully at {upcoming_fixtures_path}')
+        
+    
         raw_short_term_path = os.path.join(self.fixtures_path, 'raw_files/ShortTermForm/')
         raw_long_term_path = os.path.join(self.fixtures_path, 'raw_files/LongTermForm/')
         preprocessed_path = os.path.join(self.fixtures_path, 'preprocessed_files/')
