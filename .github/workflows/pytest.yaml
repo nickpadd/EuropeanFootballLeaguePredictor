@@ -7,6 +7,10 @@ on:
   pull_request:
     branches:
       - '*'
+  workflow_run:
+    workflows: ["Update datasets and predictions"]
+    types:
+      - completed
   workflow_dispatch:
 
 
