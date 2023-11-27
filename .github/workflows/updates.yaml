@@ -1,0 +1,29 @@
+name: Update datasets and predictions
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
+
+jobs:
+  update_and_predict:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x  # Specify your Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Adjust as needed
+
+    - name: Run updates script
+      run: python run_updates.py
+
+    - name: Run predictions script
+      run: python run_predictions.py
