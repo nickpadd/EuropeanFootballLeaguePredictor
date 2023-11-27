@@ -18,34 +18,19 @@ data_gathering:
   current_season: '2023'
   paths:
     EPL: 
-      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/DataCoUkFiles/'
-      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/raw_files/'
-      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/EPL/season/preprocessed_files/'
-      fixture_download: 'europeanfootballleaguepredictor/data/leagues/EPL/upcoming/'
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/EPL/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/EPL/evaluation/'
     La_Liga:
-      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/DataCoUkFiles/'
-      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/raw_files/'
-      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/season/preprocessed_files/'
-      fixture_download: 'europeanfootballleaguepredictor/data/leagues/La_Liga/upcoming/'
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/La_Liga/evaluation/'
     Bundesliga:
-      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/DataCoUkFiles/'
-      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/raw_files/'
-      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/season/preprocessed_files/'
-      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/upcoming/' 
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/evaluation/'
     Serie_A:
-      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/DataCoUkFiles/'
-      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/raw_files/'
-      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/season/preprocessed_files/'
-      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Serie_A/upcoming/' 
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Serie_A/evaluation/'
     Ligue_1:
-      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/DataCoUkFiles/'
-      raw_data_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/raw_files/'
-      preprocessed_data_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/season/preprocessed_files/'
-      fixture_download: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/upcoming/'      
+      data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/evaluation/'
   bookmaker: 
     EPL: 

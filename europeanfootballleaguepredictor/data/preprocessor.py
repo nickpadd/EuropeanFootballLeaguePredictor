@@ -3,42 +3,13 @@ from loguru import logger
 import uuid
 import os 
 import sys
+from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler
 
 class Preprocessor():
     """A class responsible for preprocessing the raw collected datasets
     """
-    def __init__(self, preprocessed_data_path: str):
-        """Initializes the preprocessor using the specified raw data path
-
-        Args:
-            preprocessed_data_path (str): The path of the raw datasets
-        """
-        self.preprocessed_data_path = preprocessed_data_path
-    
-    def get_files(self, folder_path: str) -> pd.DataFrame:
-        """Gets a combined dataframe out of all the .csv files in the specified foler
-
-        Args:
-            folder_path (str): The path of the folder
-
-        Returns:
-            pd.DataFrame: A combined dataframe with all the .csv files of the folder concatenated
-        """
-        logger.info(f'Parsing the files of {folder_path}')
-        csv_files = [f for f in os.listdir(folder_path) if f.endswith(".csv")]
-
-        # Initialize an empty DataFrame to store the combined data
-        combined_df = pd.DataFrame()
-
-        # Loop through each CSV file, read it, and concatenate it to the combined DataFrame
-        for csv_file in csv_files:
-            print(csv_file)
-            file_path = os.path.join(folder_path, csv_file)
-            df = pd.read_csv(file_path)
-            combined_df = pd.concat([combined_df, df], ignore_index=True)
-
-        logger.success(f'Succesfully parsed the files of {folder_path}')
-        return combined_df
+    def __init__(self, league :str, database :str):
+        self.database_handler = DatabaseHandler(league = league, database= database)
     
     def produce_match_id(self, dataframe_list : list = None, dataframe : pd.DataFrame = None) -> list or pd.DataFrame:
         """Produces a unique identification in 'Match_id' for each match in the dataframe or list of dataframes
@@ -151,14 +122,4 @@ class Preprocessor():
         
         return data
     
-    def output_files(self, dataframe_list: list) -> None:
-        """Outputs the dataframes in the dataframe list in the long/short term corresponding csv files
-
-        Args:
-            dataframe_list (list): A list of dataframes, a long term and a short term form to be output into .csv files
-        """
-        for dataframe, name in zip(dataframe_list, ['LongTermForm.csv', 'ShortTermForm.csv']):
-            final_path = os.path.join(self.preprocessed_data_path, name)
-            dataframe.to_csv(final_path)
-            logger.success(f'Successfully saved preprocessed files to {self.preprocessed_data_path}')
     

@@ -8,83 +8,62 @@ from understat import Understat
 from loguru import logger
 from tqdm import tqdm
 import os
+import sqlite3
+from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler
+
 
 
 class Understat_Parser():
     """The class responsible for using the understat api and combining the data with the data_co_uk dataset
     """
-    def __init__(self, league: str, dictionary : dict) -> None:
+    def __init__(self, league: str, dictionary : dict, database: str) -> None:
         """Initializes the understat parser using the league and dictionary for team names used in data_co_uk dataset
 
         Args:
             league (str): The league for which the understat parser will request data
             dictionary (dict): A team name mapping to communicate different team names between data_co_uk and understat
+            database (str): The path to the database of the league
         """
         self.league = league
         self.dictionary = dictionary
+        self.database_handler = DatabaseHandler(database=database, league=league)
         
-    def replace_team_names(self, data_path: str, replacing_dict: dict) -> None:
-        """Replaces the .csv file team names used by data_co_uk with the format of understat
+    def replace_team_names(self, table_names: list, replacing_dict: dict) -> None:
+        """Replaces the team names used by data_co_uk with the format of understat
 
         Args:
-            data_path (str): The path of the .csv file to parse and replace team names
+            table_names (list): The list of table names to replace team names
             replacing_dict (dict): A team name mapping to communicate different team names between data_co_uk and understat
         """
-        logger.info('Replacing team names.')
-        try:
-            data = pd.read_csv(data_path)
+        dataframes_list = self.database_handler.get_data(table_names)
+        for dataframe in dataframes_list:
+            # Replace team names using the mapping dictionary
+            dataframe["HomeTeam"].map(replacing_dict)
+            dataframe["AwayTeam"].map(replacing_dict)
+        
+        self.database_handler.save_dataframes(dataframes=dataframes_list, table_names=table_names)
 
-            self._replace_team_names_in_dataframe(data, replacing_dict)
 
-            data.to_csv(data_path, index=False)
-
-        except IsADirectoryError:
-            for filename in os.listdir(data_path):
-                data = pd.read_csv(os.path.join(data_path, filename))
-                data = self._replace_team_names_in_dataframe(data, replacing_dict)
-                data.to_csv(os.path.join(data_path, filename), index=False)
-
-    def _replace_team_names_in_dataframe(self, data: pd.DataFrame, replacing_dict: dict) ->pd.DataFrame:
-        """Replaces the team names of a dataframe used by data_co_uk with the format of understat
-
-        Args:
-            data (pd.DataFrame): The dataframe whoose 'HomeTeam' and 'AwayTeam' column will be translated from data_co_uk to understat format
-            replacing_dict (dict): A team name mapping to communicate different team names between data_co_uk and understat
-
-        Returns:
-            pd.DataFrame: The dataframe whoose 'HomeTeam' and 'AwayTeam' has been translated from data_co_uk to understat format
-        """
-        try:
-            data['HomeTeam'] = data['HomeTeam'].replace(replacing_dict)
-            data['AwayTeam'] = data['AwayTeam'].replace(replacing_dict)
-            return data
-
-        except KeyError:
-            data['Home Team'] = data['Home Team'].replace(replacing_dict)
-            data['Away Team'] = data['Away Team'].replace(replacing_dict)
-            return data
-
-    @logger.catch
-    async def get_understat_season_to_csv(self, season: str, months_of_form: int, output_path: str, data_co_uk_path: str) -> None:
+    async def get_understat_season(self, season: str, months_of_form: int, output_table_name: str) -> None:
         """An asynchronus function that connects with the understat api and collects data to construct the required per season datasets
 
         Args:
             season (str): The season for which the data gathering process takes place
             months_of_form (int): The number of months form to take into account when gathering data
-            output_path (str): The output path of the gathered datasets
+            table_name (str): The table name of the database the results will be saved
             data_co_uk_path (str): The path of the data_co_uk season datasets
         """
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
-            self.replace_team_names(data_co_uk_path, self.dictionary)
+            data_co_uk_table_name = f"DataCoUk_Season{season}_{str(int(season)+1)}"
+            self.replace_team_names(table_names = data_co_uk_table_name, replacing_dict=self.dictionary)
             logger.info(f'Started collecting {season} for {self.league} and {months_of_form} month(s) of form.')
             raw_dataframe_list = []
             pd.options.mode.copy_on_write = True
             understat = Understat(session)
 
             logger.info('Reading the DataCoUk file.')
-            data_path = os.path.join(data_co_uk_path, f'E0-{season}.csv')
             #reading the file and keeping only the finished matches
-            season_dataframe = pd.read_csv(data_path)
+            season_dataframe = self.database_handler.get_data(table_names=data_co_uk_table_name)[0]
             season_dataframe = season_dataframe.dropna(subset=['FTHG'])
 
             logger.success('Finished reading the file.')
@@ -154,21 +133,16 @@ class Understat_Parser():
             # Concatenate all DataFrames in the list into a final DataFrame
             final_raw = pd.concat(raw_dataframe_list, ignore_index=True)
 
-            logger.success('Finished processing the data.')
-            logger.info(f'Saving the resulting .csv file in path: {output_path}')
-
-            # Save the final DataFrame to a CSV file
-            final_raw.to_csv(output_path, index=False)
-
-            logger.success('File saved successfully.')
+            # Save the final DataFrame to the database
+            output_table_name = f"{output_table_name}_Season{season}_{str(int(season)+1)}"
+            self.database_handler.save_dataframes(dataframes=final_raw, table_names=output_table_name)
     
-    async def get_upcoming_match_stats(self, current_season: str, months_of_form_list: int, upcoming_fixtures_path: str) -> None:
+    async def get_upcoming_match_stats(self, current_season: str, months_of_form_list: int) -> None:
         """An asynchronous function that gathers the data for the upcoming matches prediction
 
         Args:
             current_season (str): The current season as a string identifier. '2023' represents 2023/2024 season.
             months_of_form_list (int): The number of months form to take into account when gathering data
-            upcoming_fixtures_path (str): The path to the file containing the upcoming fixtures
         """
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
             for dir in ['raw_files/LongTermForm', 'raw_files/ShortTermForm']:

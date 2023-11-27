@@ -92,9 +92,6 @@ class Config_Parser:
                 seasons_to_gather= config_data['data_gathering']['seasons_to_gather'],
                 current_season= config_data['data_gathering']['current_season'],
                 data_co_uk_path= config_data['data_gathering']['paths'][config_data['league']]['data_co_uk_path'],
-                raw_data_path= config_data['data_gathering']['paths'][config_data['league']]['raw_data_path'],
-                preprocessed_data_path= config_data['data_gathering']['paths'][config_data['league']]['preprocessed_data_path'],
-                fixture_download_path= config_data['data_gathering']['paths'][config_data['league']]['fixture_download'],
                 bookmaker_url= config_data['data_gathering']['bookmaker'][config_data['league']]['url'],
                 bookmaker_dictionary= self.load_and_extract_yaml_section(path = config_data['data_gathering']['bookmaker'][config_data['league']]['dictionary_path']),
                 data_co_uk_url= config_data['data_gathering']['data_co_uk'][config_data['league']]['url'],
@@ -122,9 +119,6 @@ class Configuration:
     seasons_to_gather: list
     current_season: str
     data_co_uk_path: str
-    raw_data_path: str
-    preprocessed_data_path: str
-    fixture_download_path: str
     bookmaker_url: str
     bookmaker_dictionary: dict
     data_co_uk_url: str
