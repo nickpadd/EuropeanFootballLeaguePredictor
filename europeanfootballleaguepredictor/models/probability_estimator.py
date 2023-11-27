@@ -139,7 +139,11 @@ class ProbabilityEstimatorNetwork:
         """
         long_term_data, short_term_data = self.drop_matchdays(long_term_data=long_term_data, short_term_data=short_term_data)
         match_info = long_term_data[['Match_id', 'Date', 'HomeTeam', 'AwayTeam', 'Result', 'HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverOdds', 'UnderOdds']]
-        for_prediction_info = for_prediction_long[['Match_id', 'Date', 'HomeTeam', 'AwayTeam', 'HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'Line', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']]
+        try:
+            for_prediction_info = for_prediction_long[['Match_id', 'Date', 'HomeTeam', 'AwayTeam', 'HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'Line', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']]
+        except KeyError:
+            for_prediction_info = for_prediction_long[['Match_id', 'Date', 'HomeTeam', 'AwayTeam']]
+            
         match_info = match_info.copy()
         match_info.loc[:, 'HomeGoals'] = match_info['Result'].str.split('-').str[0].astype(int)
         match_info.loc[:, 'AwayGoals'] = match_info['Result'].str.split('-').str[1].astype(int)

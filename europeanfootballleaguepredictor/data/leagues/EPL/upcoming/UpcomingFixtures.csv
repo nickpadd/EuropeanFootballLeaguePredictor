@@ -1,21 +1,31 @@
-Date,HomeTeam,AwayTeam,HomeWinOdds,DrawOdds,AwayWinOdds,Line,OverLineOdds,UnderLineOdds,Yes,No
-25/11/2023,Manchester City,Liverpool,1.7,4.2,4.5,3.5,2.25,1.65,1.52,2.42
-25/11/2023,Burnley,West Ham,3.65,3.65,2.0,2.5,1.72,2.12,1.62,2.22
-25/11/2023,Luton,Crystal Palace,3.4,3.45,2.15,2.5,2.1,1.75,1.87,1.88
-25/11/2023,Newcastle United,Chelsea,2.52,3.55,2.7,2.5,1.85,1.95,1.65,2.15
-25/11/2023,Nottingham Forest,Brighton,3.05,3.65,2.25,2.5,1.7,2.18,1.57,2.3
-25/11/2023,Sheffield United,Bournemouth,3.25,3.5,2.18,2.5,1.82,2.0,1.65,2.15
-25/11/2023,Brentford,Arsenal,4.25,3.7,1.85,2.5,1.85,1.95,1.75,2.02
-26/11/2023,Tottenham,Aston Villa,2.3,3.85,2.82,3.5,2.18,1.7,1.44,2.67
-26/11/2023,Everton,Manchester United,2.82,3.5,2.45,2.5,1.82,2.0,1.65,2.15
-27/11/2023,Fulham,Wolverhampton Wanderers,2.37,3.3,3.1,2.5,2.12,1.72,1.83,1.91
-02/12/2023,Arsenal,Wolverhampton Wanderers,1.32,5.3,10.0,2.5,1.65,2.27,2.02,1.75
-02/12/2023,Brentford,Luton,1.5,4.5,6.3,2.5,1.78,2.05,1.93,1.82
-02/12/2023,Burnley,Sheffield United,2.0,3.55,3.75,2.5,1.87,1.93,1.72,2.05
-02/12/2023,Nottingham Forest,Everton,2.62,3.35,2.7,2.5,2.0,1.82,1.75,2.0
-02/12/2023,Newcastle United,Manchester United,2.02,3.65,3.55,2.5,1.8,2.02,1.65,2.15
-03/12/2023,Bournemouth,Aston Villa,3.55,3.8,1.98,2.5,1.57,2.4,1.52,2.45
-03/12/2023,Chelsea,Brighton,1.98,3.85,3.5,2.5,1.6,2.37,1.52,2.42
-03/12/2023,Liverpool,Fulham,1.29,5.9,9.75,3.5,2.12,1.72,1.83,1.91
-03/12/2023,West Ham,Crystal Palace,2.05,3.65,3.45,2.5,1.8,2.02,1.7,2.12
-03/12/2023,Manchester City,Tottenham,1.38,5.3,7.3,3.5,2.15,1.7,1.7,2.07
+Date,HomeTeam,AwayTeam
+02/12/2023,Arsenal,Wolverhampton Wanderers
+02/12/2023,Brentford,Luton
+02/12/2023,Burnley,Sheffield United
+02/12/2023,Nottingham Forest,Everton
+02/12/2023,Newcastle United,Manchester United
+03/12/2023,Bournemouth,Aston Villa
+03/12/2023,Chelsea,Brighton
+03/12/2023,Liverpool,Fulham
+03/12/2023,West Ham,Crystal Palace
+03/12/2023,Manchester City,Tottenham
+05/12/2023,Wolverhampton Wanderers,Burnley
+05/12/2023,Luton,Arsenal
+06/12/2023,Brighton,Brentford
+06/12/2023,Fulham,Nottingham Forest
+06/12/2023,Sheffield United,Liverpool
+06/12/2023,Crystal Palace,Bournemouth
+06/12/2023,Aston Villa,Manchester City
+06/12/2023,Manchester United,Chelsea
+07/12/2023,Everton,Newcastle United
+07/12/2023,Tottenham,West Ham
+09/12/2023,Crystal Palace,Liverpool
+09/12/2023,Brighton,Burnley
+09/12/2023,Manchester United,Bournemouth
+09/12/2023,Sheffield United,Brentford
+09/12/2023,Wolverhampton Wanderers,Nottingham Forest
+09/12/2023,Aston Villa,Arsenal
+10/12/2023,Everton,Chelsea
+10/12/2023,Fulham,West Ham
+10/12/2023,Luton,Manchester City
+10/12/2023,Tottenham,Newcastle United

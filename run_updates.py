@@ -26,9 +26,13 @@ def main():
     logger.info('Continuing with bookmaker scraping.')
     understat_parser = Understat_Parser(league = config.league, dictionary = config.data_co_uk_dictionary)
     bookmaker_scraper = BookmakerScraper(url = config.bookmaker_url, dictionary = config.bookmaker_dictionary)
-    odds_dataframe = bookmaker_scraper.get_odds()
-    logger.success('Successfully retrieved odds!')
-    logger.info(f'\n {odds_dataframe}')
+    try:
+        odds_dataframe = bookmaker_scraper.get_odds()
+        logger.success('Successfully retrieved odds!')
+        logger.info(f'\n {odds_dataframe}')
+    except:
+        logger.warning('The bookmaker url may not be accessible from your IP address. Try using a Greek IP vpn! Will proceed without scraped bookmaker odds!')
+        odds_dataframe = None
     
     
     upcoming_match_scheduler = UpcomingMatchScheduler(
