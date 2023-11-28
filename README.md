@@ -51,7 +51,7 @@ The configuration file europeanfootballleaguepredictor/config/config.yaml includ
 
 
 ### Running the scripts for the upcoming matches
-For running the scripts below make sure you have followed [Installing Project Dependencies](###installing-project-dependencies) and you are inside the poetry shell.
+For running the scripts below make sure you have followed [Installing Project Dependencies](#installing-project-dependencies) and you are inside the poetry shell.
 
 - Data Collection: </br>
 In order to run the model running the 'run_data_collection.py' is required. The script uses the configuration settings **data_gathering.long_term_form/ data_gathering.short_term_form** in order to gather the requested data.
@@ -99,5 +99,13 @@ The metrics are produced for each year independently and consist of:
 - **ROI_over2.5**: The ROI for the over2.5 goal betting model
 - **ROI_under2.5**: The ROI for the under2.5 goal betting model
 
+In order to access the logged runs use the mlflow user interface by running:
+```bash
+mlflow ui
+```
+This will host a user interface in local hosts were you will be able to examine and compare model performances.
+
+## Optimal model parameters and performance
+Currently ongoing model evaluation of optimal hyperparameters and performance. Will be updated soon.
 
 
