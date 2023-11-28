@@ -1,4 +1,4 @@
-league: EPL #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
+league: La_Liga #One of available [EPL, La_Liga, Bundesliga, Serie_A, Ligue_1] as a string
 
 model:
   voting: #Percentage of long_term_form/short_term_form perencage. Should add to 1
