@@ -3,6 +3,7 @@ name = "europeanfootballleaguepredictor"
 version = "0.1.0"
 description = "A model network that predicts the upcoming top european league football matches."
 authors = ["nickpadd"]
+license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
