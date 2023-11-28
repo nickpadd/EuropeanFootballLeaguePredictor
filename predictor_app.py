@@ -55,7 +55,7 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
     net = ProbabilityEstimatorNetwork(voting_dict=voting_dict, matchdays_to_drop=matchdays_to_drop)
     net.build_network(regressor = regressor)
         
-    database = f'europeanfootballleaguepredictor/data/database/{config.league}_database.db'
+    database = f'europeanfootballleaguepredictor/data/database/{league_name}_database.db'
     database_handler = DatabaseHandler(league=config.league, database=database)
     short_term_form, long_term_form, for_prediction_short, for_prediction_long = database_handler.get_data(table_names=["Preprocessed_ShortTermForm", "Preprocessed_LongTermForm", "Preprocessed_UpcomingShortTerm", "Preprocessed_UpcomingLongTerm"])
     
