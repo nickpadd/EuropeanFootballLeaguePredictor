@@ -14,7 +14,7 @@ class Visualizer:
         Args:
             prediction_dataframe (pd.DataFrame): A dataframe containing match information and predicted probabilities from the model
         """
-        self.prediction_dataframe = prediction_dataframe
+        self.prediction_dataframe = prediction_dataframe.copy()
         self.get_bookmaker_prob()
 
     def get_bookmaker_prob(self):
