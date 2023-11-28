@@ -7,23 +7,22 @@ import pandas as pd
 from loguru import logger
 
 class BookmakerScraper():
-    """A class responsible for scraping the bookmaker website
-    """
+    """A class responsible for scraping the bookmaker website"""
     def __init__(self, url: str, dictionary: dict):
-        """Initializing the scraper by specifying the url and the dictionary of the team names used by the bookmaker
+        """Initializing the scraper by specifying the url and the dictionary of the team names used by the bookmaker.
 
         Args:
-            url (str): The url corresponding to the certain webpage with the betting odds of the league specified in the configuration
-            dictionary (dict): A dictionary of the team names used by the bookmaker
+            url (str): The url corresponding to the certain webpage with the betting odds of the league specified in the configuration.
+            dictionary (dict): A dictionary of the team names used by the bookmaker.
         """
         self.url = url
         self.dictionary = dictionary
     
     def get_odds_json(self) -> dict:
-        """Gets a page dictionary containing the odds, from the specified url
+        """Gets a page dictionary containing the odds, from the specified url.
 
         Returns:
-            dict: A dictionary containing the odds together with other raw code elements
+            dict: A dictionary containing the odds together with other raw code elements.
         """
         page = requests.get(self.url)
         soup = BeautifulSoup(page.content, "html.parser")
@@ -79,7 +78,6 @@ class BookmakerScraper():
                 names = names[7:]
                 
         data_teams = pd.DataFrame({'Home Team': HomeTeams, 'Away Team': AwayTeams})
-        logger.debug(line)
         data_values = pd.DataFrame(rows, columns=['1', 'x', '2', 'Line', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No'])
         odds_dataframe = pd.concat([data_teams, data_values], axis=1)
         odds_dataframe['Home Team'] = odds_dataframe['Home Team'].str.strip()
