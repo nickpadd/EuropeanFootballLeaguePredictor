@@ -10,7 +10,7 @@ Betting involves risks, and there is no guarantee that the predictions provided 
 
 
 ## Visit the Github Page
-The [EuropeanFootballLeaguePredictor Github Page](https://nickpadd.github.io/EPLP.github.io/Home) provides a detailed description of the model creation and evaluation on past seasons, as well as the upcoming predictions of this week's european league games!
+The [EuropeanFootballLeaguePredictor Github Page](https://nickpadd.github.io/EFLP.github.io/Home) provides a detailed description of the model creation and evaluation on past seasons, as well as the upcoming predictions of this week's european league games!
 
 
 ## How to run the project
