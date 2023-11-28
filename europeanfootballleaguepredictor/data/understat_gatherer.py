@@ -14,26 +14,29 @@ from europeanfootballleaguepredictor.data.database_handler import DatabaseHandle
 
 
 class Understat_Parser():
-    """The class responsible for using the understat api and combining the data with the data_co_uk dataset
-    """
+    """The class responsible for using the understat api and combining the data with the data_co_uk dataset"""
+    
     def __init__(self, league: str, dictionary : dict, database: str) -> None:
-        """Initializes the understat parser using the league and dictionary for team names used in data_co_uk dataset
+        """
+        Initializes the understat parser using the league and dictionary for team names used in data_co_uk dataset.
 
         Args:
-            league (str): The league for which the understat parser will request data
-            dictionary (dict): A team name mapping to communicate different team names between data_co_uk and understat
-            database (str): The path to the database of the league
+            league (str): The league for which the understat parser will request data.
+            dictionary (dict): A team name mapping to communicate different team names between data_co_uk and understat.
+            database (str): The path to the database of the league.
         """
         self.league = league
         self.dictionary = dictionary
+        self.upcoming_fixtures_table = "UpcomingFixtures"
         self.database_handler = DatabaseHandler(database=database, league=league)
         
     def replace_team_names(self, table_names: list, replacing_dict: dict) -> None:
-        """Replaces the team names used by data_co_uk with the format of understat
+        """
+        Replaces the team names used by data_co_uk with the format of understat.
 
         Args:
-            table_names (list): The list of table names to replace team names
-            replacing_dict (dict): A team name mapping to communicate different team names between data_co_uk and understat
+            table_names (list): The list of table names to replace team names.
+            replacing_dict (dict): A team name mapping to communicate different team names between data_co_uk and understat.
         """
         dataframes_list = self.database_handler.get_data(table_names)
         for dataframe in dataframes_list:
@@ -45,13 +48,13 @@ class Understat_Parser():
 
 
     async def get_understat_season(self, season: str, months_of_form: int, output_table_name: str) -> None:
-        """An asynchronus function that connects with the understat api and collects data to construct the required per season datasets
+        """
+        An asynchronous function that connects with the understat api and collects data to construct the required per season datasets.
 
         Args:
-            season (str): The season for which the data gathering process takes place
-            months_of_form (int): The number of months form to take into account when gathering data
-            table_name (str): The table name of the database the results will be saved
-            data_co_uk_path (str): The path of the data_co_uk season datasets
+            season (str): The season for which the data gathering process takes place.
+            months_of_form (int): The number of months form to take into account when gathering data.
+            output_table_name (str): The table name of the database the results will be saved.
         """
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
             data_co_uk_table_name = f"DataCoUk_Season{season}_{str(int(season)+1)}"
@@ -138,25 +141,25 @@ class Understat_Parser():
             self.database_handler.save_dataframes(dataframes=final_raw, table_names=output_table_name)
     
     async def get_upcoming_match_stats(self, current_season: str, months_of_form_list: int) -> None:
-        """An asynchronous function that gathers the data for the upcoming matches prediction
+        """
+        An asynchronous function that gathers the data for the upcoming matches prediction.
 
         Args:
             current_season (str): The current season as a string identifier. '2023' represents 2023/2024 season.
-            months_of_form_list (int): The number of months form to take into account when gathering data
+            months_of_form_list (int): The number of months form to take into account when gathering data.
         """
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
-            for dir in ['raw_files/LongTermForm', 'raw_files/ShortTermForm']:
-                self.replace_team_names(os.path.join(upcoming_fixtures_path, dir), self.dictionary)
+            self.replace_team_names(table_names = self.upcoming_fixtures_table, replacing_dict=self.dictionary)
                     
             logger.info(f'Started collecting upcoming matches statistics')
             pd.options.mode.copy_on_write = True
             understat = Understat(session)
-
-            data_path = os.path.join(upcoming_fixtures_path, f'UpcomingFixtures.csv')
-            upcoming_matches = pd.read_csv(data_path)
+            
+            upcoming_matches = self.database_handler.get_data(table_names=self.upcoming_fixtures_table)[0]
             current_date = dt.now()
 
-            for months_of_form, file_name in zip(months_of_form_list, ['raw_files/LongTermForm/UpcomingLongTerm.csv', 'raw_files/ShortTermForm/UpcomingShortTerm.csv']):
+            dataframes_list = []
+            for months_of_form in months_of_form_list:
                 if months_of_form == None:
                     table = await understat.get_league_table(self.league, current_season , end_date = str(current_date.strftime("%Y-%m-%d")))
                 else: 
@@ -182,9 +185,7 @@ class Understat_Parser():
                 combined_result_home = pd.merge(upcoming_matches, HomeStats, left_on='HomeTeam', right_on='HTeam', how='outer') 
                 combined_result_home_away = pd.merge(combined_result_home, AwayStats, left_on='AwayTeam', right_on='ATeam', how='outer')
 
-                output_path = os.path.join(upcoming_fixtures_path, file_name)
-                combined_result_home_away.to_csv(output_path, index=False)
-                combined_result_home_away = combined_result_home_away.drop(columns=['HTeam', 'ATeam'])
-                logger.success(f'File {file_name} saved successfully in {upcoming_fixtures_path}.')
-                    
+                dataframes_list.append(combined_result_home_away)
+            
+            self.database_handler.save_dataframes(table_names=["Raw_UpcomingLongTerm", "Raw_UpcomingShortTerm"], dataframes=dataframes_list)        
             logger.success('Finished understat session for upcoming matches.')

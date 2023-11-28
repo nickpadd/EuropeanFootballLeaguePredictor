@@ -12,6 +12,8 @@ from europeanfootballleaguepredictor.models.bettor import Bettor
 import mlflow.sklearn
 import tempfile
 import statistics
+from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
+
 
 def main():
     '''Parsing the configuration file'''
@@ -32,10 +34,10 @@ def main():
     net = ProbabilityEstimatorNetwork(voting_dict=config.voting_dict, matchdays_to_drop=config.matchdays_to_drop)
     net.build_network(regressor = config.regressor)
 
-    short_term_form = pd.read_csv(os.path.join(config.preprocessed_data_path, 'ShortTermForm.csv'))
-    long_term_form = pd.read_csv(os.path.join(config.preprocessed_data_path, 'LongTermForm.csv'))
+    database_handler = DatabaseHandler(league=config.league, database=config.database)
+    short_term_form, long_term_form= database_handler.get_data(table_names=["Preprocessed_ShortTermForm", "Preprocessed_LongTermForm"])
 
-    for validation_season in ['2017', '2018', '2019', '2020', '2021', '2022']:
+    for validation_season in config.seasons_to_gather:
       with mlflow.start_run(run_name = f"{_regressor_instance} | {config.league} | {validation_season}") as run:
         # Log model parameters
         mlflow.log_param("Form_Votes", config.voting_dict)
@@ -44,6 +46,7 @@ def main():
         mlflow.log_param('League', config.league)
         mlflow.log_param('Matchdays to drop', config.matchdays_to_drop)
         bettor = Bettor(bank=config.bettor_bank, kelly_cap=config.bettor_kelly_cap)
+        #Evaluate the model for a specific season.
         figures, metrics = net.evaluate_per_season(short_term_data=short_term_form, long_term_data=long_term_form, validation_season=validation_season, bettor= bettor, evaluation_output = config.evaluation_output)
         logger.info(metrics)
           
@@ -52,9 +55,9 @@ def main():
         mlflow.log_table(data=roi_df.round(2), artifact_file=f"ROI")
           
         # Log metrics individualy
-        for bet_name in ['home_win', 'draw', 'away_win', 'over2.5', 'under2.5']:
-          mlflow.log_metric(f"ROI_{bet_name}", np.round(metrics['ROI'][f'{bet_name}_roi'], 2))
-          
+        for metric_name, metric_value in metrics['ROI'].items():
+            mlflow.log_metric(f"ROI_{metric_name}", np.round(metric_value, 2))
+
         roi_1x2 = statistics.mean([metrics['ROI']['home_win_roi'], metrics['ROI']['draw_roi'], metrics['ROI']['away_win_roi']])
         roi_12 = statistics.mean([metrics['ROI']['home_win_roi'], metrics['ROI']['away_win_roi']])
         roi_ou = statistics.mean([metrics['ROI']['over2.5_roi'], metrics['ROI']['under2.5_roi']])

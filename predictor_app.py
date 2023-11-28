@@ -9,6 +9,8 @@ from pretty_html_table import build_table
 import importlib
 import os
 import argparse
+from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
+
 
 def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, long_form_vote):
     """Generates a prediction table with the model predictions of certain match outcomes 
@@ -44,9 +46,6 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
     config_data_parser = Config_Parser(config_file_path, None)
     config_data = config_data_parser.load_and_extract_yaml_section()
     config = config_data_parser.load_configuration_class(config_data)
-    #Change the config paths to the ones that the user requested
-    config.preprocessed_data_path = config_data['data_gathering']['paths'][league_name]['preprocessed_data_path']
-    config.fixture_download_path  = config_data['data_gathering']['paths'][league_name]['fixture_download']
     
     logger.info(config)
     '''End of the configuration file parsing'''
@@ -56,11 +55,9 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
     net = ProbabilityEstimatorNetwork(voting_dict=voting_dict, matchdays_to_drop=matchdays_to_drop)
     net.build_network(regressor = regressor)
         
-    config_data['data_gathering']['paths'][config_data['league']]['data_co_uk_path']
-    short_term_form = pd.read_csv(os.path.join(config.preprocessed_data_path, 'ShortTermForm.csv'))
-    long_term_form = pd.read_csv(os.path.join(config.preprocessed_data_path, 'LongTermForm.csv'))
-    for_prediction_short = pd.read_csv(os.path.join(config.fixture_download_path, 'preprocessed_files/ShortTermForm.csv'))
-    for_prediction_long = pd.read_csv(os.path.join(config.fixture_download_path, 'preprocessed_files/LongTermForm.csv'))
+    database = f'europeanfootballleaguepredictor/data/database/{config.league}_database.db'
+    database_handler = DatabaseHandler(league=config.league, database=database)
+    short_term_form, long_term_form, for_prediction_short, for_prediction_long = database_handler.get_data(table_names=["Preprocessed_ShortTermForm", "Preprocessed_LongTermForm", "Preprocessed_UpcomingShortTerm", "Preprocessed_UpcomingLongTerm"])
     
     probability_dataframe = net.produce_probabilities(short_term_data=short_term_form, long_term_data=long_term_form, for_prediction_short=for_prediction_short, for_prediction_long=for_prediction_long)
 
@@ -88,7 +85,7 @@ def main():
 
         btn.click(league_predictions_figure, inputs=[drop1, drop3, slide1, slide2], outputs=[plot1, table1])
 
-    iface.launch(height=2000, share=True)
+    iface.launch(height=2000)
     
 if __name__ == "__main__":
     main()

@@ -14,24 +14,29 @@ bettor:
 data_gathering:
   long_term_form: null #Months of long_form, null indicates season long form
   short_term_form: 3 #Months of short-term form
-  seasons_to_gather: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'] #List of the seasons to gather for the model to be trained on. Keep in mind that 2020 season was covid-season
+  seasons_to_gather: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'] #List of the seasons to gather for the model to be trained on. Subset of ['2017', '2018', '2019', '2020', '2021', '2022', '2023']. Keep in mind that 2020 season was covid-season
   current_season: '2023'
   paths:
     EPL: 
       data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/EPL/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/EPL/evaluation/'
+      database: 'europeanfootballleaguepredictor/data/database/EPL_database.db'
     La_Liga:
       data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/La_Liga/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/La_Liga/evaluation/'
+      database: 'europeanfootballleaguepredictor/data/database/La_Liga_database.db'
     Bundesliga:
       data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Bundesliga/evaluation/'
+      database: 'europeanfootballleaguepredictor/data/database/Bundesliga_database.db'
     Serie_A:
       data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Serie_A/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Serie_A/evaluation/'
+      database: 'europeanfootballleaguepredictor/data/database/Serie_A_database.db'
     Ligue_1:
       data_co_uk_path: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/DataCoUkFiles/'
       evaluation_output: 'europeanfootballleaguepredictor/data/leagues/Ligue_1/evaluation/'
+      database: 'europeanfootballleaguepredictor/data/database/Ligue_1_database.db'
   bookmaker: 
     EPL: 
       url: 'https://en.stoiximan.gr/sport/soccer/england/premier-league/1/' #The corresponding stoiximan website url of the predicted league. Might not work in countries outside Greece.

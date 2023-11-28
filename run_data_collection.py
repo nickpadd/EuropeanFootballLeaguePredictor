@@ -23,17 +23,14 @@ def main():
     logger.info(config)
     '''End of the configuration file parsing'''
     
-    database = f'europeanfootballleaguepredictor/data/database/{config.league}_database.db'
-    database_handler = DatabaseHandler(league= config.league, database= database)
+    database_handler = DatabaseHandler(league= config.league, database= config.database)
 
-    # Path to the directory containing league files
-    directory_path = f'europeanfootballleaguepredictor/data/leagues/{config.league}/DataCoUkFiles/'
     dataframe_list = [] 
     table_name_list = []
     
     # Iterate through each file in the directory
-    for file in os.listdir(directory_path):
-        file_path = os.path.join(directory_path, file)
+    for file in os.listdir(config.data_co_uk_path):
+        file_path = os.path.join(config.data_co_uk_path, file)
 
         # Extracting table name from the file name
         season_year = int(file.split('-')[1].split('.')[0])
@@ -46,8 +43,7 @@ def main():
 
     database_handler.save_dataframes(dataframes=dataframe_list, table_names=table_name_list)    
     
-    database_name = f"europeanfootballleaguepredictor/data/database/{config.league}_database.db"
-    understat_parser = Understat_Parser(league = config.league, dictionary = config.data_co_uk_dictionary, database = database_name)
+    understat_parser = Understat_Parser(league = config.league, dictionary = config.data_co_uk_dictionary, database = config.database)
     
     for table_name, months_of_form in zip(['Raw_LongTermForm', 'Raw_ShortTermForm'], config.months_of_form_list):
         logger.info(f'Gathering {months_of_form} month form data for seasons in {config.seasons_to_gather}')
@@ -59,15 +55,16 @@ def main():
     
     logger.success('Succesfully gathered and saved the datasets.')
     
-    preprocessor = Preprocessor(league=config.league, database=database_name)
+    preprocessor = Preprocessor(league=config.league, database=config.database)
 
     #Gathering all the seasons into two concatenated dataframes one for long term and one for short term form
     long_term_form_season_list = preprocessor.database_handler.get_data([f'Raw_LongTermForm_Season{season}_{str(int(season)+1)}' for season in config.seasons_to_gather])
     short_term_form_season_list = preprocessor.database_handler.get_data([f'Raw_ShortTermForm_Season{season}_{str(int(season)+1)}' for season in config.seasons_to_gather])
     long_term_form_dataframe = pd.concat([dataframe for dataframe in long_term_form_season_list])
     short_term_form_dataframe = pd.concat([dataframe for dataframe in short_term_form_season_list])
-
-    preprocessor.database_handler.save_dataframes(dataframes=[long_term_form_dataframe, short_term_form_dataframe], table_names=['Preprocessed_LongTermForm', 'Preprocessed_ShortTermForm'])
+    
+    preprocessed_dataframes = preprocessor.preprocessing_pipeline(data=[long_term_form_dataframe, short_term_form_dataframe])
+    preprocessor.database_handler.save_dataframes(dataframes=preprocessed_dataframes, table_names=['Preprocessed_LongTermForm', 'Preprocessed_ShortTermForm'])
     
 if __name__ == "__main__":
     main()

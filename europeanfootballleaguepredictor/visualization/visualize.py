@@ -147,7 +147,7 @@ class Visualizer:
                 buttons=buttons,
                 active=0, # set the initial active button
                 x=0.1,
-                y=1.2,
+                y=0.95,
                 direction="down",
             )],
 
