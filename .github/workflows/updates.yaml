@@ -1,21 +1,12 @@
-name: Run pytest
+name: Update datasets and predictions
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - '*'
-  workflow_run:
-    workflows: ["Update datasets and predictions"]
-    types:
-      - completed
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight
   workflow_dispatch:
 
-
 jobs:
-  test:
+  updates:
     runs-on: ubuntu-latest
 
     steps:
@@ -59,9 +50,18 @@ jobs:
         run: poetry install --no-interaction
         
       #----------------------------------------------
-      #              run test suite
+      #              run updates
       #----------------------------------------------
-      - name: Run tests
+      - name: Run updates
         run: |
           source .venv/bin/activate
-          pytest tests/
+          python run_updates.py
+
+      #----------------------------------------------
+      #              run predictions
+      #----------------------------------------------
+      - name: Run predictions
+        run: |
+          source .venv/bin/activate
+          python run_predictions.py
+      
