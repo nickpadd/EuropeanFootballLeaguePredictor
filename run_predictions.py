@@ -53,7 +53,7 @@ def main():
     # Save the interactive figure as an HTML file
     output_handler = PathHandler(path=f'Predictions/{config.league}')
     output_handler.create_paths_if_not_exists()
-    html_table = build_table(probability_dataframe.drop(['ScorelineProbability'], axis=1), 'blue_light')
+    html_table = build_table(probability_dataframe.drop(['ScorelineProbability', 'Match_id'], axis=1), 'blue_light')
     with open(f'Predictions/{config.league}/PredictionTable.html', 'w') as f:
         f.write(html_table)
     figure.write_html(f'Predictions/{config.league}/InteractiveFigure.html')

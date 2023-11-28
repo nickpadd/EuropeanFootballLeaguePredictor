@@ -98,6 +98,7 @@ class Preprocessor():
                 if stats_have_nulls.any():
                     null_rows = dataframe[stats_columns].isnull().any(axis=1)
                     logger.warning(f'{data_status} data contain NaN values in the statistics:\n {dataframe.loc[null_rows, stats_columns]} \n Usually, this warning occurs due to data_co_uk datasets containing {None} values. DELETING THE ABOVE ENTRIES!')
+                    logger.warning(f"This might be the case because of the replacing dictionary missing a team. Team names: {dataframe.loc[null_rows, info_columns]}")
                     dataframe.dropna(subset=stats_columns, inplace=True)
                 if odds_have_nulls.any():
                     null_rows = dataframe[odds_columns].isnull().any(axis=1)
