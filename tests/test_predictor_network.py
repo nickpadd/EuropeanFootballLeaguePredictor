@@ -8,6 +8,10 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 
+# Set a seed for reproducibility
+seed_value = 42  # You can choose any integer as the seed
+np.random.seed(seed_value)
+
 @pytest.fixture 
 def create_dummy_dataframe() ->pd.DataFrame:
     """Creates a dummy dataframe in the format of the gathered preprocessed datasets that are input to the probability_estimator_network
@@ -205,7 +209,7 @@ class TestProbabilityEstimatorNetwork:
             line2_sum = row['Under2.5Probability'] + row['Over2.5Probability']
             line3_sum = row['Under3.5Probability'] + row['Over3.5Probability']
             gg_sum = row['GGProbability'] + row['NGProbability']
-            assert np.isclose(np.round(win_sum, 2) ==1, 1, atol=self.tolerance)
-            assert np.isclose(np.round(line2_sum, 2) ==1, 1, atol=self.tolerance)
-            assert np.isclose(np.round(line3_sum, 2) ==1, 1, atol=self.tolerance)
-            assert np.isclose(np.round(gg_sum, 2) ==1, 1, atol=self.tolerance)
+            assert np.isclose(np.round(win_sum, 2), 1, atol=self.tolerance)
+            assert np.isclose(np.round(line2_sum, 2), 1, atol=self.tolerance)
+            assert np.isclose(np.round(line3_sum, 2), 1, atol=self.tolerance)
+            assert np.isclose(np.round(gg_sum, 2), 1, atol=self.tolerance)
