@@ -8,7 +8,24 @@ import argparse
 from europeanfootballleaguepredictor.data.preprocessor import Preprocessor
 import pandas as pd
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
+import aiohttp 
+from aiohttp.client_exceptions import ServerDisconnectedError
+import sys
 
+async def fetch_data_with_retry(understat_parser, season, months_of_form, output_table_name, max_retries=3, retry_delay=1):
+    for attempt in range(max_retries):
+        try:
+            await understat_parser.get_understat_season(season=season, months_of_form=months_of_form, output_table_name=output_table_name)
+            logger.success(f'Succesfully gathered and saved season {season}.')
+            break  # Break out of the loop if successful
+        except (aiohttp.ClientError, ServerDisconnectedError) as e:
+            if attempt < max_retries - 1:
+                print(f"Retry attempt {attempt + 1}/{max_retries}")
+                await asyncio.sleep(retry_delay)  # Add a short delay before retrying
+            else:
+                logger.error(f'Max retries reached, for error {e}.')
+                sys.exit(1)
+            
 def main():
     '''Parsing the configuration file'''
     
@@ -48,12 +65,8 @@ def main():
     for table_name, months_of_form in zip(['Raw_LongTermForm', 'Raw_ShortTermForm'], config.months_of_form_list):
         logger.info(f'Gathering {months_of_form} month form data for seasons in {config.seasons_to_gather}')
         for season in config.seasons_to_gather:
-            loop = asyncio.get_event_loop()
-            loop.run_until_complete(understat_parser.get_understat_season(season = season, months_of_form = months_of_form, output_table_name= table_name))
+            asyncio.run(fetch_data_with_retry(understat_parser, season, months_of_form, table_name))
     
-        logger.success(f'Succesfully finished {months_of_form} month(s) form gathering.')
-    
-    logger.success('Succesfully gathered and saved the datasets.')
     
     preprocessor = Preprocessor(league=config.league, database=config.database)
 
@@ -67,4 +80,4 @@ def main():
     preprocessor.database_handler.save_dataframes(dataframes=preprocessed_dataframes, table_names=['Preprocessed_LongTermForm', 'Preprocessed_ShortTermForm'])
     
 if __name__ == "__main__":
-    main()
+    main()raise  # Raise the exception if max retries reached

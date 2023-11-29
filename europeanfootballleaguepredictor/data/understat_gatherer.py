@@ -59,17 +59,15 @@ class Understat_Parser():
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
             data_co_uk_table_name = f"DataCoUk_Season{season}_{str(int(season)+1)}"
             self.replace_team_names(table_names = data_co_uk_table_name, replacing_dict=self.dictionary)
-            logger.info(f'Started collecting {season} for {self.league} and {months_of_form} month(s) of form.')
+            logger.info(f'Started connection with Understat. Collecting {season} for {self.league} and {months_of_form} month(s) of form.')
             raw_dataframe_list = []
             pd.options.mode.copy_on_write = True
             understat = Understat(session)
 
-            logger.info('Reading the DataCoUk file.')
             #reading the file and keeping only the finished matches
             season_dataframe = self.database_handler.get_data(table_names=data_co_uk_table_name)[0]
             season_dataframe = season_dataframe.dropna(subset=['FTHG'])
 
-            logger.success('Finished reading the file.')
             #creating a new Result column
             season_dataframe['Result'] = None
             for i, x in enumerate(season_dataframe['Result']):
@@ -90,7 +88,7 @@ class Understat_Parser():
             unique_dates = season_dataframe["Date"].unique()
 
             #loop through the unique dates and gather data from understat from one day prior
-            for i, date in tqdm(enumerate(unique_dates), total=len(unique_dates), desc=logger.info('Beggining processing the Understat data.')):
+            for i, date in tqdm(enumerate(unique_dates), total=len(unique_dates), desc=logger.info('Collecting Understat data.')):
                 #formating date and subtracting a day to make sure the match has not been processed by the league table
                 unique_dates[i] = datetime.datetime.strptime(unique_dates[i], '%d/%m/%Y').date()
                 unique_dates[i] = unique_dates[i] - datetime.timedelta(days=1)
@@ -151,7 +149,7 @@ class Understat_Parser():
         async with aiohttp.ClientSession(cookies={'beget':'begetok'}) as session:
             self.replace_team_names(table_names = self.upcoming_fixtures_table, replacing_dict=self.dictionary)
                     
-            logger.info(f'Started collecting upcoming matches statistics')
+            logger.info(f'Started connection with Understat. Collecting upcoming matches statistics')
             pd.options.mode.copy_on_write = True
             understat = Understat(session)
             
