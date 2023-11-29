@@ -71,7 +71,7 @@ class Understat_Parser():
 
             logger.success('Finished reading the file.')
             #creating a new Result column
-            season_dataframe['Result'] = np.nan
+            season_dataframe['Result'] = None
             for i, x in enumerate(season_dataframe['Result']):
                 season_dataframe.loc[i, 'Result'] = f'{season_dataframe.loc[i, "FTHG"]}-{season_dataframe.loc[i, "FTAG"]}'
 
