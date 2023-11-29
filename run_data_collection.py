@@ -80,4 +80,4 @@ def main():
     preprocessor.database_handler.save_dataframes(dataframes=preprocessed_dataframes, table_names=['Preprocessed_LongTermForm', 'Preprocessed_ShortTermForm'])
     
 if __name__ == "__main__":
-    main()raise  # Raise the exception if max retries reached
+    main()

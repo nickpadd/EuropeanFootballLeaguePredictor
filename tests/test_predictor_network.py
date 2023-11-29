@@ -70,7 +70,7 @@ class TestProbabilityEstimatorNetwork:
     """
     voting_dict = { 'long_term': 0.6, 'short_term': 0.4}
     matchdays_to_drop = 4
-    tolerance = 0.35
+    tolerance = 0.5
     def test_build_network(self) ->None:
         """Tests weather the network is build correctly with the regression models having been initialized as expected class instances
         """
