@@ -66,7 +66,7 @@ def main():
         logger.info(f'Gathering {months_of_form} month form data for seasons in {config.seasons_to_gather}')
         for season in config.seasons_to_gather:
             asyncio.run(fetch_data_with_retry(understat_parser, season, months_of_form, table_name))
-    
+            asyncio.sleep(1)
     
     preprocessor = Preprocessor(league=config.league, database=config.database)
 
