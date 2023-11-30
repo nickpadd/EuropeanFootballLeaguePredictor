@@ -78,7 +78,7 @@ The predictions can be run either directly by a python script or via a web-appli
     python run_predictions.py
     ```
 
--Evaluation: </br>
+- Evaluation: </br>
 The evaluation script is run on the specified league and parameters of the configuration settings with the following line:
 
 ```bash
