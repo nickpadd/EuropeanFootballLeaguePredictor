@@ -71,7 +71,7 @@ The predictions can be run either directly by a python script or via a web-appli
 
     - To start the web-application run the following line. A localhost url will appear which hosts the application:
     ```bash
-    python prediction_app.py
+    python predictor_app.py
     ```
     - To run directly make sure you have specified the configuration settings for the league and regressor model and matchdays to drop and run the following line. This will produce a Predictions/{league} folder where the predictions are saved as an interactive plot and a html table:
     ```bash
