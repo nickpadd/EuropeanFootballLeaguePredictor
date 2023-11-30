@@ -7,14 +7,16 @@ on:
 
 jobs:
   run_pipeline:
-    strategy:
-      matrix: [ "ubuntu-latest", "macos-latest", "windows-latest" ]
-
     defaults:
       run:
         shell: bash
 
+    strategy:
+      matrix: 
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
