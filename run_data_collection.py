@@ -15,7 +15,8 @@ import sys
 async def fetch_data_with_retry(understat_parser, season, months_of_form, output_table_name, max_retries=3, retry_delay=1):
     for attempt in range(max_retries):
         try:
-            await understat_parser.get_understat_season(season=season, months_of_form=months_of_form, output_table_name=output_table_name)
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(understat_parser.get_understat_season(season=season, months_of_form=months_of_form, output_table_name=output_table_name))
             logger.success(f'Succesfully gathered and saved season {season}.')
             break  # Break out of the loop if successful
         except (aiohttp.ClientError, ServerDisconnectedError) as e:
