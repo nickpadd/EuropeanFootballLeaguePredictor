@@ -59,7 +59,7 @@ jobs:
       #----------------------------------------------
       - name: Run data collection script
         run: |
-          source .venv/bin/activate
+          source $VENV
           python run_data_collection.py
       
       #----------------------------------------------
@@ -67,7 +67,7 @@ jobs:
       #----------------------------------------------
       - name: Run updates script
         run: |
-          source .venv/bin/activate
+          source $VENV
           python run_updates.py
 
       #----------------------------------------------
@@ -75,7 +75,7 @@ jobs:
       #----------------------------------------------
       - name: Run predictions script
         run: |
-          source .venv/bin/activate
+          source $VENV
           python run_predictions.py
 
       #----------------------------------------------
@@ -83,5 +83,5 @@ jobs:
       #----------------------------------------------
       - name: Run evaluation script
         run: |
-          source .venv/bin/activate
+          source $VENV
           python run_evaluation_per_season.py
