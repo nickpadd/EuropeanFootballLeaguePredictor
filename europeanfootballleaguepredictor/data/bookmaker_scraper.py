@@ -85,7 +85,6 @@ class BookmakerScraper():
         
         return odds_dataframe
     
-    @logger.catch
     def get_odds(self) -> pd.DataFrame:
         """A pipeline that directly provides the odds_dataframe
 
