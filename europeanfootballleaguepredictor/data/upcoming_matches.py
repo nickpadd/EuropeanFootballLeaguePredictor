@@ -10,6 +10,7 @@ import asyncio
 from europeanfootballleaguepredictor.data.preprocessor import Preprocessor
 from europeanfootballleaguepredictor.utils.path_handler import PathHandler
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler
+import sys 
 
 class UpcomingMatchScheduler():
     """The class responsible for making the important database updates in order to predict the upcoming matches"""
@@ -56,26 +57,29 @@ class UpcomingMatchScheduler():
             table_name, replacing_dict, url = self.fixtures_table, self.fixtures_dict, self.fixtures_url
             
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            
-            response = requests.get(url)
-            if response.status_code == 200:
-                temp_path = temp_file.name
-                # Write the content to the temporary file
-                temp_file.write(response.content)
+            try:
+                response = requests.get(url)
+                if response.status_code == 200:
+                    temp_path = temp_file.name
+                    # Write the content to the temporary file
+                    temp_file.write(response.content)
 
-                # Perform other operations (replace_team_names) on the temporary file
-                self.replace_team_names(data_path=temp_path, replacing_dict=replacing_dict)
+                    # Perform other operations (replace_team_names) on the temporary file
+                    self.replace_team_names(data_path=temp_path, replacing_dict=replacing_dict)
                 
-                data = pd.read_csv(temp_path)
-                self.database_handler.save_dataframes(dataframes=data, table_names=table_name)
-                
+                    data = pd.read_csv(temp_path)
+                    self.database_handler.save_dataframes(dataframes=data, table_names=table_name)
+            
+                else:
+                    # Log failure
+                    logger.error(f"Failed to download the file. Status code: {response.status_code}")
+                    sys.exit(1)
+
+            finally:
+                temp_file.close()
                 os.remove(temp_path)
                 # Log success
                 logger.success(f"File downloaded and saved to database table {table_name}")
-
-            else:
-                # Log failure
-                logger.error(f"Failed to download the file. Status code: {response.status_code}")
 
             
     def replace_team_names(self, data_path :str, replacing_dict : dict) -> None:
