@@ -88,7 +88,11 @@ class Preprocessor():
         for dataframe in data:
             contains_nulls = dataframe.isnull().any().any()
             if contains_nulls:
-                info_has_nulls = dataframe[info_columns].isnull().any()
+                try:
+                    info_has_nulls = dataframe[info_columns].isnull().any()
+                except KeyError:
+                    logger.debug(dataframe.columns)
+                    logger.debug(dataframe.head(20))
                 stats_have_nulls = dataframe[stats_columns].isnull().any()
                 odds_have_nulls = dataframe[odds_columns].isnull().any()
                 if info_has_nulls.any():
