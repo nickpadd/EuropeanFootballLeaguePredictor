@@ -9,19 +9,21 @@ from europeanfootballleaguepredictor.data.preprocessor import Preprocessor
 import pandas as pd
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
 import aiohttp 
+import time
 from aiohttp.client_exceptions import ServerDisconnectedError
 import sys
 
-async def fetch_data_with_retry(understat_parser, season, months_of_form, output_table_name, max_retries=3, retry_delay=1):
+def fetch_data_with_retry(understat_parser, season, months_of_form, output_table_name, max_retries=3, retry_delay=1):
     for attempt in range(max_retries):
+        loop = asyncio.get_event_loop()
         try:
-            await understat_parser.get_understat_season(season=season, months_of_form=months_of_form, output_table_name=output_table_name)
+            loop.run_until_complete(understat_parser.get_understat_season(season=season, months_of_form=months_of_form, output_table_name=output_table_name))
             logger.success(f'Succesfully gathered and saved season {season}.')
             break  # Break out of the loop if successful
         except (aiohttp.ClientError, ServerDisconnectedError) as e:
             if attempt < max_retries - 1:
                 print(f"Retry attempt {attempt + 1}/{max_retries}")
-                await asyncio.sleep(retry_delay)  # Add a short delay before retrying
+                time.sleep(retry_delay)  # Add a short delay before retrying
             else:
                 logger.error(f'Max retries reached, for error {e}.')
                 sys.exit(1)
@@ -65,9 +67,7 @@ def main():
     for table_name, months_of_form in zip(['Raw_LongTermForm', 'Raw_ShortTermForm'], config.months_of_form_list):
         logger.info(f'Gathering {months_of_form} month form data for seasons in {config.seasons_to_gather}')
         for season in config.seasons_to_gather:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(fetch_data_with_retry(understat_parser, season, months_of_form, table_name))
+            fetch_data_with_retry(understat_parser, season, months_of_form, table_name)
     
     preprocessor = Preprocessor(league=config.league, database=config.database)
 
