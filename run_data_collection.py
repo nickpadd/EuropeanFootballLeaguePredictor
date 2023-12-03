@@ -65,8 +65,9 @@ def main():
     for table_name, months_of_form in zip(['Raw_LongTermForm', 'Raw_ShortTermForm'], config.months_of_form_list):
         logger.info(f'Gathering {months_of_form} month form data for seasons in {config.seasons_to_gather}')
         for season in config.seasons_to_gather:
-            asyncio.run(fetch_data_with_retry(understat_parser, season, months_of_form, table_name))
-    
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(fetch_data_with_retry(understat_parser, season, months_of_form, table_name))
     
     preprocessor = Preprocessor(league=config.league, database=config.database)
 

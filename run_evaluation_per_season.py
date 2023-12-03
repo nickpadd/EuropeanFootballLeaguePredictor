@@ -36,8 +36,9 @@ def main():
 
     database_handler = DatabaseHandler(league=config.league, database=config.database)
     short_term_form, long_term_form= database_handler.get_data(table_names=["Preprocessed_ShortTermForm", "Preprocessed_LongTermForm"])
-
-    for validation_season in config.seasons_to_gather:
+    filtered_list = [year for year in config.seasons_to_gather if year != config.current_season]
+    
+    for validation_season in filtered_list:
       with mlflow.start_run(run_name = f"{_regressor_instance} | {config.league} | {validation_season}") as run:
         # Log model parameters
         mlflow.log_param("Form_Votes", config.voting_dict)

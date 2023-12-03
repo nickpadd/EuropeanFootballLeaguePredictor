@@ -78,9 +78,15 @@ class Bettor:
         """ 
         #QUARTER KELLY
         portion_of_bet_gained_with_win = bookmaker_odds - 1
-        bankroll_portion = min(estimated_true_probability - (1 - estimated_true_probability)/portion_of_bet_gained_with_win, kelly_cap) #Capping the portion at 10%
-        bet = bankroll_portion*self.current_bankroll[f'{bet_name}_bank']/4
-        return max(bankroll_portion, 0), max(bet, 0)
+        if portion_of_bet_gained_with_win <= 0:
+            capped_bankroll_portion, capped_bet = 0, 0
+        else:
+            bankroll_portion = max(estimated_true_probability - (1 - estimated_true_probability)/portion_of_bet_gained_with_win, 0) #Normal kelly bankroll portion
+            bet = max(bankroll_portion*self.current_bankroll[f'{bet_name}_bank'], 0) #Normal kelly bet
+
+            capped_bankroll_portion = min(np.divide(bankroll_portion, 4), kelly_cap) #Quarter kelly and cap 
+            capped_bet = capped_bankroll_portion*self.current_bankroll[f'{bet_name}_bank'] #Quarter kelly and cap 
+        return capped_bankroll_portion, capped_bet
     
     def get_betting_result(self, match_id: str) -> dict:
         """Searches and returns for the result dictionary of the specified match

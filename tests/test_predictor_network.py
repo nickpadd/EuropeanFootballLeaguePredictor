@@ -65,7 +65,6 @@ def create_dummy_dataframe() ->pd.DataFrame:
         'AxPTS/M': np.round(np.random.uniform(0.5, 2.5, size=12), 2),
         'Match_id': [f"match_{i}" for i in range(1, 13)]
     })
-    logger.debug(dummy_data)
     return dummy_data
 
 
