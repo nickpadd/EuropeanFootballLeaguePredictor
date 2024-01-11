@@ -256,6 +256,8 @@ class ProbabilityEstimatorNetwork:
             under2 = 0.0
             over3 = 0.0
             under3 = 0.0
+            over4 = 0.0
+            under4 = 0.0
             over1 = 0.0
             under1 = 0.0
             gg = 0.0
@@ -279,12 +281,16 @@ class ProbabilityEstimatorNetwork:
                         over3 += scoreline_prob_array[home_goals, away_goals]
                     if(away_goals+home_goals<4):
                         under3 += scoreline_prob_array[home_goals, away_goals]
+                    if (away_goals+home_goals>=5):
+                        over4 += scoreline_prob_array[home_goals, away_goals]
+                    if(away_goals+home_goals<5):
+                        under4 += scoreline_prob_array[home_goals, away_goals]
                     if (away_goals==0) or (home_goals==0): 
                         ng += scoreline_prob_array[home_goals, away_goals]
                     if (away_goals!=0) and (home_goals!=0):
                         gg += scoreline_prob_array[home_goals, away_goals]
             
-            betting_probabilities_list.append({'home': home_win, 'draw': draw, 'away': away_win, 'over2.5': over2, 'under2.5': under2, 'over3.5': over3, 'under3.5': under3, 'over1.5': over1, 'under1.5': under1, 'ng': ng, 'gg': gg})
+            betting_probabilities_list.append({'home': home_win, 'draw': draw, 'away': away_win, 'over2.5': over2, 'under2.5': under2, 'over3.5': over3, 'under3.5': under3, 'over4.5': over4, 'under4.5': under4, 'over1.5': over1, 'under1.5': under1, 'ng': ng, 'gg': gg})
             
         return betting_probabilities_list    
     
@@ -310,6 +316,8 @@ class ProbabilityEstimatorNetwork:
             prediction_dataframe.loc[index, 'Under2.5Probability'] = bet['under2.5']
             prediction_dataframe.loc[index, 'Over3.5Probability'] = bet['over3.5']
             prediction_dataframe.loc[index, 'Under3.5Probability'] = bet['under3.5']
+            prediction_dataframe.loc[index, 'Over4.5Probability'] = bet['over4.5']
+            prediction_dataframe.loc[index, 'Under4.5Probability'] = bet['under4.5']
             prediction_dataframe.loc[index, 'Over1.5Probability'] = bet['over1.5']
             prediction_dataframe.loc[index, 'Under1.5Probability'] = bet['under1.5']
             prediction_dataframe.loc[index, 'GGProbability'] = bet['gg']
