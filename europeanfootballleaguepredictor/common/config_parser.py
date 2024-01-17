@@ -56,7 +56,7 @@ class Config_Parser:
         if config_data['model']['voting']['long_term_form_vote_perc'] + config_data['model']['voting']['short_term_form_vote_perc'] != 1:
             logger.error('Voting weights do not add to 1! Please check configuration file!')
             sys.exit(1)
-        if config_data['model']['regressor'] not in ['LinearRegression', 'PoissonRegressor', 'SVR']:
+        if config_data['model']['regressor'] not in ['LinearRegression', 'PoissonRegressor', 'SVR', 'XGBRegressor']:
             logger.error(f"Model regressor {config_data['model']['regressor']} is invalid! Please check configuration file!")
             sys.exit(1)
         if config_data['league'] not in ['EPL', 'La_Liga', 'Bundesliga', 'Serie_A', 'Ligue_1']:
@@ -73,12 +73,16 @@ class Config_Parser:
             self.config (_type_: Configuration_dataclass_object): The dataclass with the validated configuration settings.
         """
         self.check_validity(config_data)
-        try:
+        if (config_data['model']['regressor'] == "LinearRegression") or (config_data['model']['regressor'] == "PoissonRegressor"):
             module_path = 'sklearn.linear_model'
             regressor_module = importlib.import_module(module_path)
             regressor = getattr(regressor_module, config_data['model']['regressor'])
-        except:
+        if config_data['model']['regressor'] == 'SVR':
             module_path = 'sklearn.svm'
+            regressor_module = importlib.import_module(module_path)
+            regressor = getattr(regressor_module, config_data['model']['regressor'])
+        if config_data['model']['regressor'] == 'XGBRegressor': 
+            module_path = 'xgboost'
             regressor_module = importlib.import_module(module_path)
             regressor = getattr(regressor_module, config_data['model']['regressor'])
             

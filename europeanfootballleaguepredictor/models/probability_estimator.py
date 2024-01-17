@@ -6,6 +6,7 @@ import pandas as pd
 from sklearn.linear_model import PoissonRegressor
 from sklearn.preprocessing import MinMaxScaler
 from loguru import logger
+import xgboost
 import json
 
 class FootballPredictor(BaseModel):
@@ -32,6 +33,7 @@ class FootballPredictor(BaseModel):
         if isinstance(self.home_side, PoissonRegressor):
             self.home_side = regressor(max_iter = 1000)
             self.away_side = regressor(max_iter = 1000)
+        
 
     
     def train_model(self, train_data, home_goals, away_goals) -> None:
