@@ -15,38 +15,54 @@ class BookmakerScraper():
             url (str): The url corresponding to the certain webpage with the betting odds of the league specified in the configuration.
             dictionary (dict): A dictionary of the team names used by the bookmaker.
         """
-        self.url = url
+        self.result_url, self.over_under_url, self.btts_url = BookmakerScraper.produce_urls(url)
         self.dictionary = dictionary
     
-    def get_odds_json(self) -> dict:
+    @staticmethod    
+    def produce_urls(base_url: str):
+        """
+        Transforms the base URL of match result to over/under and btts urls.
+        """
+
+        result_url = base_url + '?bt=matchresult'
+        over_under_url = base_url + '?bt=overunder'
+        btts_url = base_url + '?bt=bothteamstoscore'
+        
+        return result_url, over_under_url, btts_url
+
+    
+    def get_odds_json(self) -> list:
         """Gets a page dictionary containing the odds, from the specified url.
 
         Returns:
             dict: A dictionary containing the odds together with other raw code elements.
         """
-        page = requests.get(self.url)
-        soup = BeautifulSoup(page.content, "html.parser")
-        script = soup.body.find_all("script")
-        script = script[0]
+        odds_list = []
+        for url in [self.result_url, self.over_under_url, self.btts_url]:
+            page = requests.get(url)
+            soup = BeautifulSoup(page.content, "html.parser")
+            script = soup.body.find_all("script")
+            script = script[0]
 
-        # Define the regular expression pattern
-        pattern = r'<script>(.*?)<\/script>'
+            # Define the regular expression pattern
+            pattern = r'<script>(.*?)<\/script>'
 
-        # Use re.findall to find all matches
-        matches = re.findall(pattern, str(script), re.DOTALL)
+            # Use re.findall to find all matches
+            matches = re.findall(pattern, str(script), re.DOTALL)
 
-        if matches:
-            # Extract the content between script tags
-            content_between_scripts = matches[0]
-            content_between_scripts= content_between_scripts.split('window["initial_state"]=')[1].strip()
-        else:
-            print('No match found.')
+            if matches:
+                # Extract the content between script tags
+                content_between_scripts = matches[0]
+                content_between_scripts= content_between_scripts.split('window["initial_state"]=')[1].strip()
+            else:
+                print('No match found.')
 
-        odds_dictionary = json.loads(content_between_scripts)
-        
-        return odds_dictionary
+            odds_dictionary = json.loads(content_between_scripts)
+            odds_list.append(odds_dictionary)
+            
+        return odds_list
     
-    def odds_json_to_dataframe(self, odds_dictionary: dict) -> pd.DataFrame:
+    def odds_json_to_dataframe(self, odds_list: list) -> pd.DataFrame:
         """Produces a dataframe out of the dictionary output by get_odds_json()
 
         Args:
@@ -61,16 +77,28 @@ class BookmakerScraper():
         AwayTeams = []
         rows = []
         names = []
-        for match in odds_dictionary['data']['blocks'][0]['events']:
+            
+        result_json, over_under_json, btts_json = [odds_list[i]['data']['blocks'][0]['events'] for i in range(3)]
+        
+        for i, match in enumerate(result_json):
+            over_under = over_under_json[i] 
+            btts = btts_json[i]
+
+            
             teams = match['shortName'].split(' - ')
+            logger.debug(f"Teams: {teams}")
             HomeTeams.append(self.replace_names(teams[0]))
             AwayTeams.append(self.replace_names(teams[1]))
             Dates.append(datetime.datetime.fromtimestamp(match['startTime']/1000.0).strftime('%d/%m/%Y'))
-            for x in match['markets']:
-                for y in x['selections']:
-                    names.append(y['name'])
-                    Odds.append(y['price'])
-            
+
+            for odd_type in match, over_under, btts:
+                for x in odd_type['markets']:
+                    logger.debug(x)
+                    for y in x['selections']:
+                        names.append(y['name'])
+                        Odds.append(y['price'])
+
+                
             while Odds:
                 line = names[4].split(' ')[1]
                 rows.append(Odds[:3] + [line] + Odds[3:7])
