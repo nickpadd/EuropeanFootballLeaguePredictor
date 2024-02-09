@@ -86,14 +86,12 @@ class BookmakerScraper():
 
             
             teams = match['shortName'].split(' - ')
-            logger.debug(f"Teams: {teams}")
             HomeTeams.append(self.replace_names(teams[0]))
             AwayTeams.append(self.replace_names(teams[1]))
             Dates.append(datetime.datetime.fromtimestamp(match['startTime']/1000.0).strftime('%d/%m/%Y'))
 
             for odd_type in match, over_under, btts:
                 for x in odd_type['markets']:
-                    logger.debug(x)
                     for y in x['selections']:
                         names.append(y['name'])
                         Odds.append(y['price'])
