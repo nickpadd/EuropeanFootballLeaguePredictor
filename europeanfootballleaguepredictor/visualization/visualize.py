@@ -50,7 +50,7 @@ class Visualizer:
         buttons = []
 
         # loop through each match and create two traces for Bookmaker odds and predicted values
-        for index, (h_team, a_team) in enumerate(zip(self.prediction_dataframe['HomeTeam'].tolist(), self.prediction_dataframe['AwayTeam'].tolist())):
+        for index, (date, h_team, a_team) in enumerate(zip(self.prediction_dataframe['Date'].tolist(),self.prediction_dataframe['HomeTeam'].tolist(), self.prediction_dataframe['AwayTeam'].tolist())):
         
             # create the trace for Bookmaker odds, try except block incase bookmaker odds are not included
             try:
@@ -109,7 +109,7 @@ class Visualizer:
                 button_dict = dict(
                     method="restyle",
                     args=[{"visible": [False] * (3 * len(self.prediction_dataframe))}], # set all traces to false initially
-                    label= f"<b>{h_team}-{a_team} | {str(self.prediction_dataframe.loc[index, 'Date'].strip('[]'))}</b>" 
+                    label= f"<b>{h_team}-{a_team} | {str(date.strip('[]'))}</b>" 
                 )
                 # set visibility to true for the corresponding traces
                 button_dict["args"][0]["visible"][3*index] = True # Bookmaker odds trace
@@ -126,7 +126,7 @@ class Visualizer:
                 button_dict = dict(
                     method="restyle",
                     args=[{"visible": [False] * (2 * len(self.prediction_dataframe))}], # set all traces to false initially
-                    label= f"<b>{h_team}-{a_team} | {str(self.prediction_dataframe.loc[index, 'Date'].strip('[]'))}</b>" 
+                    label= f"<b>{h_team}-{a_team} | {str(date.strip('[]'))}</b>" 
                 )
                 # set visibility to true for the corresponding traces
                 button_dict["args"][0]["visible"][2*index] = True # Predicted trace
