@@ -24,7 +24,7 @@ The [EuropeanFootballLeaguePredictor Github Page](https://nickpadd.github.io/EFL
     ```bash
     cd EuropeanFootballLeaguePredictor
 
-3. Managing dependencies:
+- Managing dependencies with Poetry: 
     - Installing poetry:
     ```bash
     pip install poetry 
@@ -37,6 +37,25 @@ The [EuropeanFootballLeaguePredictor Github Page](https://nickpadd.github.io/EFL
     - Running the poetry shell (a virtual environment with the dependencies installed):
     ```bash
     poetry shell
+
+- Alternative method via venv:
+    - Create a virtual environment using venv:
+    ```bash
+    python3 -m venv venv
+    ```
+    - Activate the virtual environment:
+        - On Windows:
+        ```bash
+        venv\Scripts\activate
+        ```
+        - On macOS/Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+    - Install requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ### Configuration
 The configuration file europeanfootballleaguepredictor/config/config.yaml includes many of the models parameters such as:
