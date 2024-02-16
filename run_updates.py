@@ -1,4 +1,4 @@
-from europeanfootballleaguepredictor.data.bookmaker_scraper import BookmakerScraper
+from europeanfootballleaguepredictor.data.bookmaker_scraper_v2 import BookmakerScraper
 from europeanfootballleaguepredictor.data.understat_gatherer import Understat_Parser
 from europeanfootballleaguepredictor.common.config_parser import Config_Parser
 from europeanfootballleaguepredictor.data.upcoming_matches import UpcomingMatchScheduler
@@ -38,7 +38,7 @@ def main():
     understat_parser = Understat_Parser(league = config.league, dictionary = config.data_co_uk_dictionary, database=config.database)
     bookmaker_scraper = BookmakerScraper(url = config.bookmaker_url, dictionary = config.bookmaker_dictionary)
     try:
-        odds_dataframe = bookmaker_scraper.get_odds()
+        odds_dataframe = bookmaker_scraper.return_odds()
         logger.success('Successfully retrieved odds!')
         logger.info(f'\n {odds_dataframe}')
     except Exception as e:
