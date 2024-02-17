@@ -3,10 +3,9 @@ import time
 from datetime import datetime
 import pandas as pd
 from loguru import logger
-from selenium import webdriver 
-from selenium.webdriver.common.proxy import Proxy, ProxyType
 import undetected_chromedriver as uc
 import uuid
+
 
 def combine_dictionaries(dictionary_list: list):
     combined_list = []
@@ -89,10 +88,10 @@ class BookmakerScraper():
     
     def extract_odds(self, soup):
         dictionary_list = []
-        all_matches = soup.find('div', {"class":"league-page"}).find('div', {"class":"vue-recycle-scroller__item-wrapper"}).find_all('div', {"class":"vue-recycle-scroller__item-view"})
+        all_matches = soup.find('div', {"class":"league-page"}).find('div', {"class":"vue-recycle-scroller__item-wrapper"}).find_all('div', {"class":["vue-recycle-scroller__item-view", "vue-recycle-scroller__item-view hover"]})
         year = datetime.now().year
         for match in all_matches:
-            date = match.find('span', {"class":"tw-mr-0"}).text + '/' + str(year)
+            #date = match.find('span', {"class":"tw-mr-0"}).text + '/' + str(year)
             teams = match.find_all('span', {"class":"tw-text-n-13-steel tw-inline-block tw-align-top tw-w-auto tw-pl-xs"})
             home_team = teams[0].text.strip()
             away_team = teams[1].text.strip()
@@ -101,13 +100,23 @@ class BookmakerScraper():
                 odds_names = [odd.text for odd in selection.find_all('span', "selections__selection__title")]
                 odds_values = [odd.text for odd in selection.find_all('span', "selections__selection__odd")]
             
-            match_dictionary = {'date': date, 'home_team': home_team, 'away_team': away_team}
+            match_dictionary = {'HomeTeam': home_team, 'AwayTeam': away_team}
             for title, value in zip(odds_names, odds_values):
+                if 'Over' in title:
+                    line = title.split('Over')[1]
+                    title = 'OverLine'
+                    match_dictionary['Line']=line
+                if 'Under' in title:
+                    line = title.split('Under')[1]
+                    title = 'UnderLine'
+                    match_dictionary['Line']=line
+                
                 match_dictionary[title] = value
                 
             dictionary_list.append(match_dictionary)
         
-        identified_list = self.generate_uuids(dictionary_list, ['date', 'home_team', 'away_team'])   
+        identified_list = self.generate_uuids(dictionary_list, ['HomeTeam', 'AwayTeam'])   
+
         return identified_list
     
     @staticmethod
@@ -128,7 +137,22 @@ class BookmakerScraper():
             odds_json_list.append(extracted_odds_dict)
             
         combined_odds = combine_dictionaries(odds_json_list)
+        odds_dataframe = pd.DataFrame(combined_odds).drop(columns=['id'])
+        translated_names_odds = self.replace_team_names(odds_dataframe, self.dictionary)
         self.driver.quit()
-        return pd.DataFrame(combined_odds).drop(columns=['id'])
+        return translated_names_odds
+    
+    def replace_team_names(self, input_dataframe: pd.DataFrame, replacing_dict: dict) -> pd.DataFrame:
+        """
+        Replaces the team names used by bookmaker with the format of understat.
+
+        Args:
+            input_dataframe (pd.DataFrame): The scraped odds dataframe.
+            replacing_dict (dict): A team name mapping to communicate different team names between bookmaker and understat.
+        """
+        input_dataframe['HomeTeam'] = input_dataframe['HomeTeam'].replace(replacing_dict, regex=False)
+        input_dataframe['AwayTeam'] = input_dataframe['AwayTeam'].replace(replacing_dict, regex=False)
+        
+        return input_dataframe
             
     
