@@ -1,4 +1,4 @@
-from europeanfootballleaguepredictor.data.bookmaker_scraper_v2 import BookmakerScraper
+from europeanfootballleaguepredictor.data.bookmaker_scraper import BookmakerScraper
 from europeanfootballleaguepredictor.data.understat_gatherer import Understat_Parser
 from europeanfootballleaguepredictor.common.config_parser import Config_Parser
 from europeanfootballleaguepredictor.data.upcoming_matches import UpcomingMatchScheduler
