@@ -110,11 +110,11 @@ class UpcomingMatchScheduler():
         fixtures['Date'] = fixtures['Date'].dt.strftime("%d/%m/%Y")
         
         try:
-            upcoming_matches = pd.merge(fixtures[['Date', 'HomeTeam', 'AwayTeam']], self.odds, left_on=['HomeTeam', 'AwayTeam'], right_on=['Home Team', 'Away Team'], how='inner')
-            upcoming_matches = upcoming_matches.drop(columns=['Home Team', 'Away Team'], axis=1)
-            upcoming_matches.rename(columns={'1': 'HomeWinOdds', 'x': 'DrawOdds', '2': 'AwayWinOdds', 'OverLine': 'OverLineOdds', 'UnderLine': 'UnderLineOdds'}, inplace=True)
+            upcoming_matches = pd.merge(fixtures[['Date', 'HomeTeam', 'AwayTeam']], self.odds, on=['HomeTeam', 'AwayTeam'], how='inner')
+            upcoming_matches.rename(columns={'1': 'HomeWinOdds', 'X': 'DrawOdds', '2': 'AwayWinOdds', 'OverLine': 'OverLineOdds', 'UnderLine': 'UnderLineOdds'}, inplace=True)
             upcoming_matches.drop(columns=['Yes', 'No'])
         except (KeyError, TypeError) as e:
+            logger.warning(e)
             today = datetime.now()
             fifteen_days_from_now = today + timedelta(days=15)
             fixtures['Date'] = pd.to_datetime(fixtures['Date'], format='%d/%m/%Y')

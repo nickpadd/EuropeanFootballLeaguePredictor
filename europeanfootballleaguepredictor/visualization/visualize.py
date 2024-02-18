@@ -21,9 +21,11 @@ class Visualizer:
         """Changes the bookmaker odds into probabilities
         """
         try:
-            self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']] = 1/self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']]
-        except KeyError:
-            logger.warning('Bookmaker results were not found, will produce prediction figures not containing that data.')
+            print(self.prediction_dataframe.columns)
+            self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']] = 1/self.prediction_dataframe[['HomeWinOdds', 'DrawOdds', 'AwayWinOdds', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No']].astype(float)
+        except KeyError as e:
+            logger.error(e)
+            logger.warning('Bookmaker results were not processed as expected, will produce prediction figures not containing that data.')
     
     def produce_closest_line(self):
         # Extracting the numerical values from the column names

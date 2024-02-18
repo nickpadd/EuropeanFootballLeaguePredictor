@@ -1,11 +1,35 @@
-import requests
 from bs4 import BeautifulSoup
-import json
-import re
-import datetime
+import time
+from datetime import datetime
 import pandas as pd
 from loguru import logger
+import undetected_chromedriver as uc
+import uuid
 
+
+def combine_dictionaries(dictionary_list: list):
+    combined_list = []
+    for odds_type_dict in dictionary_list:
+        for dic in odds_type_dict:
+            identifier = dic["id"]
+            if not has_dict_with_id(combined_list, identifier):
+                combined_list.append(dic)
+            else:
+                for match in combined_list:
+                    if match['id']==identifier:
+                        match.update(dic)
+                        pass
+                    
+    return combined_list
+    
+def has_dict_with_id(lst, target_id):
+    if not lst:  # Check if the list is empty
+        return False
+    for d in lst:
+        if 'id' in d and d['id'] == target_id:
+            return True
+    return False
+    
 class BookmakerScraper():
     """A class responsible for scraping the bookmaker website"""
     def __init__(self, url: str, dictionary: dict):
@@ -17,122 +41,118 @@ class BookmakerScraper():
         """
         self.result_url, self.over_under_url, self.btts_url = BookmakerScraper.produce_urls(url)
         self.dictionary = dictionary
-    
+        self.driver = uc.Chrome(version_main = 120)
+
     @staticmethod    
     def produce_urls(base_url: str):
         """
         Transforms the base URL of match result to over/under and btts urls.
         """
-
         result_url = base_url + '?bt=matchresult'
         over_under_url = base_url + '?bt=overunder'
         btts_url = base_url + '?bt=bothteamstoscore'
         
         return result_url, over_under_url, btts_url
-
     
-    def get_odds_json(self) -> list:
-        """Gets a page dictionary containing the odds, from the specified url.
+    def scroll_down(self):
+        """A method for scrolling the page."""
 
-        Returns:
-            dict: A dictionary containing the odds together with other raw code elements.
-        """
-        odds_list = []
+        # Get scroll height.
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+
+            # Scroll down to the bottom.
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+            # Wait to load the page.
+            time.sleep(2)
+
+            # Calculate new scroll height and compare with last scroll height.
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+
+            if new_height == last_height:
+
+                break
+
+            last_height = new_height
+    
+    def get_page_soup(self, url):
+        self.driver.get(url)
+        self.driver.implicitly_wait(4)
+        self.scroll_down()
+        self.driver.implicitly_wait(4)
+        soup = BeautifulSoup(self.driver.page_source, 'html.parser')
+        
+        return soup
+    
+    def extract_odds(self, soup):
+        dictionary_list = []
+        all_matches = soup.find('div', {"class":"league-page"}).find('div', {"class":"vue-recycle-scroller__item-wrapper"}).find_all('div', {"class":["vue-recycle-scroller__item-view", "vue-recycle-scroller__item-view hover"]})
+        year = datetime.now().year
+        for match in all_matches:
+            #date = match.find('span', {"class":"tw-mr-0"}).text + '/' + str(year)
+            teams = match.find_all('span', {"class":"tw-text-n-13-steel tw-inline-block tw-align-top tw-w-auto tw-pl-xs"})
+            home_team = teams[0].text.strip()
+            away_team = teams[1].text.strip()
+            selections = match.find_all('div', "selections")
+            for selection in selections:
+                odds_names = [odd.text for odd in selection.find_all('span', "selections__selection__title")]
+                odds_values = [odd.text for odd in selection.find_all('span', "selections__selection__odd")]
+            
+            match_dictionary = {'HomeTeam': home_team, 'AwayTeam': away_team}
+            for title, value in zip(odds_names, odds_values):
+                if 'Over' in title:
+                    line = title.split('Over')[1]
+                    title = 'OverLine'
+                    match_dictionary['Line']=line
+                if 'Under' in title:
+                    line = title.split('Under')[1]
+                    title = 'UnderLine'
+                    match_dictionary['Line']=line
+                
+                match_dictionary[title] = value
+                
+            dictionary_list.append(match_dictionary)
+        
+        identified_list = self.generate_uuids(dictionary_list, ['HomeTeam', 'AwayTeam'])   
+
+        return identified_list
+    
+    @staticmethod
+    def generate_uuids(list_of_dicts, keys):
+        for i, data in enumerate(list_of_dicts):
+            key_values = '-'.join([str(data[key]) for key in keys])
+            id = uuid.uuid5(uuid.NAMESPACE_OID, key_values)
+            data['id'] = str(id)
+            list_of_dicts[i] = data
+            
+        return list_of_dicts
+    
+    def return_odds(self):
+        odds_json_list = []
         for url in [self.result_url, self.over_under_url, self.btts_url]:
-            page = requests.get(url)
-            soup = BeautifulSoup(page.content, "html.parser")
-            script = soup.body.find_all("script")
-            script = script[0]
-
-            # Define the regular expression pattern
-            pattern = r'<script>(.*?)<\/script>'
-
-            # Use re.findall to find all matches
-            matches = re.findall(pattern, str(script), re.DOTALL)
-
-            if matches:
-                # Extract the content between script tags
-                content_between_scripts = matches[0]
-                content_between_scripts= content_between_scripts.split('window["initial_state"]=')[1].strip()
-            else:
-                print('No match found.')
-
-            odds_dictionary = json.loads(content_between_scripts)
-            odds_list.append(odds_dictionary)
+            soup = self.get_page_soup(url)
+            extracted_odds_dict = self.extract_odds(soup)
+            odds_json_list.append(extracted_odds_dict)
             
-        return odds_list
+        combined_odds = combine_dictionaries(odds_json_list)
+        odds_dataframe = pd.DataFrame(combined_odds).drop(columns=['id'])
+        translated_names_odds = self.replace_team_names(odds_dataframe, self.dictionary)
+        self.driver.quit()
+        return translated_names_odds
     
-    def odds_json_to_dataframe(self, odds_list: list) -> pd.DataFrame:
-        """Produces a dataframe out of the dictionary output by get_odds_json()
+    def replace_team_names(self, input_dataframe: pd.DataFrame, replacing_dict: dict) -> pd.DataFrame:
+        """
+        Replaces the team names used by bookmaker with the format of understat.
 
         Args:
-            odds_dictionary (dict): A dictionary containing the odds together with other raw code elements, output of get_odds_json()
-
-        Returns:
-            pd.DataFrame: A dataframe containing the bookmaker odds for the upcoming matches of the specified league
+            input_dataframe (pd.DataFrame): The scraped odds dataframe.
+            replacing_dict (dict): A team name mapping to communicate different team names between bookmaker and understat.
         """
-        Odds = []
-        Dates = []
-        HomeTeams = []
-        AwayTeams = []
-        rows = []
-        names = []
-            
-        result_json, over_under_json, btts_json = [odds_list[i]['data']['blocks'][0]['events'] for i in range(3)]
+        input_dataframe['HomeTeam'] = input_dataframe['HomeTeam'].replace(replacing_dict, regex=False)
+        input_dataframe['AwayTeam'] = input_dataframe['AwayTeam'].replace(replacing_dict, regex=False)
         
-        for i, match in enumerate(result_json):
-            over_under = over_under_json[i] 
-            btts = btts_json[i]
-
+        return input_dataframe
             
-            teams = match['shortName'].split(' - ')
-            HomeTeams.append(self.replace_names(teams[0]))
-            AwayTeams.append(self.replace_names(teams[1]))
-            Dates.append(datetime.datetime.fromtimestamp(match['startTime']/1000.0).strftime('%d/%m/%Y'))
-
-            for odd_type in match, over_under, btts:
-                for x in odd_type['markets']:
-                    for y in x['selections']:
-                        names.append(y['name'])
-                        Odds.append(y['price'])
-
-                
-            while Odds:
-                line = names[4].split(' ')[1]
-                rows.append(Odds[:3] + [line] + Odds[3:7])
-                Odds = Odds[7:]
-                names = names[7:]
-                
-        data_teams = pd.DataFrame({'Home Team': HomeTeams, 'Away Team': AwayTeams})
-        data_values = pd.DataFrame(rows, columns=['1', 'x', '2', 'Line', 'OverLineOdds', 'UnderLineOdds', 'Yes', 'No'])
-        odds_dataframe = pd.concat([data_teams, data_values], axis=1)
-        odds_dataframe['Home Team'] = odds_dataframe['Home Team'].str.strip()
-        odds_dataframe['Away Team'] = odds_dataframe['Away Team'].str.strip()
-        
-        return odds_dataframe
     
-    @logger.catch
-    def get_odds(self) -> pd.DataFrame:
-        """A pipeline that directly provides the odds_dataframe
-
-        Returns:
-            pd.DataFrame: A dataframe containing the bookmaker odds for the upcoming matches of the specified league
-        """
-        odds_json = self.get_odds_json()
-        odds_dataframe = self.odds_json_to_dataframe(odds_json)
-        return odds_dataframe
-         
-    def replace_names(self, string) -> str:
-        """Replaces team names using the dictionary in order to match the team names used by understat
-
-        Args:
-            string (str): The string that should be examined and get team names updated
-
-        Returns:
-            str: The input string with the team names now corresponding to understat format
-        """
-        for old_name, new_name in self.dictionary.items():
-            string = string.replace(old_name, new_name)
-        return string
-    
-
