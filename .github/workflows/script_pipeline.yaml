@@ -67,10 +67,10 @@ jobs:
       #----------------------------------------------
       #              run updates
       #----------------------------------------------
-      - name: Run updates script
-        run: |
-          source $VENV
-          python run_updates.py
+      #- name: Run updates script
+      #  run: |
+      #    source $VENV
+      #    python run_updates.py
 
       #----------------------------------------------
       #              run predictions

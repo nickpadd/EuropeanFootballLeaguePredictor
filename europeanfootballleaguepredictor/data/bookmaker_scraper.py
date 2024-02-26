@@ -41,7 +41,7 @@ class BookmakerScraper():
         """
         self.result_url, self.over_under_url, self.btts_url = BookmakerScraper.produce_urls(url)
         self.dictionary = dictionary
-        self.driver = uc.Chrome(version_main = 120)
+        self.driver = uc.Chrome(version_main = 122)
 
     @staticmethod    
     def produce_urls(base_url: str):

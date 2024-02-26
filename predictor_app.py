@@ -9,7 +9,6 @@ from pretty_html_table import build_table
 import importlib
 import os
 import argparse
-import xgboost
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
 
 
@@ -37,10 +36,6 @@ def league_predictions_figure(league_name, regressor_str, matchdays_to_drop, lon
         regressor = getattr(regressor_module, regressor_str)
     if regressor_str == 'SVR':
         module_path = 'sklearn.svm'
-        regressor_module = importlib.import_module(module_path)
-        regressor = getattr(regressor_module, regressor_str)
-    if regressor_str == 'XGBRegressor': 
-        module_path = 'xgboost'
         regressor_module = importlib.import_module(module_path)
         regressor = getattr(regressor_module, regressor_str)
         
@@ -78,7 +73,7 @@ def main():
     with gr.Blocks() as iface:
         with gr.Row():
             drop1 = gr.Dropdown(['EPL', 'Bundesliga', 'Ligue_1', 'La_Liga', 'Serie_A'], label="Select League")
-            drop3 = gr.Dropdown(['LinearRegression', 'PoissonRegressor', 'SVR', 'XGBRegressor'], label="Select regressor Type")
+            drop3 = gr.Dropdown(['LinearRegression', 'PoissonRegressor', 'SVR'], label="Select regressor Type")
         with gr.Row():
             with gr.Column(scale=1, min_width=600):
                 slide1 = gr.Slider(minimum=0, maximum=10, step=1, value=4, show_label=True, interactive=True, label="Select number of matchdays to drop")
