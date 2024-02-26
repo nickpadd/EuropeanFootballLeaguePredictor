@@ -81,10 +81,6 @@ class Config_Parser:
             module_path = 'sklearn.svm'
             regressor_module = importlib.import_module(module_path)
             regressor = getattr(regressor_module, config_data['model']['regressor'])
-        if config_data['model']['regressor'] == 'XGBRegressor': 
-            module_path = 'xgboost'
-            regressor_module = importlib.import_module(module_path)
-            regressor = getattr(regressor_module, config_data['model']['regressor'])
             
         self.config = Configuration(
                 league= config_data['league'],

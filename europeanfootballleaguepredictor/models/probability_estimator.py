@@ -6,7 +6,6 @@ import pandas as pd
 from sklearn.linear_model import PoissonRegressor
 from sklearn.preprocessing import MinMaxScaler
 from loguru import logger
-import xgboost
 import json
 
 class FootballPredictor(BaseModel):
