@@ -28,6 +28,7 @@ gradio = "^4.7.1"
 ipykernel = "^6.29.2"
 selenium = "^4.17.2"
 undetected-chromedriver = "^3.5.4"
+certifi = "^2024.2.2"
 
 
 [build-system]
