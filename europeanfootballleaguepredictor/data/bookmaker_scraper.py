@@ -5,6 +5,8 @@ import pandas as pd
 from loguru import logger
 import undetected_chromedriver as uc
 import uuid
+import os 
+import certifi
 
 
 def combine_dictionaries(dictionary_list: list):
@@ -41,6 +43,8 @@ class BookmakerScraper():
         """
         self.result_url, self.over_under_url, self.btts_url = BookmakerScraper.produce_urls(url)
         self.dictionary = dictionary
+        os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+        os.environ["SSL_CERT_FILE"] = certifi.where()
         self.driver = uc.Chrome(version_main = 122)
 
     @staticmethod    
