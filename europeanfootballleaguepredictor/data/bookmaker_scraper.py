@@ -45,7 +45,7 @@ class BookmakerScraper():
         self.dictionary = dictionary
         os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
         os.environ["SSL_CERT_FILE"] = certifi.where()
-        self.driver = uc.Chrome(version_main = 122)
+        self.driver = uc.Chrome(version_main = 127)
 
     @staticmethod    
     def produce_urls(base_url: str):
@@ -96,27 +96,32 @@ class BookmakerScraper():
         year = datetime.now().year
         for match in all_matches:
             #date = match.find('span', {"class":"tw-mr-0"}).text + '/' + str(year)
-            teams = match.find_all('span', {"class":"tw-text-n-13-steel tw-inline-block tw-align-top tw-w-auto tw-pl-xs"})
+            teams = match.find_all('div', class_='tw-truncate')
             home_team = teams[0].text.strip()
             away_team = teams[1].text.strip()
-            selections = match.find_all('div', "selections")
+            selections = match.find_all('div', "selections__selection")
+            odds_names = []
+            odds_values = []
             for selection in selections:
-                odds_names = [odd.text for odd in selection.find_all('span', "selections__selection__title")]
-                odds_values = [odd.text for odd in selection.find_all('span', "selections__selection__odd")]
+                odds_names.extend([odd.text for odd in selection.find('span', class_='selection-horizontal-button__title')])
+                odds_values.extend([odd.text for odd in selection.find('span', class_='tw-text-s')])
             
+            line_values = ['0.5', '1.5', '2.5', '3.5', '4.5', '5.5', '6.5']
             match_dictionary = {'HomeTeam': home_team, 'AwayTeam': away_team}
+
+            for title in odds_names:
+                if title in line_values:
+                    match_dictionary['Line'] = title
+                    odds_names.remove(title)
+                    break 
+
             for title, value in zip(odds_names, odds_values):
                 if 'Over' in title:
-                    line = title.split('Over')[1]
                     title = 'OverLine'
-                    match_dictionary['Line']=line
                 if 'Under' in title:
-                    line = title.split('Under')[1]
                     title = 'UnderLine'
-                    match_dictionary['Line']=line
                 
                 match_dictionary[title] = value
-                
             dictionary_list.append(match_dictionary)
         
         identified_list = self.generate_uuids(dictionary_list, ['HomeTeam', 'AwayTeam'])   
