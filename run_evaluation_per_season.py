@@ -52,7 +52,7 @@ def main():
           
         #logging metrics as a table
         roi_df = pd.DataFrame(list(metrics['ROI'].items()), columns=['Metric', 'Value'])
-        mlflow.log_table(data=roi_df.round(2), artifact_file=f"ROI")
+        mlflow.log_table(data=roi_df.round(2), artifact_file=f"ROI.json")
           
         # Log metrics individualy
         for metric_name, metric_value in metrics['ROI'].items():
