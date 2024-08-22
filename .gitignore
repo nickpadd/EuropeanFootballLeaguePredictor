@@ -1,8 +1,0 @@
-mlruns/**
-htmlcov/**
-poetry.lock
-.coverage
-/raw_files/**
-/preprocessed_files/**
-/evaluation/**
-
