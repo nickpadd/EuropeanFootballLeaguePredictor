@@ -5,4 +5,5 @@ poetry.lock
 /raw_files/**
 /preprocessed_files/**
 /evaluation/**
+*.pyc
 
