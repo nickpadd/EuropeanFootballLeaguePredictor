@@ -1,4 +1,4 @@
-league: EPL
+league: Serie_A
 
 model:
   voting: #Percentage of long_term_form/short_term_form perencage. Should add to 1
