@@ -6,4 +6,4 @@ poetry.lock
 /preprocessed_files/**
 /evaluation/**
 *.pyc
-
+updates_script.sh
