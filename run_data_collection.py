@@ -10,6 +10,7 @@ import pandas as pd
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler 
 import aiohttp 
 from aiohttp.client_exceptions import ServerDisconnectedError
+import requests 
 import sys
 
 async def fetch_data_with_retry(understat_parser, season, months_of_form, output_table_name, max_retries=3, retry_delay=1):
@@ -45,6 +46,25 @@ def main():
     dataframe_list = [] 
     table_name_list = []
     
+    # Download the data from the data_co_uk website
+    for season in config.seasons_to_gather:
+        # Compute the two-year seas code, e.g., '1718' for '2017', '1819' for '2018'
+        two_year_code = season[-2:] + str(int(season[-2:]) + 1).zfill(2)
+        url_base = '/'.join(config.data_co_uk_url.split('/')[:-2])
+                                                    
+        # Format the URL with the t-year season code
+        url = os.path.join(url_base, two_year_code, config.data_co_uk_url.split('/')[-1])
+
+        response = requests.get(url)
+        if response.status_code == 200:
+            file_path = os.path.join(config.data_co_uk_path, f'E0-{season}.csv')
+            with open(file_path, 'wb') as file:
+                file.write(response.content)
+            logger.success(f'Data for season {season} saved at {file_path}.')
+        else:
+            logger.error(f'Failed to download data for season {season}.')
+            exit(1)
+
     # Iterate through each file in the directory
     for file in os.listdir(config.data_co_uk_path):
         file_path = os.path.join(config.data_co_uk_path, file)

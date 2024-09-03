@@ -14,7 +14,7 @@ bettor:
 data_gathering:
   long_term_form: null #Months of long_form, null indicates season long form
   short_term_form: 3 #Months of short-term form
-  seasons_to_gather: ['2017', '2018', '2019', '2020', '2021', '2022', '2023'] #List of the seasons to gather for the model to be trained on. Subset of ['2017', '2018', '2019', '2020', '2021', '2022', '2023']. Keep in mind that 2020 season was covid-season
+  seasons_to_gather: ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'] #List of the seasons to gather for the model to be trained on. Subset of ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']. Keep in mind that 2020 season was covid-season
   current_season: '2024'
   paths:
     EPL: 

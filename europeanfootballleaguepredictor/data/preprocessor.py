@@ -1,7 +1,7 @@
 import pandas as pd 
 from loguru import logger 
 import uuid
-import os 
+import numpy as np
 import sys
 from europeanfootballleaguepredictor.data.database_handler import DatabaseHandler
 
@@ -83,23 +83,23 @@ class Preprocessor():
         if data_status == 'Preprocessed':
             stats_columns = ['HW/M', 'HD/M', 'HL/M', 'HG/M', 'HGA/M', 'HPTS/M', 'HxG/M', 'HNPxG/M', 'HxGA/M', 'HNPxGA/M', 'HNPxGD/M', 'HDC/M', 'HODC/M', 'HxPTS/M', 'HPPDA', 'HOPPDA',
                              'AW/M', 'AD/M', 'AL/M', 'AG/M', 'AGA/M', 'APTS/M', 'AxG/M', 'ANPxG/M', 'AxGA/M', 'ANPxGA/M', 'ANPxGD/M', 'ADC/M', 'AODC/M', 'AxPTS/M', 'APPDA', 'AOPPDA']
+        
         info_columns = ['HomeTeam', 'AwayTeam', 'Result']
         
         for dataframe in data:
             contains_nulls = dataframe.isnull().any().any()
             if contains_nulls:
-                logger.debug(dataframe.columns)
                 info_has_nulls = dataframe[info_columns].isnull().any()
                 stats_have_nulls = dataframe[stats_columns].isnull().any()
                 odds_have_nulls = dataframe[odds_columns].isnull().any()
                 if info_has_nulls.any():
                     null_rows = dataframe[info_columns].isnull().any(axis=1)
-                    logger.error(f'{data_status} data contain NaN values in the team names:\n {dataframe.loc[null_rows, info_columns]} \n Usually, this error occurs when league dictionaries are not updated correctly! \n Ending the run...')
+                    logger.error(f'{data_status} data contain {len(dataframe.loc[null_rows, info_columns])} NaN values in the team names:\n {dataframe.loc[null_rows, info_columns]} \n Usually, this error occurs when league dictionaries are not updated correctly! \n Ending the run...')
                     sys.exit(1)
                 if stats_have_nulls.any():
                     null_rows = dataframe[stats_columns].isnull().any(axis=1)
-                    logger.warning(f'{data_status} data contain NaN values in the statistics:\n {dataframe.loc[null_rows, stats_columns]} \n Usually, this warning occurs due to data_co_uk datasets containing {None} values. DELETING THE ABOVE ENTRIES!')
-                    logger.warning(f"This might be the case because of the replacing dictionary missing a team. Team names: {dataframe.loc[null_rows, info_columns]}")
+                    logger.warning(f'{data_status} data contain {len(dataframe.loc[null_rows, stats_columns])} NaN values in the statistics:\n {dataframe.loc[null_rows, stats_columns]} \n Usually, this warning occurs due to data_co_uk datasets containing {None} values. DELETING THE ABOVE ENTRIES!')
+                    logger.warning(f"This might be the case because of the replacing dictionary missing a team. Team names: {np.unique(dataframe.loc[null_rows, info_columns], return_counts=True)}")
                     dataframe.dropna(subset=stats_columns, inplace=True)
                 if odds_have_nulls.any():
                     null_rows = dataframe[odds_columns].isnull().any(axis=1)

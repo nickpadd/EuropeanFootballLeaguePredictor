@@ -51,8 +51,6 @@ class UpcomingMatchScheduler():
         """
         if category == 'odds':
             table_name, replacing_dict, url = self.data_co_uk_current_season_table, self.data_co_uk_dict, self.data_co_uk_url
-            path = f"/europeanfootballleaguepredictor/data/leagues/{self.league}/DataCoUkFiles/E0-{self.current_season}.csv"
-        
         elif category == 'fixtures':
             table_name, replacing_dict, url = self.fixtures_table, self.fixtures_dict, self.fixtures_url
             

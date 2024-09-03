@@ -41,9 +41,9 @@ class Understat_Parser():
         dataframes_list = self.database_handler.get_data(table_names)
         for dataframe in dataframes_list:
             # Replace team names using the mapping dictionary
-            dataframe["HomeTeam"].map(replacing_dict)
-            dataframe["AwayTeam"].map(replacing_dict)
-        
+            dataframe["HomeTeam"] = dataframe["HomeTeam"].map(replacing_dict).fillna(dataframe["HomeTeam"])
+            dataframe["AwayTeam"] = dataframe["AwayTeam"].map(replacing_dict).fillna(dataframe["AwayTeam"])
+
         self.database_handler.save_dataframes(dataframes=dataframes_list, table_names=table_names)
 
 
@@ -81,8 +81,12 @@ class Understat_Parser():
                 season_dataframe = season_dataframe[['Date', 'HomeTeam', 'AwayTeam', 'Result', 'B365H', 'B365D', 'B365A', 'BbAv>2.5', 'BbAv<2.5']]
                 season_dataframe = season_dataframe.rename(columns={'BbAv>2.5': 'OverOdds', 'BbAv<2.5': 'UnderOdds', 'B365H': 'HomeWinOdds', 'B365D': 'DrawOdds', 'B365A': 'AwayWinOdds'})
 
-            season_dataframe['Date'] = pd.to_datetime(season_dataframe['Date'], format='%d/%m/%Y')
-            season_dataframe['Date'] = season_dataframe['Date'].dt.strftime('%d/%m/%Y')
+            try:
+                season_dataframe['Date'] = pd.to_datetime(season_dataframe['Date'], format='%d/%m/%Y')
+                season_dataframe['Date'] = season_dataframe['Date'].dt.strftime('%d/%m/%Y')
+            except ValueError:
+                season_dataframe['Date'] = pd.to_datetime(season_dataframe['Date'], format='%d/%m/%y')
+                season_dataframe['Date'] = season_dataframe['Date'].dt.strftime('%d/%m/%Y')
 
             #get the unique dates for all the matches
             unique_dates = season_dataframe["Date"].unique()
@@ -90,7 +94,11 @@ class Understat_Parser():
             #loop through the unique dates and gather data from understat from one day prior
             for i, date in tqdm(enumerate(unique_dates), total=len(unique_dates), desc=logger.info('Collecting Understat data.')):
                 #formating date and subtracting a day to make sure the match has not been processed by the league table
-                unique_dates[i] = datetime.datetime.strptime(unique_dates[i], '%d/%m/%Y').date()
+                try:
+                    unique_dates[i] = datetime.datetime.strptime(unique_dates[i], '%d/%m/%Y').date()
+                except ValueError:
+                    unique_dates[i] = datetime.datetime.strptime(unique_dates[i], '%d/%m/%y').date()
+                    
                 unique_dates[i] = unique_dates[i] - datetime.timedelta(days=1)
 
                 if months_of_form == None:
