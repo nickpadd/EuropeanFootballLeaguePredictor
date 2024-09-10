@@ -62,7 +62,7 @@ def main():
                 file.write(response.content)
             logger.success(f'Data for season {season} saved at {file_path}.')
         else:
-            logger.error(f'Failed to download data for season {season}.')
+            logger.error(f'Failed to download data for season {season}. Response code: {response.status_code}.')
             exit(1)
 
     # Iterate through each file in the directory
