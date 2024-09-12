@@ -77,7 +77,11 @@ In order to run the model running the 'run_data_collection.py' is required. The 
 ```bash
 python run_data_collection.py
 ```
-This will initialize the database of the league specified in the configuration and gather the requested data of long term and short term form.
+This will use the pre-downloaded 'europeanfootballleaguepredictor/data/leagues/{league}/DataCoUkFiles/*.csv' files and initialize the database of the league specified in the configuration and gather the requested data of long term and short term form.
+If you wish to download the '.csv' from the website to include seasons that are not pre-downloaded you can modify the ```data_gathering.seasons_to_gather``` list. When running the script include a ```--download``` flag in the script.
+```bash
+python run_data_collection.py --download
+```
 
 - Updates: </br>
 To update the database for recent game results and upcoming fixtures:

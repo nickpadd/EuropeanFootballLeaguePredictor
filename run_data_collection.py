@@ -32,6 +32,7 @@ def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, help="Path to the configuration file (e.g., config.yaml)", default='europeanfootballleaguepredictor/config/config.yaml')
+    parser.add_argument("--download", action='store_true', help="Download the data from the data_co_uk website. False uses the already downloaded files.", default=False)
     config_file_path = parser.parse_args().config
     
     config_data_parser = Config_Parser(config_file_path, None)
@@ -46,24 +47,25 @@ def main():
     dataframe_list = [] 
     table_name_list = []
     
-    # Download the data from the data_co_uk website
-    for season in config.seasons_to_gather:
-        # Compute the two-year seas code, e.g., '1718' for '2017', '1819' for '2018'
-        two_year_code = season[-2:] + str(int(season[-2:]) + 1).zfill(2)
-        url_base = '/'.join(config.data_co_uk_url.split('/')[:-2])
-                                                    
-        # Format the URL with the t-year season code
-        url = os.path.join(url_base, two_year_code, config.data_co_uk_url.split('/')[-1])
-
-        response = requests.get(url)
-        if response.status_code == 200:
-            file_path = os.path.join(config.data_co_uk_path, f'E0-{season}.csv')
-            with open(file_path, 'wb') as file:
-                file.write(response.content)
-            logger.success(f'Data for season {season} saved at {file_path}.')
-        else:
-            logger.error(f'Failed to download data for season {season}. Response code: {response.status_code}.')
-            exit(1)
+    # Download the data from the data_co_uk website if download is set to True
+    if parser.parse_args().download:
+        for season in config.seasons_to_gather:
+            # Compute the two-year seas code, e.g., '1718' for '2017', '1819' for '2018'
+            two_year_code = season[-2:] + str(int(season[-2:]) + 1).zfill(2)
+            url_base = '/'.join(config.data_co_uk_url.split('/')[:-2])
+                                                        
+            # Format the URL with the t-year season code
+            url = os.path.join(url_base, two_year_code, config.data_co_uk_url.split('/')[-1])
+    
+            response = requests.get(url)
+            if response.status_code == 200:
+                file_path = os.path.join(config.data_co_uk_path, f'E0-{season}.csv')
+                with open(file_path, 'wb') as file:
+                    file.write(response.content)
+                logger.success(f'Data for season {season} saved at {file_path}.')
+            else:
+                logger.error(f'Failed to download data for season {season}. Response code: {response.status_code}.')
+                exit(1)
 
     # Iterate through each file in the directory
     for file in os.listdir(config.data_co_uk_path):
