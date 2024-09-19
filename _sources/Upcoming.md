@@ -29,7 +29,7 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 ## La Liga
 
 <div style="text-align: center;">
-  <iframe src="_static/league_figures/laliga/InteractiveFigure.html"
+  <iframe src="_static/league_figures/la_liga/InteractiveFigure.html"
           width="1500"
           height="700"
           frameborder="0"
@@ -43,12 +43,12 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 
 The figure depicts a radar plot of the most popular bets which includes both the predicted probabilities and the probability assigned by the bookmaker as a conversion of the odds.
 
-To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/laliga/PredictionTable.html" download="LaLiga_Predictions.html">Download File</a>
+To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/la_liga/PredictionTable.html" download="LaLiga_Predictions.html">Download File</a>
 
 ## Serie A
 
 <div style="text-align: center;">
-  <iframe src="_static/league_figures/seriea/InteractiveFigure.html"
+  <iframe src="_static/league_figures/serie_a/InteractiveFigure.html"
           width="1500"
           height="700"
           frameborder="0"
@@ -62,7 +62,7 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 
 The figure depicts a radar plot of the most popular bets which includes both the predicted probabilities and the probability assigned by the bookmaker as a conversion of the odds.
 
-To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/seriea/PredictionTable.html" download="SerieA_Predictions.html">Download File</a>
+To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/serie_a/PredictionTable.html" download="SerieA_Predictions.html">Download File</a>
 
 ## Bundesliga
 
@@ -86,7 +86,7 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 ## Ligue 1
 
 <div style="text-align: center;">
-  <iframe src="_static/league_figures/ligue1/InteractiveFigure.html"
+  <iframe src="_static/league_figures/ligue_1/InteractiveFigure.html"
           width="1500"
           height="700"
           frameborder="0"
@@ -100,7 +100,7 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 
 The figure depicts a radar plot of the most popular bets which includes both the predicted probabilities and the probability assigned by the bookmaker as a conversion of the odds.
 
-To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/ligue1/PredictionTable.html" download="Ligue1_Predictions.html">Download File</a>
+To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/ligue_1/PredictionTable.html" download="Ligue1_Predictions.html">Download File</a>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RE6NB27P4L"></script>
