@@ -1,7 +1,11 @@
 # Upcoming Match Predictions
 
 The predicted results of the following matches in comparison with the bookmaker's odds can be seen in the following section.
+ (**Unfortunately the interactive figures are not working on mobile devices**)
 
+```{note}
+**New season predictions will start from matchday 4 and onwards as the model needs some matchdays to calibrate on the team's statistics.**
+```
 
 ## EPL
 
@@ -38,7 +42,7 @@ To download a more detailed table with predictions and bookmaker odds: <a href="
 *The model predictions of the upcoming Premier League games compared to the bookmaker odds. On the left a radar plot is visible containing the most popular bets with the model predictions in light green and the Bookmakers' predictions in dark blue. On the right side a bar plot of the model's prediction for the most probable scorelines is visible.*
 
 The figure depicts a radar plot of the most popular bets which includes both the predicted probabilities and the probability assigned by the bookmaker as a conversion of the odds.
-Serie
+
 To download a more detailed table with predictions and bookmaker odds: <a href="_static/league_figures/laliga/PredictionTable.html" download="LaLiga_Predictions.html">Download File</a>
 
 ## Serie A
