@@ -45,7 +45,7 @@ class BookmakerScraper():
         self.dictionary = dictionary
         os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
         os.environ["SSL_CERT_FILE"] = certifi.where()
-        self.driver = uc.Chrome(version_main = 127)
+        self.driver = uc.Chrome(version_main = 129)
 
     @staticmethod    
     def produce_urls(base_url: str):
