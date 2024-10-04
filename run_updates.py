@@ -36,8 +36,8 @@ def main():
     
 
     understat_parser = Understat_Parser(league = config.league, dictionary = config.data_co_uk_dictionary, database=config.database)
-    bookmaker_scraper = BookmakerScraper(url = config.bookmaker_url, dictionary = config.bookmaker_dictionary)
     try:
+        bookmaker_scraper = BookmakerScraper(url = config.bookmaker_url, dictionary = config.bookmaker_dictionary)
         odds_dataframe = bookmaker_scraper.return_odds()
         logger.success('Successfully retrieved odds!')
         logger.info(f'\n {odds_dataframe}')
