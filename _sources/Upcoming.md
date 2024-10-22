@@ -4,7 +4,7 @@ The predicted results of the following matches in comparison with the bookmaker'
  (**Unfortunately the interactive figures are not working on mobile devices**)
 
 ```{note}
-**Some matches may not appear in the upcoming section due to misalignment between different data sources in team names. Creating a related issue with the teams that fail to appear would help a lot.**
+**New season predictions will start from matchday 4 and onwards as the model needs some matchdays to calibrate on the team's statistics.**
 ```
 
 ## EPL
