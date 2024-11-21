@@ -1,4 +1,4 @@
-# EuropeanFotballLeaguePredictor
+# EuropeanFootballLeaguePredictor
 
 EuropeanFootballLeaguePredictor is a predictor of europes top league games based on historic performances of teams, taking into account only advanced league table statistics. It uses traditional machine learning techniques and statistical modeling in order to deduct data driven predictions based on the team’s season performance and recent form. The EuropeanFootballLeaguePredictor includes EnglishPremierLegue, La Liga, Ligue 1, Bundesliga, Serie A. 
 
@@ -14,48 +14,35 @@ The [EuropeanFootballLeaguePredictor Github Page](https://nickpadd.github.io/Eur
 
 
 ## How to run the project
-### Installing Project Dependencies
-1. Clone this repository to your local machine or download the project files.
+### Haven’t installed the project yet? Time to dive in!
 
-   ```bash
-   git clone https://github.com/nickpadd/EuropeanFootballLeaguePredictor
+1. Download the file *PROJECT-SETUP.sh* (**or the '.bat' for Windows users**) from the repository and place it in the
+folder where you want to install the project.
+2. Open the terminal and navigate to the folder where the 'PROJECT-SETUP.sh' file is located.
+3. Run the following command in the terminal:
+- macOS/Linux users
+```bash
+bash PROJECT-SETUP.sh
+```
+- Windows users
+```bash
+PROJECT-SETUP.bat
+```
 
-2. Navigate to the project directory using the command line.
-    ```bash
-    cd EuropeanFootballLeaguePredictor
+The script will install the project dependencies and create a virtual environment for the project.<br>
+**Wait until it's finished and don't close the terminal.**
 
-- Managing dependencies with Poetry: 
-    - Installing poetry:
-    ```bash
-    pip install poetry 
-    ```
-    - Installing project dependencies:
-    ```bash
-    poetry install
-    ```
-
-    - Running the poetry shell (a virtual environment with the dependencies installed):
-    ```bash
-    poetry shell
-
-- Alternative method via venv:
-    - Create a virtual environment using venv:
-    ```bash
-    python3 -m venv venv
-    ```
-    - Activate the virtual environment:
-        - On Windows:
-        ```bash
-        venv\Scripts\activate
-        ```
-        - On macOS/Linux:
-        ```bash
-        source venv/bin/activate
-        ```
-    - Install requirements:
-    ```bash
-    pip install -r requirements.txt
-    ```
+### (Already) installed the project? Let's get started!
+1. Open the terminal and navigate to the project folder *EuropeanFootballLeaguePredictor*.
+2. Run the following command in the terminal:
+- macOS/Linux users
+```bash
+source EFLPvenv/bin/activate
+```
+- Windows users
+```bash
+EFLPvenv\Scripts\activate
+``` 
 
 ### Configuration
 The configuration file europeanfootballleaguepredictor/config/config.yaml includes many of the models parameters such as:
