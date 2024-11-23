@@ -38,19 +38,13 @@ for /f "tokens=*" %%I in ('%PYTHON% -c "import platform; print(platform.machine(
 )
 echo Platform machine: %platform_machine%
 
-REM Clone the repository in the current directory
-git clone https://github.com/nickpadd/EuropeanFootballLeaguePredictor
-
-REM Browse the project directory
-cd EuropeanFootballLeaguePredictor || exit /b 1
-
 REM Create a virtual environment
-%PYTHON% -m venv EFLPvenv
+%PYTHON% -m venv eflp_venv
 
 REM Activate the virtual environment
-call EFLPvenv\Scripts\activate.bat
+call eflp_venv\Scripts\activate.bat
 
 REM Install dependencies for the project using the pip associated with the virtual environment
-EFLPvenv\Scripts\pip install -r requirements.txt
+eflp_venv\Scripts\pip install -r requirements.txt
 
 echo The project has been successfully installed. Perform the following README steps.

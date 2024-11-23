@@ -37,19 +37,13 @@ echo -e "Using Python binary: $PYTHON\n"
 platform_machine=$($PYTHON -c 'import platform; print(platform.machine())')
 echo -e "Platform machine: $platform_machine\n"
 
-# Clone the repository in the current directory
-git clone https://github.com/nickpadd/EuropeanFootballLeaguePredictor
-
-# Browse the project directory
-cd EuropeanFootballLeaguePredictor || exit
-
 # Create a virtual environment
-$PYTHON -m venv EFLPvenv
+$PYTHON -m venv eflp_venv
 
 # Activate the virtual environment
-source EFLPvenv/bin/activate
+source eflp_venv/bin/activate
 
 # Install dependencies for the project using the pip associated with the virtual environment
-EFLPvenv/bin/pip install -r requirements.txt
+eflp_venv/bin/pip install -r requirements.txt
 
 echo -e "\n \033[1;32m *** The project has been successfully installed. Perform the following README steps. *** \033[0m \n"
