@@ -6,3 +6,4 @@ htmlcov/**
 /evaluation/**
 *.pyc
 updates_script.sh
+/eflp_venv/**
