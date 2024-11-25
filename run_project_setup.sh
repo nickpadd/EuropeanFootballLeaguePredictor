@@ -5,14 +5,14 @@ find_python() {
     local required_version="3.9"
     local max_version="4.0"
     local python_bins
-    python_bins=$(ls /usr/bin | grep -E '^python[0-9.]*$')
 
-    unalias -a # Temporarily disable aliases
+    # Search Python binaries in the PATH, respecting pyenv
+    python_bins=$(command -v python python3 python3.* 2>/dev/null)
 
     for bin in $python_bins; do
-        if command -v "$bin" &>/dev/null; then
+        if [ -x "$bin" ]; then
             local python_version
-            python_version=$($bin -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')
+            python_version=$("$bin" -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')
             if [[ $(echo -e "$python_version\n$required_version" | sort -V | head -n1) == "$required_version" ]] && \
                [[ $(echo -e "$python_version\n$max_version" | sort -V | head -n1) != "$max_version" ]]; then
                 echo "$bin"
