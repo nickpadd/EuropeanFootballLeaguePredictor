@@ -1,9 +1,9 @@
 mlruns/**
 htmlcov/**
-poetry.lock
 .coverage
 /raw_files/**
 /preprocessed_files/**
 /evaluation/**
 *.pyc
 updates_script.sh
+/eflp_venv/**
