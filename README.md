@@ -56,7 +56,7 @@ The configuration file europeanfootballleaguepredictor/config/config.yaml includ
 
 
 ### Running the scripts for the upcoming matches
-For running the scripts below make sure you have followed [Installing Project Dependencies](#installing-project-dependencies) and you are inside the poetry shell.
+For running the scripts below make sure you have followed [Installing Project Dependencies](#how-to-run-the-project) and you are inside the poetry shell.
 
 - Data Collection: </br>
 In order to run the model running the 'run_data_collection.py' is required. The script uses the configuration settings **data_gathering.long_term_form/ data_gathering.short_term_form** in order to gather the requested data.
